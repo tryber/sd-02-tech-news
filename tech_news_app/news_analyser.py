@@ -4,6 +4,3 @@ def top_5_news():
 
 def top_5_categories():
     raise NotImplementedError
-
-
-# init pr
