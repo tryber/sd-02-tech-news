@@ -1,1 +1,1 @@
-news_details_url
+type(sources)

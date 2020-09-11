@@ -1,50 +1,110 @@
 import requests
 from parsel import Selector
+import re
+
+
+def fetch_content(url, timeout=2):
+    try:
+        response = requests.get(url, timeout=timeout)
+        response.raise_for_status()
+    except (requests.HTTPError, requests.ReadTimeout) as exc:
+        print(exc)
+        return ""
+    else:
+        return response.text
 
 
 def get_title(selector):
     title = selector.css("h1#js-article-title::text").get()
-    return title
+    return title and title.strip()
 
 
 def get_timestamp(selector):
-    timestamp = selector.css(".tec--timestamp__item > time::attr(datetime)").get()
+    timestamp = selector.css(
+        ".tec--timestamp__item > time::attr(datetime)"
+    ).get()
     return timestamp
 
 
 def get_writer(selector):
     writer = selector.css(".tec--author__info__link::text").get()
-    return writer
+    return writer and writer.strip()
 
 
 def get_shares_count(selector):
-    shares_count = selector.css(".tec--toolbar__item::text").get()
+    shares_count = selector.css(
+        ".tec--toolbar__item:first-child *::text"
+    ).re_first(r"\d")
     return shares_count
 
 
+def get_comments_count(selector):
+    comments_count = selector.css(
+        ".tec--toolbar__item:nth-child(2) > button *::text"
+    ).re_first(r"\d")
+    return comments_count
+
+
 def get_summary(selector):
-    summary = selector.css(".tec--article__body > p:first-child *::text").getall()
-    return " ".join(summary)
+    summary = " ".join(
+        selector.css(".tec--article__body > p:first-child *::text").getall()
+    )
+    return re.sub("\\n|\\xa0", "", summary)
 
 
-def scrape():
+def get_sources(selector):
+    sources = selector.css(".z--mb-16 > div > a::text").getall()
+    sources_list = []
+    for source in sources:
+        sources_list.append(source.strip())
+    return ", ".join(sources_list)
+
+
+def get_categories(selector):
+    categories = selector.css("#js-categories > a::text").getall()
+    categories_list = []
+    for category in categories:
+        categories_list.append(category.strip())
+    return ", ".join(categories_list)
+
+
+def extract_news(url, selector):
+    news_info = dict()
+    news_info["url"] = url
+    news_info["title"] = get_title(selector)
+    news_info["timestamp"] = get_timestamp(selector)
+    news_info["writer"] = get_writer(selector)
+    news_info["shares_count"] = get_shares_count(selector)
+    news_info["comments_count"] = get_comments_count(selector)
+    news_info["summary"] = get_summary(selector)
+    news_info["sources"] = get_sources(selector).strip()
+    news_info["categories"] = get_categories(selector)
+    return news_info
+
+
+def scrape(n=1):
     base_url = "https://www.tecmundo.com.br/novidades"
 
-    page_text = requests.get(base_url).text
-    page_selector = Selector(page_text)
+    all_news = []
 
-    # news_details_url = page_selector.css("h3 > a::attr(href)").get()
-    news_details_url_mock = "http://127.0.0.1:5501/Surface%20Duo%20ganha%20novo%20comercial%20focado%20na%20dobradi%C3%A7a%20-%20TecMundo.htm"
-    news_details_text = requests.get(news_details_url_mock).text
-    news_details_selector = Selector(news_details_text)
+    next_page_url = base_url
 
-    title = get_title(news_details_selector).strip()
-    timestamp = get_timestamp(news_details_selector)
-    writer = get_writer(news_details_selector).strip()
-    shares_count = get_shares_count(news_details_selector).strip()
-    summary = get_summary(news_details_selector)
+    count = 1
 
-    return news_details_url_mock, title, timestamp, writer, shares_count, summary
+    while next_page_url and count <= n:
+        page_text = fetch_content(next_page_url)
+        page_selector = Selector(page_text)
+        news_urls = page_selector.css("h3 > a::attr(href)").getall()
+        for news_details_url in news_urls:
+            news_details_text = fetch_content(news_details_url)
+            news_details_selector = Selector(news_details_text)
+            news = extract_news(news_details_url, news_details_selector)
+            all_news.append(news)
+        next_page_url = page_selector.css(".tec--btn::attr(href)").get()
+        count += 1
+
+    print("Raspagem de notícias finalizada")
+    return all_news
 
 
-print(scrape())
+print(scrape(1))
