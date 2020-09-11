@@ -12,8 +12,9 @@ def fetch_content(url, timeout=1):
     response = requests.get(url, timeout=timeout)
     response.raise_for_status()
     time.sleep(2)
-  except requests.HTTPError:
-    return ""
+  except (requests.HTTPError or requests.ReadTimeout) as exc:
+    print(exc, file = sys.stderr)
+    return
   else:
     return response.text
 
@@ -84,9 +85,7 @@ def scrape(N=1):
   for i in range(N):
     scrape_main_page(main_url)
     main_page = fetch_content(main_url)
+    print('main_page', main_page)
     selector = parsel.Selector(main_page)
     main_url = selector.css('div.tec--list > a.tec--btn::attr(href)').get()
   print('Raspagem de notícias finalizada')
-
-
-scrape(1)

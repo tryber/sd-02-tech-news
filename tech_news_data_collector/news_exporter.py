@@ -46,5 +46,3 @@ def json_exporter(filename):
   
   except IOError:
     print('Formato inválido', file = sys.stderr)
-
-csv_exporter('imported.csv')

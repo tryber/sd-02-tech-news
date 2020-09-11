@@ -46,7 +46,7 @@ def is_header_valid(header):
 
 def is_row_valid(row, index):
   if not all(row):
-    print('Erro na notícia {', index, '}', file = sys.stderr)
+    print(f'Erro na notícia {index}', file = sys.stderr)
     raise ValueError
 
 
@@ -120,6 +120,3 @@ def json_importer(filename):
     print('Formato inválido', file = sys.stderr)
   except json.decoder.JSONDecodeError:
     print('JSON inválido')
-
-
-csv_importer('imported.csv')
