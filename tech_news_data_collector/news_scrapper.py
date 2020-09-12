@@ -1,6 +1,7 @@
 import requests
 from parsel import Selector
 import re
+from mongo_connection import insert_news
 
 
 def fetch_content(url, timeout=2):
@@ -103,8 +104,9 @@ def scrape(n=1):
         next_page_url = page_selector.css(".tec--btn::attr(href)").get()
         count += 1
 
+    insert_news(all_news)
     print("Raspagem de notícias finalizada")
     return all_news
 
 
-print(scrape(1))
+print(scrape(2))
