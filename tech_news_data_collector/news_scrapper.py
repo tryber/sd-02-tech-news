@@ -4,6 +4,10 @@ import time
 from pymongo import MongoClient
 
 
+def get_simple_text(selector, selector_attributes):
+    return selector.css(selector_attributes).get() or ''
+
+
 def save_db(dict_new_detail):
     with MongoClient() as client:
         db = client.web_scrape_python
@@ -12,7 +16,7 @@ def save_db(dict_new_detail):
             dict_new_detail, upsert=True)
 
 
-def get_URLs(url):
+def get_urls(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -31,33 +35,32 @@ def fix_line_breaks(string):
 def get_news_details(url, total, current):
     new_detailed = {}
 
-    content = get_URLs(url)
+    content = get_urls(url)
     selector = parsel.Selector(content)
 
     new_detailed['url'] = url
 
-    title = selector.css("#js-article-title ::text").get() or ''
+    title = get_simple_text(selector, "#js-article-title ::text")
     new_detailed['title'] = title.strip()
 
-    new_detailed['datetime'] = selector.css(".tec--timestamp__item time \
-                                            ::attr(datetime)").get() or ''
+    new_detailed['datetime'] = get_simple_text(selector,
+                                               ".tec--timestamp__item time \
+                                               ::attr(datetime)")
 
-    writer = selector.css(".tec--author__info__link ::text").get() or ''
+    writer = get_simple_text(selector, ".tec--author__info__link ::text")
     new_detailed['writer'] = writer.strip()
 
     if len(selector.css("div.tec--toolbar__item").getall()) == 2:
         share, comments_count = selector.css(
-                                              "div.tec--toolbar__item \
-                                               ::text").re(r'\d+')
+                                   "div.tec--toolbar__item ::text").re(r'\d+')
     else:
-        comments_count = selector.css("#js-comments-btn \
-                                       ::attr(data-count)").get()
+        comments_count = get_simple_text(selector, "#js-comments-btn \
+                                         ::attr(data-count)")
         share = 0
     new_detailed['comments_count'] = comments_count
     new_detailed['share'] = share
     new_detailed['summary'] = ''.join(selector.css(".tec--article__body > \
-                                                   p:first_child *::text"
-                                                   ).getall()) or ''
+                                    p:first_child *::text").getall()) or ''
 
     source = ''.join(selector.css(".z--mb-16 a ::text"
                                   ).getall()).strip().split('\n')
@@ -79,7 +82,7 @@ def scrape(n=1):
     urls_to_scrape = []
 
     for number in range(1, n + 1):
-        content = get_URLs(f"{base_url}/{number}")
+        content = get_urls(f"{base_url}/{number}")
         selector = parsel.Selector(content)
         news_urls = selector.css(".tec--list--lg \
                                  .tec--list__item \
