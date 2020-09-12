@@ -27,9 +27,9 @@ def save_db(item, db, collection):
         db[collection].insert_one(item_to_insert)
 
 
-def check_if_exists_db(value, i, db, collection, field):
+def check_if_exists_db(value, i, collection, field):
     with MongoClient() as client:
-        db = client[db]
+        db = client['web_scrape_python']
         new = list(db[collection].find({field: value}))
         if len(new) > 0:
             raise ValueError(f"Notícia {i} duplicada")
@@ -40,8 +40,14 @@ def iterate_lines(csvLines):
         save_db(line, 'web_scrape_python', 'news_collection')
 
 
-def csv_importer(arg):
+def check_errors_or_if_exists(csvLines, header):
+    for index, line in enumerate(csvLines, start=1):
+        line = [item for item in line if item]
+        check_comparison(len(line), len(header), f'Erro na notícia {index}')
+        check_if_exists_db(line[0], index, 'news_collection', 'url')
 
+
+def csv_importer(arg):
     try:
         extension = os.path.splitext(arg)[1]
         check_comparison(extension, '.csv', 'Invalid extension')
@@ -51,16 +57,7 @@ def csv_importer(arg):
 
             check_comparison(header, correct_header, 'Invalid header')
 
-            for index, line in enumerate(csvLines, start=1):
-                line = [item for item in line if item]
-                check_comparison(len(line), len(header),
-                                 f'Erro na notícia {index}')
-
-                check_if_exists_db(line[0],
-                                   index,
-                                   'web_scrape_python',
-                                   'news_collection',
-                                   'url')
+            check_errors_or_if_exists(csvLines, header)
             iterate_lines(csvLines)
 
     except FileNotFoundError:
