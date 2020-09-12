@@ -2,10 +2,11 @@ import sys
 import os.path
 import csv
 from pymongo import MongoClient
-from functools import reduce
+
 
 correct_header = ['url', 'title', 'timestamp', 'writer', 'shares_count',
                   'comments_count', 'summary', 'sources', 'categories']
+
 
 def create_dict(keys, values):
     new_dict = {}
@@ -34,6 +35,11 @@ def check_if_exists_db(value, i, db, collection, field):
             raise ValueError(f"Notícia {i} duplicada")
 
 
+def iterate_lines(csvLines):
+    for line in csvLines:
+        save_db(line, 'web_scrape_python', 'news_collection')
+
+
 def csv_importer(arg):
 
     try:
@@ -55,9 +61,7 @@ def csv_importer(arg):
                                    'web_scrape_python',
                                    'news_collection',
                                    'url')
-
-            for line in csvLines:
-                save_db(line,'web_scrape_python', 'news_collection')
+            iterate_lines(csvLines)
 
     except FileNotFoundError:
         print(f"Arquivo {arg} não encontrado", file=sys.stderr)
@@ -74,4 +78,3 @@ def json_importer():
 
 
 csv_importer('tech_news_data_collector/news.csv')
-
