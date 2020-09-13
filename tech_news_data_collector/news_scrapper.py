@@ -56,7 +56,7 @@ def get_news_details(url, total, current):
     else:
         comments_count = get_simple_text(selector, "#js-comments-btn \
                                          ::attr(data-count)")
-        share = 0
+        share = '0'
     new_detailed['comments_count'] = comments_count
     new_detailed['share'] = share
     new_detailed['summary'] = ''.join(selector.css(".tec--article__body > \
