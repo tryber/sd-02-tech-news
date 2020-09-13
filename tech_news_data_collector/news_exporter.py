@@ -13,14 +13,21 @@ def get_from_db(db, collection):
         return db[collection].find()
 
 
+def check_if_is_list(item):
+    if type(item) is list:
+        return ','.join(item)
+    return item
+
+
 def adjust_dot_comma(lines):
     final_text = []
     for line in lines:
         adjusted_line = []
+
         for item in line:
-            if type(item) is list:
-                item = ','.join(item)
+            item = check_if_is_list(item)
             adjusted_line.append(item)
+
         final_text.append(adjusted_line)
     return final_text
 
