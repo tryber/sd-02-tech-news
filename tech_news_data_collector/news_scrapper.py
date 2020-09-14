@@ -1,6 +1,6 @@
 import requests
-from parsel import Selector
 import time
+from parsel import Selector
 from pymongo import MongoClient
 
 
@@ -11,6 +11,9 @@ user_agent = (
 )
 
 info_headers = {"User-agent": user_agent, "Accept": "text/html"}
+
+news_urls = []
+result = []
 
 
 def add_to_mongo(results):
@@ -23,14 +26,16 @@ def add_to_mongo(results):
             )
 
 
-def scrape(page_number=1):
+def page_links(page_number):
     base_url = "https://www.tecmundo.com.br/novidades"
-    news_urls = []
     query_number = 1
     while base_url and query_number <= page_number:
+        print('for q', query_number)
+        print('for b', base_url)
+        time.sleep(1)
         response = requests.get(base_url, headers=info_headers)
         selector = Selector(response.text)
-        news_urls += (selector.css(
+        news_urls.extend(selector.css(
             "h3.tec--card__title a.tec--card__title__link::attr(href)"
         ).getall())
         base_url = selector.css(
@@ -39,9 +44,13 @@ def scrape(page_number=1):
         query_number = int(selector.css(
             ".tec--list.tec--list--lg > .tec--btn.tec--btn--lg::attr(href)"
         ).re_first(r"\d"))
-    result = []
+
+
+def scrape(page_number=1):
+    page_links(page_number)
+    
     for index, news in enumerate(news_urls):
-        # time.sleep(6)
+        time.sleep(0.1)
         resp_news = requests.get(news, headers=info_headers)
         sel_news = Selector(resp_news.text)
 
@@ -81,8 +90,9 @@ def scrape(page_number=1):
                 sel_news.css("#js-categories a::text").getall()
             ) or [])]
         })
+        print(index)
+    # add_to_mongo(result)
+    print(result)
 
-    add_to_mongo(result)
 
-
-scrape(2)
+scrape(3)
