@@ -15,18 +15,9 @@ def fetch_content(url, timeout=2):
         return response.text
 
 
-def get_title_or_writer(selector, field):
-    result = ""
-    if field == "title":
-        result = selector.css("h1#js-article-title::text").get()
-    if field == "writer":
-        result = selector.css(".tec--author__info__link::text").get()
+def get_title_or_writer(selector, css_selector):
+    result = selector.css(css_selector).get()
     return result and result.strip()
-
-
-# def get_title(selector):
-#     title = selector.css("h1#js-article-title::text").get()
-#     return title and title.strip()
 
 
 def get_timestamp(selector):
@@ -34,11 +25,6 @@ def get_timestamp(selector):
         ".tec--timestamp__item > time::attr(datetime)"
     ).get()
     return timestamp
-
-
-# def get_writer(selector):
-#     writer = selector.css(".tec--author__info__link::text").get()
-#     return writer and writer.strip()
 
 
 def get_shares_count(selector):
@@ -62,46 +48,33 @@ def get_summary(selector):
     return re.sub("\\n|\\xa0", "", summary)
 
 
-def get_categories_or_sources(selector, field):
-    response = []
-    if field == "sources":
-        sources = selector.css(".z--mb-16 > div > a::text").getall()
-        for source in sources:
-            response.append(source.strip())
-    if field == "categories":
-        categories = selector.css("#js-categories > a::text").getall()
-        for category in categories:
-            response.append(category.strip())
-    return ", ".join(response)
-
-
-# def get_sources(selector):
-#     sources = selector.css(".z--mb-16 > div > a::text").getall()
-#     sources_list = []
-#     for source in sources:
-#         sources_list.append(source.strip())
-#     return ", ".join(sources_list)
-
-
-# def get_categories(selector):
-#     categories = selector.css("#js-categories > a::text").getall()
-#     categories_list = []
-#     for category in categories:
-#         categories_list.append(category.strip())
-#     return ", ".join(categories_list)
+def get_categories_or_sources(selector, css_selector):
+    result = selector.css(css_selector).getall()
+    result_list = []
+    for item in result:
+        result_list.append(item.strip())
+    return ", ".join(result_list)
 
 
 def extract_news(url, selector):
     news_info = dict()
     news_info["url"] = url
-    news_info["title"] = get_title_or_writer(selector, "title")
+    news_info["title"] = get_title_or_writer(
+        selector, "h1#js-article-title::text"
+    )
     news_info["timestamp"] = get_timestamp(selector)
-    news_info["writer"] = get_title_or_writer(selector, "writer")
+    news_info["writer"] = get_title_or_writer(
+        selector, ".tec--author__info__link::text"
+    )
     news_info["shares_count"] = get_shares_count(selector)
     news_info["comments_count"] = get_comments_count(selector)
     news_info["summary"] = get_summary(selector)
-    news_info["sources"] = get_categories_or_sources(selector, "sources")
-    news_info["categories"] = get_categories_or_sources(selector, "categories")
+    news_info["sources"] = get_categories_or_sources(
+        selector, ".z--mb-16 > div > a::text"
+    )
+    news_info["categories"] = get_categories_or_sources(
+        selector, "#js-categories > a::text"
+    )
     return news_info
 
 
