@@ -12,7 +12,9 @@ user_agent = (
 
 info_headers = {"User-agent": user_agent, "Accept": "text/html"}
 
-news_urls = []
+news_urls = [
+    "http://127.0.0.1:5500/App%20de%20captura%20de%20tela%20recebe%20Fluent%20Design%20no%20Windows%2010%20-%20TecMundo.html",
+]
 result = []
 
 
@@ -46,9 +48,25 @@ def page_links(page_number):
         ).re_first(r"\d"))
 
 
+def getter_strip(sel_news, css_info, fail):
+    answer = (sel_news.css(css_info).get() or fail).strip()
+    return answer
+
+
+def getterall_strip(sel_news, css_info, fail):
+    answer = (("".join
+               (sel_news.css(css_info).getall())) or fail).strip()
+    return answer
+
+
+def getter_only(sel_news, css_info, fail):
+    answer = (sel_news.css("#js-article-date::attr(datetime)").get() or fail)
+    return answer
+
+
 def scrape(page_number=1):
-    page_links(page_number)
-    
+    # page_links(page_number)
+
     for index, news in enumerate(news_urls):
         time.sleep(0.1)
         resp_news = requests.get(news, headers=info_headers)
@@ -57,29 +75,27 @@ def scrape(page_number=1):
         result.append({
             "url": news,
 
-            "title": (sel_news.css(
-                "#js-article-title::text"
-            ).get() or "").strip(),
+            "title": getter_strip(sel_news, "#js-article-title::text", ""),
 
-            "timestamp": (sel_news.css(
-                "#js-article-date::attr(datetime)"
-            ).get() or ""),
+            "timestamp": getter_only(
+                sel_news, "#js-article-date::attr(datetime)", ""
+            ),
 
-            "writer": (sel_news.css(
-                ".tec--author__info__link::text"
-            ).get() or "").strip(),
+            "writer": getter_strip(
+                sel_news, ".tec--author__info__link::text", ""
+            ),
 
             "shares_count": ((
                 sel_news.css(".tec--toolbar .tec--toolbar__item::text")
                 .re_first(r"\d")) or "0").strip(),
 
-            "comments_count": ((
-                sel_news.css("#js-comments-btn::attr(data-count)").get()
-            ) or "0").strip(),
+            "comments_count": getter_strip(
+                sel_news, "#js-comments-btn::attr(data-count)", "0"
+            ),
 
-            "summary": (("".join(
-                sel_news.css(".tec--article__body > p:first-child *::text")
-                .getall())) or "").strip(),
+            "summary": getterall_strip(
+                sel_news, ".tec--article__body > p:first-child *::text", ""
+            ),
 
             "sources": [source.strip() for source in ((
                 sel_news.css(
@@ -90,9 +106,8 @@ def scrape(page_number=1):
                 sel_news.css("#js-categories a::text").getall()
             ) or [])]
         })
-        print(index)
-    # add_to_mongo(result)
-    print(result)
+        print(index, result)
+    add_to_mongo(result)
 
 
-scrape(3)
+scrape(1)
