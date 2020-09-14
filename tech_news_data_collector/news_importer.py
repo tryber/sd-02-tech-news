@@ -3,10 +3,7 @@ import os.path
 import csv
 from pymongo import MongoClient
 import json
-
-
-correct_header = ['url', 'title', 'timestamp', 'writer', 'shares_count',
-                  'comments_count', 'summary', 'sources', 'categories']
+from utils import check_comparison, correct_header
 
 
 def create_dict(keys, values):
@@ -14,11 +11,6 @@ def create_dict(keys, values):
     for index, key in enumerate(keys, start=0):
         new_dict[key] = values[index]
     return new_dict
-
-
-def check_comparison(item, item_to_check, exception_message):
-    if item != item_to_check:
-        raise ValueError(exception_message)
 
 
 def save_db(item, db, collection, is_dict):
@@ -115,4 +107,4 @@ def json_importer(arg):
 
 # csv_importer('tech_news_data_collector/news.csv')
 
-json_importer('tech_news_data_collector/news.json')
+# json_importer('tech_news_data_collector/news.json')

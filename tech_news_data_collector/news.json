@@ -1,2 +1,2 @@
-[{"url": "primeira", "title": "título 1","timestamp": "2015","writer": "Pessoa 1","shares_count": "2","comments_count": "3","summary": "Resumo 1","sources": ["Source 1"],"categories": ["categoria 1", "categoria 2"]},
-{"url": "segunda", "title": "título 2","timestamp": "2016","writer": "Pessoa 2","shares_count": "4","comments_count": "7","summary": "Resumo 2","sources": ["Source 1", "Source 2"],"categories": ["categoria 3"]}]
+[{"url": "primeira1", "title": "título 1","timestamp": "2015","writer": "Pessoa 1","shares_count": "2","comments_count": "3","summary": "Resumo 1","sources": ["Source 1"],"categories": ["categoria 1", "categoria 2"]},
+{"url": "segunda2", "title": "título 2","timestamp": "2016","writer": "Pessoa 2","shares_count": "4","comments_count": "7","summary": "Resumo 2","sources": ["Source 1", "Source 2"],"categories": ["categoria 3"]}]
