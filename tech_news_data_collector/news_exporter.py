@@ -11,7 +11,7 @@ def check_file_extention(filename, extention):
 
 
 def find_all():
-    cur = db().pages.find({},{'_id': 0})
+    cur = db().pages.find({}, {"_id": 0})
     arr = []
     for doc in cur:
         arr.append(doc)
@@ -20,7 +20,7 @@ def find_all():
 
 def csv_exporter(filename):
     try:
-        check_file_extention(filename, '.csv')
+        check_file_extention(filename, ".csv")
         with open(filename, "w") as file:
             writer = csv.writer(file)
             news = find_all()
@@ -32,18 +32,17 @@ def csv_exporter(filename):
 
             for row in news:
                 writer.writerow(row)
-        print('Exportação realizada com sucesso')
+        print("Exportação realizada com sucesso")
 
     except IOError:
-        print('Formato inválido', file=sys.stderr)
+        print("Formato inválido", file=sys.stderr)
 
 
 def json_exporter(filename):
     try:
-        check_file_extention(filename, '.json')
+        check_file_extention(filename, ".json")
         with open(filename, "w") as file:
             news = find_all()
             json.dump(news, file)
-    
     except IOError:
-        print('Formato inválido', file=sys.stderr)
+        print("Formato inválido", file=sys.stderr)
