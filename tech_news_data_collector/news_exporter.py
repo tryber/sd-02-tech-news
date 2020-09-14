@@ -10,7 +10,7 @@ correct_header = ['url', 'title', 'timestamp', 'writer', 'shares_count',
                   'comments_count', 'summary', 'sources', 'categories']
 
 
-def get_from_db(db, collection, projection={}):
+def get_from_db(db, collection, projection={"_id": 0}):
     with MongoClient() as client:
         db = client[db]
         return db[collection].find({}, projection)
@@ -44,9 +44,7 @@ def csv_exporter(file_path):
         print(exc_ext, file=sys.stderr)
 
     else:
-        all_news = list(get_from_db('web_scrape_python',
-                                    'news_collection',
-                                    {"_id": 0}))
+        all_news = list(get_from_db('web_scrape_python', 'news_collection'))
 
         base_path = Path(__file__).parent
         file_path = (base_path / f"{file_path}").resolve()
@@ -84,5 +82,5 @@ def json_exporter(file_path):
         print('Exportação realizada com sucesso', file=sys.stdout)
 
 
-csv_exporter("../news.csv")
+# csv_exporter("../news.csv")
 # json_exporter("../news.json")
