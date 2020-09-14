@@ -60,8 +60,19 @@ def request_details(url):
         return response.text
 
 
-def scrape(searchPages):
-    urlsDetails = request_links(searchPages)
+def mongo_save(arrayInfos):
+    with MongoClient("mongodb://localhost:27017/") as client:
+        db = client["tech_news"]
+        for value in arrayInfos:
+            db["news"].bulk_write(
+                [UpdateOne(
+                    {"url": value["url"]},
+                    {"$set": value},
+                    upsert=True)]
+            )
+
+
+def create_infos(urlsDetails):
     arrayInfos = []
     for link in urlsDetails:
         content = request_details(link)
@@ -127,15 +138,13 @@ def scrape(searchPages):
                 ],
             }
         )
-    with MongoClient("mongodb://localhost:27017/") as client:
-        db = client["tech_news"]
-        for value in arrayInfos:
-            db["news"].bulk_write(
-                [UpdateOne(
-                    {"url": value["url"]},
-                    {"$set": value},
-                    upsert=True)]
-            )
+    return arrayInfos
+
+
+def scrape(searchPages):
+    urlsDetails = request_links(searchPages)
+    arrayInfos = create_infos(urlsDetails)
+    mongo_save(arrayInfos)
 
 
 pages = input("Qual o numero de paginas você deseja raspar?\n")
