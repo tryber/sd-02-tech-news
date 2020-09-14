@@ -36,7 +36,7 @@ def csv_exporter():
     all_news = list(get_from_db('web_scrape_python', 'news_collection'))
 
     base_path = Path(__file__).parent
-    file_path = (base_path / "../news.txt").resolve()
+    file_path = (base_path / "../news.csv").resolve()
 
     with open(file_path, mode="w") as file:
         lines = [list(new.values())[1:] for new in all_news]
