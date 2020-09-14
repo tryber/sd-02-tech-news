@@ -49,3 +49,9 @@ def insert_news_importer(news):
                 )
             if repetead_url:
                 print(f"Notícia {index} duplicada")
+
+
+def get_news():
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.find({}, {"_id": 0})
