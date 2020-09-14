@@ -2,6 +2,8 @@ import csv
 from pymongo import MongoClient
 import re
 import sys
+import json
+from bson import ObjectId
 
 
 def mongo_extract():
@@ -45,12 +47,26 @@ def csv_exporter(arquive):
     print("Exportação realizada com sucesso")
 
 
-def json_exporter():
-    raise NotImplementedError
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
 
-arquive = input("Digite o nome do arquivo com .csv\n")
-if(re.search(".csv$", arquive, re.IGNORECASE)):
+def json_exporter(arquive):
+    documents = mongo_extract()
+    with open(arquive.lower(), "w") as file:
+        for document in documents:
+            json.dump(document, file, cls=JSONEncoder)
+    print("Exportação realizada com sucesso")
+
+
+arquive = input("Digite o nome do arquivo com .csv ou .json\n")
+
+if re.search(".csv$", arquive, re.IGNORECASE):
     csv_exporter(arquive)
+elif re.search(".json$", arquive, re.IGNORECASE):
+    json_exporter(arquive)
 else:
     print("Formato inválido", file=sys.stderr)
