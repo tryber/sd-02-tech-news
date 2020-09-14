@@ -1,7 +1,7 @@
 import requests
 from parsel import Selector
 import re
-from mongo_connection import insert_news
+from mongo_connection import insert_news_scrapper
 
 
 def fetch_content(url, timeout=2):
@@ -91,17 +91,19 @@ def scrape(n=1):
         page_text = fetch_content(next_page_url)
         page_selector = Selector(page_text)
         news_urls = page_selector.css("h3 > a::attr(href)").getall()
+        print(f"raspagem da página {count} em andamento")
         for news_details_url in news_urls:
             news_details_text = fetch_content(news_details_url)
             news_details_selector = Selector(news_details_text)
             news = extract_news(news_details_url, news_details_selector)
             all_news.append(news)
+        print(f"dados da página {count} raspados")
         next_page_url = page_selector.css(".tec--btn::attr(href)").get()
         count += 1
 
-    insert_news(all_news)
+    insert_news_scrapper(all_news)
     print("Raspagem de notícias finalizada")
     return all_news
 
 
-print(scrape(2))
+scrape(2)
