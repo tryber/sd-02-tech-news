@@ -8,7 +8,7 @@ def get_from_db(filter_query={}, projection={}):
 
 
 def search_by_title(regex):
-    regex_expression = { "title": { '$regex': regex, "$options" :'i'}}
+    regex_expression = {"title": {'$regex': regex, "$options": 'i'}}
     news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
     for item in news_list:
         print(f"- {item['title']} : {item['url']}")
@@ -26,5 +26,6 @@ def search_by_source():
 
 def search_by_category():
     raise NotImplementedError
+
 
 search_by_title('paraxzcxc criar')
