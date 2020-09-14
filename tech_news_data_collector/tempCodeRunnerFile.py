@@ -1,2 +1,0 @@
-otFoundError:
-        print(f"Arq
