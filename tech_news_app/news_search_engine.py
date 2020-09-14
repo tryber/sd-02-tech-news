@@ -24,10 +24,14 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    news = db().pages.find({'$and': [{"sources": {'$regex':  source, '$options': 'i'}}]},{'_id': 0, 'title': 1, 'url': 1})
+    news = db().pages.find({'$and':
+    [{"sources": {'$regex':  source, '$options': 'i'}}]},
+    {'_id': 0, 'title': 1, 'url': 1}
+    )
     return list(news)
 
 
 def search_by_category(category):
-    news = db().pages.find({'$and':[{"categories": '$regex':  category, '$options': 'i'}}]},{'_id': 0, 'title': 1, 'url': 1})
+    news = db().pages.find({'$and':[{"categories": '$regex':  category, '$options': 'i'}}]},
+    {'_id': 0, 'title': 1, 'url': 1})
     return list(news)

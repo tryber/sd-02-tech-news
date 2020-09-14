@@ -35,7 +35,7 @@ def csv_exporter(filename):
         print('Exportação realizada com sucesso')
 
     except IOError:
-        print('Formato inválido', file = sys.stderr)
+        print('Formato inválido', file=sys.stderr)
 
 
 def json_exporter(filename):
@@ -46,4 +46,4 @@ def json_exporter(filename):
             json.dump(news, file)
     
     except IOError:
-        print('Formato inválido', file = sys.stderr)
+        print('Formato inválido', file=sys.stderr)
