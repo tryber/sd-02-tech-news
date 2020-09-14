@@ -32,7 +32,7 @@ def test_csv_importer_informacoes_incompletas():
     stub_output = StringIO()
     expected_output = "Erro na notícia 0\n"
     with redirect_stderr(stub_output):
-        csv_importer("mock/informaçao_faltando.csv")
+        csv_importer("mock/informacao_faltando.csv")
     assert stub_output.getvalue() == expected_output
 
 
@@ -52,63 +52,67 @@ def test_csv_importer_importacao_interrompida_em_caso_de_erro():
     assert stub_output.getvalue() != expected_output
 
 
-# @patch("tech_news_data_collector.news_importer.insert")
-# def test_csv_importer_sucesso(insert_mock):
-#     stub_output = StringIO()
-#     expected_output = "Importação realizada com sucesso\n"
-#     with redirect_stdout(stub_output):
-#         csv_importer("mock/arquivo.csv")
-#     assert stub_output.getvalue() == expected_output
+@patch("tech_news_data_collector.news_importer.insert")
+def test_csv_importer_sucesso(insert_mock):
+    stub_output = StringIO()
+    expected_output = "Importação realizada com sucesso\n"
+    with redirect_stdout(stub_output):
+        csv_importer("mock/arquivo.csv")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_arquivo_nao_existe():
-#     stub_output = StringIO()
-#     expected_output = "Arquivo { nao_existe.json } não encontrado\n"
-#     with redirect_stderr(stub_output):
-#         json_importer("nao_existe.json")
-#     assert stub_output.getvalue() == expected_output
+def test_json_importer_arquivo_nao_existe():
+    stub_output = StringIO()
+    expected_output = "Arquivo nao_existe.json não encontrado\n"
+    with redirect_stderr(stub_output):
+        json_importer("nao_existe.json")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_extensao_invalida():
-#     stub_output = StringIO()
-#     expected_output = "Formato inválido\n"
-#     with redirect_stderr(stub_output):
-#         json_importer("mock/arquivo.csv")
-#     assert stub_output.getvalue() == expected_output
+def test_json_importer_extensao_invalida():
+    stub_output = StringIO()
+    expected_output = "Formato inválido\n"
+    with redirect_stderr(stub_output):
+        json_importer("mock/arquivo.csv")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_json_invalido():
-#     stub_output = StringIO()
-#     expected_output = "Erro na notícia 0\n"
-#     with redirect_stderr(stub_output):
-#         json_importer("mock/informacao_faltando.json")
-#     assert stub_output.getvalue() == expected_output
+def test_json_importer_json_invalido():
+    stub_output = StringIO()
+    expected_output = "Erro na notícia 0\n"
+    with redirect_stderr(stub_output):
+        json_importer("mock/informacao_faltando.json")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_informacoes_incompletas():
-#     stub_output = StringIO()
-#     expected_output = "Notícia 1 duplicada\n"
-#     with redirect_stderr(stub_output):
-#         json_importer("mock/url_duplicado.json")
-#     assert stub_output.getvalue() == expected_output
+def test_json_importer_informacoes_incompletas():
+    stub_output = StringIO()
+    expected_output = "Notícia 1 duplicada\n"
+    with redirect_stderr(stub_output):
+        json_importer("mock/url_duplicado.json")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_urls_duplicadas():
-#     stub_output = StringIO()
-#     expected_output = "Notícia 1 duplicada\n"
-#     with redirect_stderr(stub_output):
-#         json_importer("mock/url_duplicado.json")
-#     assert stub_output.getvalue() == expected_output
+def test_json_importer_urls_duplicadas():
+    stub_output = StringIO()
+    expected_output = "Notícia 1 duplicada\n"
+    with redirect_stderr(stub_output):
+        json_importer("mock/url_duplicado.json")
+    assert stub_output.getvalue() == expected_output
 
 
-# def test_json_importer_importacao_interrompida_em_caso_de_erro():
-#     assert False
+def test_json_importer_importacao_interrompida_em_caso_de_erro():
+    stub_output = StringIO()
+    expected_output = "Importação realizada com sucesso\n"
+    with redirect_stdout(stub_output):
+        json_importer("mock/url_duplicado.json")
+    assert stub_output.getvalue() != expected_output
 
 
-# @patch("tech_news_data_collector.news_exporter.insert")
-# def test_json_importer_sucesso():
-#     stub_output = StringIO()
-#     expected_output = "Importação realizada com sucesso\n"
-#     with redirect_stdout(stub_output):
-#         csv_importer("mock/arquivo.json")
-#     assert stub_output.getvalue() == expected_output
+@patch("tech_news_data_collector.news_importer.insert")
+def test_json_importer_sucesso(insert_mock):
+    stub_output = StringIO()
+    expected_output = "Importação realizada com sucesso\n"
+    with redirect_stdout(stub_output):
+        json_importer("mock/arquivo.json")
+    assert stub_output.getvalue() == expected_output

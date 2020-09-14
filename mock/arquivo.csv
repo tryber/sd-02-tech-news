@@ -1,2 +1,2 @@
-title,timestamp,writer,summary,shares_count,comments_count,sources,categories,url
-title,timestamp,writer,summary,shares_count,comments_count,sources,categories,url
+url;title;timestamp;writer;shares_count;comments_count;summary;sources;categories
+url1;nokia;timestamp;writer;shares_count;comments_count;summary;sources;categories
