@@ -30,7 +30,7 @@ def mongoInsert(arquive):
         for index in range(len(arquive)):
             objToInsert = createObjectMongo(arquive[index])
             existObject = db["news"].find_one({"url": objToInsert["url"]})
-            if existObject == None:
+            if existObject is None:
                 db["news"].insert_one(objToInsert)
             else:
                 print("Notícia " + str(index) + " duplicada", file=sys.stderr)
