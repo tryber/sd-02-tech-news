@@ -1,8 +1,8 @@
-from mongo_connection import db
+from mongo_connection import tech_news_db
 
 
 def top_5_news():
-    news = db().pages.aggregate(
+    news = tech_news_db().pages.aggregate(
         [
             {
                 "$addFields": {

@@ -3,7 +3,7 @@ import requests
 import time
 import re
 import sys
-from mongo_connection import db
+from mongo_connection import tech_news_db
 
 base_url = "https://www.tecmundo.com.br/novidades"
 
@@ -20,23 +20,23 @@ def fetch_content(url, timeout=1):
         return response.text
 
 
-def stringFormatter(str):
+def string_formatter(str):
     whithoutN = re.sub("\\n", "", str)
-    return re.sub("\s{2,}", "", whithoutN)
+    return re.sub(r"\s{2,}", "", whithoutN)
 
 
 def scrape_page_new(page_url):
     new_page = fetch_content(page_url)
     selector = parsel.Selector(new_page)
 
-    title = stringFormatter(
+    title = string_formatter(
         selector.css("#js-article-title::text").get() or ""
     )
-    timestamp = stringFormatter(
+    timestamp = string_formatter(
         selector.css("div.tec--timestamp__item > time > strong::text").get()
         or ""
     )
-    writer = stringFormatter(
+    writer = string_formatter(
         selector.css("#js-author-bar p.z--m-none > a::text").get() or ""
     )
     shares_count = selector.css(
@@ -46,11 +46,11 @@ def scrape_page_new(page_url):
         r"\d" or 0
     )
     categories = list(
-        map(stringFormatter, selector.css("#js-categories a::text").getall())
+        map(string_formatter, selector.css("#js-categories a::text").getall())
     )
     sources = list(
         map(
-            stringFormatter,
+            string_formatter,
             selector.css("#js-main div.z--mb-16.z--px-16 a::text").getall(),
         )
     )
@@ -72,18 +72,18 @@ def scrape_page_new(page_url):
 
 
 def find(url):
-    if db().pages.find_one({"url": url}):
+    if tech_news_db().pages.find_one({"url": url}):
         return True
     return False
 
 
 def insert(url, obj):
     obj["url"] = url
-    db().pages.insert_one(obj)
+    tech_news_db().pages.insert_one(obj)
 
 
 def delete(url, obj):
-    db().pages.delete_one({"url": url})
+    tech_news_db().pages.delete_one({"url": url})
 
 
 def scrape_main_page(url):

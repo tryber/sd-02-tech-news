@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
-def db():
-  client = MongoClient()
-  return client.tech_news
+
+def tech_news_db():
+    client = MongoClient()
+    return client.tech_news

@@ -2,7 +2,7 @@ import csv
 import json
 import sys
 import os
-from mongo_connection import db
+from mongo_connection import tech_news_db
 
 
 def check_file_extention(filename, extention):
@@ -11,7 +11,7 @@ def check_file_extention(filename, extention):
 
 
 def find_all():
-    cur = db().pages.find({}, {"_id": 0})
+    cur = tech_news_db().pages.find({}, {"_id": 0})
     arr = []
     for doc in cur:
         arr.append(doc)
@@ -33,7 +33,6 @@ def csv_exporter(filename):
             for row in news:
                 writer.writerow(row)
         print("Exportação realizada com sucesso")
-
     except IOError:
         print("Formato inválido", file=sys.stderr)
 
