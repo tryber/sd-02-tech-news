@@ -30,8 +30,6 @@ def page_links(page_number):
     base_url = "https://www.tecmundo.com.br/novidades"
     query_number = 1
     while base_url and query_number <= page_number:
-        print('for q', query_number)
-        print('for b', base_url)
         time.sleep(1)
         response = requests.get(base_url, headers=info_headers)
         selector = Selector(response.text)
@@ -63,9 +61,9 @@ def getter_only(sel_news, css_info, fail):
 
 
 def list_getterall(sel_news, css_info):
-    answer = [item.strip() for item in ((
-        sel_news.css(css_info).getall()
-    ) or [])]
+    answer = [item.strip() for item in (
+        (sel_news.css(css_info).getall()) or []
+    )]
     return answer
 
 
@@ -107,8 +105,9 @@ def scrape(page_number=1):
 
             "categories": list_getterall(sel_news, "#js-categories a::text")
         })
-        print(index, result)
+        print(index)
     add_to_mongo(result)
+    print("Raspagem de notícias finalizada")
 
 
-scrape(9)
+scrape(2)
