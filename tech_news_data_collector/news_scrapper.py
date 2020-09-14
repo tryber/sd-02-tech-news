@@ -12,9 +12,7 @@ user_agent = (
 
 info_headers = {"User-agent": user_agent, "Accept": "text/html"}
 
-news_urls = [
-    "http://127.0.0.1:5500/App%20de%20captura%20de%20tela%20recebe%20Fluent%20Design%20no%20Windows%2010%20-%20TecMundo.html",
-]
+news_urls = []
 result = []
 
 
@@ -45,7 +43,7 @@ def page_links(page_number):
         ).get()
         query_number = int(selector.css(
             ".tec--list.tec--list--lg > .tec--btn.tec--btn--lg::attr(href)"
-        ).re_first(r"\d"))
+        ).re_first(r"\d") or 0)
 
 
 def getter_strip(sel_news, css_info, fail):
@@ -54,18 +52,25 @@ def getter_strip(sel_news, css_info, fail):
 
 
 def getterall_strip(sel_news, css_info, fail):
-    answer = (("".join
-               (sel_news.css(css_info).getall())) or fail).strip()
+    answer = (("".join(sel_news.css(css_info).getall()))
+              or fail).strip()
     return answer
 
 
 def getter_only(sel_news, css_info, fail):
-    answer = (sel_news.css("#js-article-date::attr(datetime)").get() or fail)
+    answer = (sel_news.css(css_info).get() or fail)
+    return answer
+
+
+def list_getterall(sel_news, css_info):
+    answer = [item.strip() for item in ((
+        sel_news.css(css_info).getall()
+    ) or [])]
     return answer
 
 
 def scrape(page_number=1):
-    # page_links(page_number)
+    page_links(page_number)
 
     for index, news in enumerate(news_urls):
         time.sleep(0.1)
@@ -97,17 +102,13 @@ def scrape(page_number=1):
                 sel_news, ".tec--article__body > p:first-child *::text", ""
             ),
 
-            "sources": [source.strip() for source in ((
-                sel_news.css(
-                    ".z--mb-16.z--px-16 div:last-child a::text").getall()
-            ) or [])],
+            "sources": list_getterall(
+                sel_news, ".z--mb-16.z--px-16 div:last-child a::text"),
 
-            "categories": [category.strip() for category in ((
-                sel_news.css("#js-categories a::text").getall()
-            ) or [])]
+            "categories": list_getterall(sel_news, "#js-categories a::text")
         })
         print(index, result)
     add_to_mongo(result)
 
 
-scrape(1)
+scrape(9)
