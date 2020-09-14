@@ -4,7 +4,7 @@ import re
 import sys
 
 
-def mongo_extract(): 
+def mongo_extract():
     results = []
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]

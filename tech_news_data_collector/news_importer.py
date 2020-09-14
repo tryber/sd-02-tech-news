@@ -33,7 +33,22 @@ def mongo_insert(arquive):
             if existObject is None:
                 db["news"].insert_one(objToInsert)
             else:
-                print("Notícia " + str(index) + " duplicada", file=sys.stderr)
+                print("Notícia " + str(index + 2) + " duplicada", file=sys.stderr)
+
+
+def check_news(headers, news):
+    conjunto = set(headers)
+    initiallen = len(conjunto)
+    for header in defaultHeaders:
+        conjunto.add(header)
+    if len(conjunto) != initiallen:
+        print("Cabeçalho inválido")
+        exit()
+    else:
+        for index in range(len(news)):
+            if len(news[index]) < len(defaultHeaders):
+                print("Erro na notícia " + str(index + 2), file=sys.stderr)
+                exit()
 
 
 def csv_importer(arquive):
@@ -41,18 +56,7 @@ def csv_importer(arquive):
         with open(arquive.lower()) as file:
             writer = csv.reader(file, delimiter=";")
             headers, *news = writer
-            conjunto = set(headers)
-            initiallen = len(conjunto)
-            for header in defaultHeaders:
-                conjunto.add(header)
-            if len(conjunto) != initiallen:
-                print("Cabeçalho inválido")
-                exit()
-            else:
-                for index in range(len(news)):
-                    if len(news[index]) < len(defaultHeaders):
-                        print("Erro na notícia " + str(index), file=sys.stderr)
-                        exit()
+            check_news(headers, news)
             mongo_insert(news)
             print("Importação realizada com sucesso")
     else:
