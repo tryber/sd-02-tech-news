@@ -22,7 +22,7 @@ def fetch_content(url):
     return response.text
 
 
-def requestLinks(searchPages=1):
+def request_links(searchPages=1):
     searchPages = int(searchPages)
     links = []
     URL = "https://www.tecmundo.com.br/novidades"
@@ -43,7 +43,7 @@ def requestLinks(searchPages=1):
     return links
 
 
-def requestDetails(url):
+def request_details(url):
     try:
         response = requests.get(
             url,
@@ -61,10 +61,10 @@ def requestDetails(url):
 
 
 def scrape(searchPages):
-    urlsDetails = requestLinks(searchPages)
+    urlsDetails = request_links(searchPages)
     arrayInfos = []
     for link in urlsDetails:
-        content = requestDetails(link)
+        content = request_details(link)
         if content and False:
             continue
         selector = Selector(text=content)
@@ -80,14 +80,16 @@ def scrape(searchPages):
                 "timestamp": (
                     selector.css(
                         ".tec--timestamp time::attr(datetime)"
-                    ).get() 
+                    ).get()
                     or ""
                 ),
                 "writer": (
-                    (selector.css(
-                        ".tec--author__info__link::text"
-                    ).get() 
-                    or "").strip()
+                    (
+                        selector.css(
+                            ".tec--author__info__link::text"
+                        ).get()
+                        or ""
+                    ).strip()
                 ),
                 "shares_count": (
                     selector.css(
@@ -119,7 +121,7 @@ def scrape(searchPages):
                     for categorie in (
                         selector.css(
                             "#js-categories a::text"
-                        ).getall() 
+                        ).getall()
                         or []
                     )
                 ],
@@ -129,7 +131,10 @@ def scrape(searchPages):
         db = client["tech_news"]
         for value in arrayInfos:
             db["news"].bulk_write(
-                [UpdateOne({"url": value["url"]}, {"$set": value}, upsert=True)]
+                [UpdateOne(
+                    {"url": value["url"]},
+                    {"$set": value},
+                    upsert=True)]
             )
 
 

@@ -4,7 +4,7 @@ import re
 import sys
 
 
-def mongoExtract(): 
+def mongo_extract(): 
     results = []
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
@@ -14,7 +14,7 @@ def mongoExtract():
 
 
 def csv_exporter(arquive):
-    documents = mongoExtract()
+    documents = mongo_extract()
     with open(arquive.lower(), "w") as file:
         writer = csv.writer(file, delimiter=";")
         headers = [

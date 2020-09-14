@@ -17,18 +17,18 @@ defaultHeaders = [
 ]
 
 
-def createObjectMongo(arrayInfo):
+def create_object_mongo(arrayInfo):
     arrayToObject = {}
     for index in range(len(arrayInfo)):
         arrayToObject[defaultHeaders[index]] = arrayInfo[index]
     return arrayToObject
 
 
-def mongoInsert(arquive):
+def mongo_insert(arquive):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
         for index in range(len(arquive)):
-            objToInsert = createObjectMongo(arquive[index])
+            objToInsert = create_object_mongo(arquive[index])
             existObject = db["news"].find_one({"url": objToInsert["url"]})
             if existObject is None:
                 db["news"].insert_one(objToInsert)
@@ -53,7 +53,7 @@ def csv_importer(arquive):
                     if len(news[index]) < len(defaultHeaders):
                         print("Erro na notícia " + str(index), file=sys.stderr)
                         exit()
-            mongoInsert(news)
+            mongo_insert(news)
             print("Importação realizada com sucesso")
     else:
         print(
