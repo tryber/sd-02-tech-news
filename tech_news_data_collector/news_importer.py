@@ -52,7 +52,7 @@ def is_row_valid(row, index):
 
 def is_url_duplicated(url, urls, index):
   if url in urls:
-    print('Notícia {', index, '} duplicada', file = sys.stderr)
+    print(f'Notícia {index} duplicada', file = sys.stderr)
     raise ValueError
 
 
@@ -63,7 +63,7 @@ def check_file_extention(filename, extention):
 
 def is_valid_param(param, index):
   if not param:
-    print('Erro na notícia {', index ,'}')
+    print(f'Erro na notícia {index}')
     raise ValueError
 
 
@@ -88,10 +88,10 @@ def csv_importer(filename):
     print('Importação realizada com sucesso')
   except ValueError:
     print()
-  except IOError:
-    print('Formato inválido', file = sys.stderr)
   except FileNotFoundError:
     print('Arquivo {', filename ,'} não encontrado', file = sys.stderr)
+  except IOError:
+    print('Formato inválido', file = sys.stderr)
 
 
 def json_importer(filename):
