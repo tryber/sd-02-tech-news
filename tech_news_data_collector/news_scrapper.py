@@ -22,7 +22,8 @@ def fetch_content(url):
     return response.text
 
 
-def requestLinks(searchPages):
+def requestLinks(searchPages=1):
+    searchPages = int(searchPages)
     links = []
     URL = "https://www.tecmundo.com.br/novidades"
     aux = 0
@@ -110,7 +111,6 @@ def scrape(searchPages):
             )
 
 
-pages = 1
-pages = int(input("Qual o numero de paginas você deseja raspar?\n"))
+pages = input("Qual o numero de paginas você deseja raspar?\n")
 scrape(pages)
 print("Raspagem de notícias finalizada")
