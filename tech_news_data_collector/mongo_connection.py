@@ -72,9 +72,9 @@ def get_news_by_date(date):
     year, month, day = date.split("-")
     # solução encontrada em:
     # https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat
-    begin = datetime.datetime(
-        int(year), int(month), int(day)
-    ).isoformat(sep="T")
+    begin = datetime.datetime(int(year), int(month), int(day)).isoformat(
+        sep="T"
+    )
 
     end = datetime.datetime(
         int(year), int(month), int(day), 23, 59, 59
@@ -83,12 +83,20 @@ def get_news_by_date(date):
     with MongoClient() as client:
         db = client.tech_news
         return db.extracted_news.find(
-            (
-                {
-                    "timestamp": {
-                        "$gte": begin,
-                        "$lte": end,
-                    }
+            {
+                "timestamp": {
+                    "$gte": begin,
+                    "$lte": end,
                 }
-            )
+            },
+            {"_id": 0, "url": 1, "title": 1},
+        )
+
+
+def get_news_by_source(source):
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.find(
+            {"sources": re.compile(f"^{source}$", re.IGNORECASE)},
+            {"_id": 0, "url": 1, "title": 1},
         )

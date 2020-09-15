@@ -1,12 +1,9 @@
 import sys
 import datetime
-from os.path import dirname, join, abspath
-
-sys.path.insert(0, abspath(join(dirname(__file__), "..")))
-
 from tech_news_data_collector.mongo_connection import (
     get_news_by_title,
     get_news_by_date,
+    get_news_by_source,
 )
 
 
@@ -45,13 +42,15 @@ def search_by_date(date):
     print(news_list)
 
 
-def search_by_source():
-    raise NotImplementedError
+def search_by_source(source):
+    news_list = []
+    news = list(get_news_by_source(source))
+    for item in news:
+        title = item["title"]
+        url = item["url"]
+        news_list.append(f"- {title}: {url}")
+    print(news_list)
 
 
 def search_by_category():
     raise NotImplementedError
-
-
-# search_by_title("CELULAR")
-search_by_date("2020-09-15")
