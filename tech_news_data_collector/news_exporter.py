@@ -71,6 +71,7 @@ def json_exporter(filename):
         with open(filename, "w") as file:
             news = find_all()
             json.dump(news, file)
+        print("Exportação realizada com sucesso")
     except ValueError as exc:
         print(exc, file=sys.stderr)
     except IOError:
