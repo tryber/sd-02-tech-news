@@ -69,69 +69,89 @@ def mongo_save(arrayInfos):
             )
 
 
-def get_selectors(selec, selector):
-    return selector.css(selec).get()
+def create_title(selector):
+    return (
+            selector.css(
+                ".tec--article__header__title::text"
+            ).get()
+            or "").strip()
 
 
-# def getAll_selectors(selec, select):
+def create_timestamp(selector):
+    return(
+            selector.css(
+                ".tec--timestamp time::attr(datetime)"
+            ).get() or ""
+        )
+
+
+def create_writer(selector):
+    return (
+            selector.css(
+                ".tec--author__info__link::text"
+            ).get()
+            or "").strip()
+
+
+def create_shares_count(selector):
+    return int(
+                selector.css(
+                    ".tec--toolbar .tec--toolbar__item::text"
+                ).re_first(
+                    r"\d{1,}"
+                )
+                or 0
+            )
+
+
+def create_comments_count(selector):
+    return int(selector.css(
+                    "#js-comments-btn::text"
+                ).re_first(
+                r"\d{1,}"
+            ) or 0)
+
+
+def create_summary(selector):
+    return ("".join(
+                    selector.css(
+                        ".tec--article__body p:first-child *::text"
+                    ).getall() or ""
+            ))
+
+
+def create_sources(selector):
+    return [
+            source.strip()
+            for source in (selector.css(
+                ".z--mb-16 div a::text"
+            ).getall() or [])
+            ]
+
+
+def create_categories(selector):
+    return [
+            categorie.strip()
+            for categorie in (
+                selector.css(
+                    "#js-categories a::text"
+                ).getall()
+                or []
+            )
+        ]
+
 
 def create_object(link, selector):
     return ({
                 "url": link,
-                "title": (
-                    get_selectors(
-                        ".tec--article__header__title::text", selector
-                    )
-                    or ""
-                ).strip(),
-                "timestamp": (
-                    get_selectors(
-                        ".tec--timestamp time::attr(datetime)", selector
-                    )
-                    or ""
-                ),
-                "writer": (
-                    (
-                        get_selectors(
-                            ".tec--author__info__link::text", selector
-                        )
-                        or ""
-                    ).strip()
-                ),
-                "shares_count": int(
-                    selector.css(
-                        ".tec--toolbar .tec--toolbar__item::text"
-                        ).re_first(
-                        r"\d{1,}"
-                    )
-                    or 0
-                ),
-                "comments_count": int(selector.css(
-                    "#js-comments-btn::text"
-                    ).re_first(
-                    r"\d{1,}"
-                )
-                    or 0),
-                "summary": "".join(
-                    selector.css(
-                        ".tec--article__body p:first-child *::text"
-                        ).getall() or ""
-                ),
-                "sources": [
-                    source.strip()
-                    for source in (selector.css(
-                        ".z--mb-16 div a::text"
-                        ).getall() or [])
-                ],
-                "categories": [
-                    categorie.strip()
-                    for categorie in (
-                        selector.css(
-                            "#js-categories a::text"
-                        ).getall()
-                        or []
-                    )
-                ],
+                "title": create_title(selector),
+                "timestamp": create_timestamp(selector),
+                "writer": create_writer(selector),
+                "shares_count": create_shares_count(selector),
+                "comments_count": create_comments_count(selector),
+                "summary": create_summary(selector),
+                "sources": create_sources(selector),
+                "categories": create_categories(selector)
             })
 
 
