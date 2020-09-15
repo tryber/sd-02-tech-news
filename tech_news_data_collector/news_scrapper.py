@@ -69,15 +69,8 @@ def mongo_save(arrayInfos):
             )
 
 
-def create_infos(urlsDetails):
-    arrayInfos = []
-    for link in urlsDetails:
-        content = request_details(link)
-        if content and False:
-            continue
-        selector = Selector(text=content)
-        arrayInfos.append(
-            {
+def create_object(link, selector):
+    return ({
                 "url": link,
                 "title": (
                     selector.css(
@@ -133,8 +126,17 @@ def create_infos(urlsDetails):
                         or []
                     )
                 ],
-            }
-        )
+            })
+
+
+def create_infos(urlsDetails):
+    arrayInfos = []
+    for link in urlsDetails:
+        content = request_details(link)
+        if content and False:
+            continue
+        selector = Selector(text=content)
+        arrayInfos.append(create_object(link, selector))
     return arrayInfos
 
 
