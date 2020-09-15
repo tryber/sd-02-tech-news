@@ -1,4 +1,5 @@
 import csv
+import sys
 from os import path
 from pymongo import MongoClient
 
@@ -24,7 +25,6 @@ def mongo_insert_if_not_found(data_to_insert):
         for index, data in enumerate(data_to_insert):
             item_exists = bool(collection.find_one({"url": data[0]}))
             if not item_exists:
-                print(index, data)
                 collection.insert_one({
                     "url": data[0],
                     "title": data[1],
@@ -40,24 +40,25 @@ def mongo_insert_if_not_found(data_to_insert):
 
 def csv_importer(csv_file):
     if not path.exists(csv_file):
-        print(f"Arquivo {csv_file} não encontrado")
+        print(f"Arquivo {csv_file} não encontrado", file=sys.stderr)
         return
     if not csv_file.endswith(".csv"):
-        print("Formato inválido")
+        print("Formato inválido", file=sys.stderr)
         return
 
     with open(csv_file) as file:
         csv_info = csv.reader(file, delimiter=";")
         header, *all_data = csv_info
         if not header == def_headers:
-            print("Cabeçalho inválido")
+            print("Cabeçalho inválido", file=sys.stderr)
 
         for index, data in enumerate(all_data):
             if not len(data) == 9:
-                print(f"Erro na notícia {index}")
+                print(f"Erro na notícia {index}", file=sys.stderr)
+                return
             for column in data:
                 if column == '':
-                    print(f"Erro na notícia {index}")
+                    print(f"Erro na notícia {index}", file=sys.stderr)
                     return
             data_to_insert.append(data)
 
