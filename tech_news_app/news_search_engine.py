@@ -4,6 +4,7 @@ from tech_news_data_collector.mongo_connection import (
     get_news_by_title,
     get_news_by_date,
     get_news_by_source,
+    get_news_by_category,
 )
 
 
@@ -52,5 +53,11 @@ def search_by_source(source):
     print(news_list)
 
 
-def search_by_category():
-    raise NotImplementedError
+def search_by_category(category):
+    news_list = []
+    news = list(get_news_by_category(category))
+    for item in news:
+        title = item["title"]
+        url = item["url"]
+        news_list.append(f"- {title}: {url}")
+    print(news_list)

@@ -100,3 +100,12 @@ def get_news_by_source(source):
             {"sources": re.compile(f"^{source}$", re.IGNORECASE)},
             {"_id": 0, "url": 1, "title": 1},
         )
+
+
+def get_news_by_category(category):
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.find(
+            {"categories": re.compile(f"^{category}$", re.IGNORECASE)},
+            {"_id": 0, "url": 1, "title": 1},
+        )
