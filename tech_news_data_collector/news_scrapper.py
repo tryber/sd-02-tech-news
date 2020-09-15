@@ -69,26 +69,32 @@ def mongo_save(arrayInfos):
             )
 
 
+def get_selectors(selec, selector):
+    return selector.css(selec).get()
+
+
+# def getAll_selectors(selec, select):
+
 def create_object(link, selector):
     return ({
                 "url": link,
                 "title": (
-                    selector.css(
-                        ".tec--article__header__title::text"
-                    ).get()
+                    get_selectors(
+                        ".tec--article__header__title::text", selector
+                    )
                     or ""
                 ).strip(),
                 "timestamp": (
-                    selector.css(
-                        ".tec--timestamp time::attr(datetime)"
-                    ).get()
+                    get_selectors(
+                        ".tec--timestamp time::attr(datetime)", selector
+                    )
                     or ""
                 ),
                 "writer": (
                     (
-                        selector.css(
-                            ".tec--author__info__link::text"
-                        ).get()
+                        get_selectors(
+                            ".tec--author__info__link::text", selector
+                        )
                         or ""
                     ).strip()
                 ),
