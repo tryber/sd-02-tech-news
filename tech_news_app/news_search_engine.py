@@ -30,8 +30,15 @@ def search_by_date(date):
             print([])
 
 
-def search_by_source():
-    raise NotImplementedError
+def search_by_source(source):
+    regex_expression = {
+                        "sources": {
+                          '$all': [re.compile(f'^{source}$', re.IGNORECASE)]}}
+    news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
+    for item in news_list:
+        print(f"- {item['title']} : {item['url']}")
+    if not len(news_list):
+        print([])
 
 
 def search_by_category():
@@ -40,3 +47,4 @@ def search_by_category():
 
 # search_by_title('paraxzcxc criar')
 # search_by_date('2020-09-12')
+# search_by_source('Source 1')
