@@ -57,8 +57,7 @@ class JSONEncoder(json.JSONEncoder):
 def json_exporter(arquive):
     documents = mongo_extract()
     with open(arquive.lower(), "w") as file:
-        for document in documents:
-            json.dump(document, file, cls=JSONEncoder)
+        json.dump(documents, file, cls=JSONEncoder)
     print("Exportação realizada com sucesso")
 
 

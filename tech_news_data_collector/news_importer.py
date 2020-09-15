@@ -3,6 +3,9 @@ import re
 import sys
 import os
 from pymongo import MongoClient
+import json
+from bson import errors
+
 
 defaultHeaders = [
     "url",
@@ -33,9 +36,7 @@ def mongo_insert(arquive):
             if existObject is None:
                 db["news"].insert_one(objToInsert)
             else:
-                print(
-                    "Notícia " + str(index + 2) + " duplicada", file=sys.stderr
-                )
+                print("Notícia " + str(index + 2) + " duplicada", file=sys.stderr)
 
 
 def headers_len(news):
@@ -73,16 +74,52 @@ def csv_importer(arquive):
             + arquive
             + " não encontrado"
         )
-        exit()
 
 
-def json_importer():
-    raise NotImplementedError
+def insert_json(arrayToInclude):
+    with MongoClient("mongodb://localhost:27017/") as client:
+        db = client["tech_news"]
+        for index in range(len(arrayToInclude)):
+            existObject = db["news"].find_one({"url": arrayToInclude[index]["url"]})
+            if existObject is None:
+                db["news"].insert_one(arrayToInclude[index])
+            else:
+                print("Notícia " + str(index + 1) + " duplicada", file=sys.stderr)
 
 
-arquive = input("Digite o nome do arquivo com .csv\n")
+def json_check(news):
+    for index in range(len(news)):
+        if len(news[index].keys()) < len(defaultHeaders) + 1:
+            print("Erro na notícia " + str(index + 1))
+            exit()
+    insert_json(news)
+
+
+def json_importer(arquive):
+    if os.path.exists(arquive):
+        file = open(arquive.lower(), "r")
+        try:
+            news = json.load(file)
+            json_check(news)
+            print("Importação realizada com sucesso")
+        except errors.BSONError:
+            print("JSON inválido", file=sys.stderr)
+        finally:
+            file.close()
+    else:
+        print(
+            "Arquivo "
+            + os.path.abspath(os.getcwd())
+            + "/"
+            + arquive
+            + " não encontrado"
+        )
+
+
+arquive = input("Digite o nome do arquivo com .csv ou .json\n")
 if re.search(".csv$", arquive, re.IGNORECASE):
     csv_importer(arquive)
+elif re.search(".json$", arquive, re.IGNORECASE):
+    json_importer(arquive)
 else:
     print("Formato inválido", file=sys.stderr)
-    exit()

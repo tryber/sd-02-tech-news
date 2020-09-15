@@ -27,8 +27,6 @@ def request_links(searchPages=1):
     links = []
     URL = "https://www.tecmundo.com.br/novidades"
     aux = 0
-    if searchPages <= 0:
-        searchPages = 1
     while aux < searchPages:
         content = fetch_content(URL)
         selector = Selector(text=content)
@@ -55,7 +53,6 @@ def request_details(url):
         time.sleep(6)
     except requests.HTTPError:
         print("Invalid URL " + url)
-        return False
     else:
         return response.text
 
