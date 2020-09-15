@@ -29,45 +29,36 @@ def scrape_page_new(page_url):
     new_page = fetch_content(page_url)
     selector = parsel.Selector(new_page)
 
-    title = string_formatter(
-        selector.css("#js-article-title::text").get() or ""
-    )
-    timestamp = string_formatter(
+    return {
+        "title": string_formatter(
+            selector.css("#js-article-title::text").get() or ""
+    ),
+        "timestamp": string_formatter(
         selector.css("div.tec--timestamp__item > time > strong::text").get()
         or ""
-    )
-    writer = string_formatter(
+    ),
+        "writer": string_formatter(
         selector.css("#js-author-bar p.z--m-none > a::text").get() or ""
-    )
-    shares_count = selector.css(
+    ),
+        "summary": ("".join(selector.css(
+            "div.tec--article__body > p:first-child *::text"
+        ).getall()
+    ),
+        "shares_count": shares_count = selector.css(
         "#js-author-bar div.tec--toolbar__item::text"
-    ).re_first(r"\d" or 0)
-    comments_count = selector.css("#js-comments-btn::text").re_first(
+    ).re_first(r"\d" or 0),
+        "comments_count": selector.css("#js-comments-btn::text").re_first(
         r"\d" or 0
-    )
-    categories = list(
-        map(string_formatter, selector.css("#js-categories a::text").getall())
-    )
-    sources = list(
+    ),
+        "sources": list(
         map(
             string_formatter,
             selector.css("#js-main div.z--mb-16.z--px-16 a::text").getall(),
         )
-    )
-    summary = selector.css(
-        "div.tec--article__body > p:first-child *::text"
-    ).getall()
-    summary = "".join(summary)
-
-    return {
-        "title": title,
-        "timestamp": timestamp,
-        "writer": writer,
-        "summary": summary,
-        "shares_count": shares_count,
-        "comments_count": comments_count,
-        "sources": sources,
-        "categories": categories,
+    ),
+        "categories": list(
+        map(string_formatter, selector.css("#js-categories a::text").getall())
+    ),
     }
 
 

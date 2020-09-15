@@ -42,22 +42,26 @@ def validate_header(header):
         raise ValueError("Cabeçalho inválido")
 
 
+def csv_exporter_open(file):
+    writer = csv.writer(file)
+    news = find_all()
+    header = []
+
+    validate_header(news[0])
+
+    for param in news[0]:
+        header.append(param)
+    writer.writerow(header)
+
+    for row in news:
+        writer.writerow(row)
+
+
 def csv_exporter(filename):
     try:
         check_file_extention(filename, ".csv")
         with open(filename, "w") as file:
-            writer = csv.writer(file)
-            news = find_all()
-            header = []
-
-            validate_header(news[0])
-
-            for param in news[0]:
-                header.append(param)
-            writer.writerow(header)
-
-            for row in news:
-                writer.writerow(row)
+            csv_exporter_open(file)
         print("Exportação realizada com sucesso")
     except ValueError as exc:
         print(exc, file=sys.stderr)
@@ -65,12 +69,16 @@ def csv_exporter(filename):
         print("Formato inválido", file=sys.stderr)
 
 
+def json_exporter_open(file):
+    news = find_all()
+    json.dump(news, file)
+
+
 def json_exporter(filename):
     try:
         check_file_extention(filename, ".json")
         with open(filename, "w") as file:
-            news = find_all()
-            json.dump(news, file)
+            json_exporter_open(file)
         print("Exportação realizada com sucesso")
     except ValueError as exc:
         print(exc, file=sys.stderr)

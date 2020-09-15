@@ -1,6 +1,5 @@
 import os
 from io import StringIO
-from unittest.mock import patch
 from contextlib import redirect_stderr, redirect_stdout
 from tech_news_data_collector.news_exporter import csv_exporter, json_exporter
 
