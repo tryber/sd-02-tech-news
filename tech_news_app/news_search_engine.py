@@ -8,13 +8,17 @@ def get_from_db(filter_query={}, projection={}):
         return db['news_collection'].find(filter_query, projection)
 
 
-def search_by_title(regex):
-    regex_expression = {"title": {'$regex': regex, "$options": 'i'}}
-    news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
+def iterate_list(news_list):
     for item in news_list:
         print(f"- {item['title']} : {item['url']}")
     if not len(news_list):
         print([])
+
+
+def search_by_title(regex):
+    regex_expression = {"title": {'$regex': regex, "$options": 'i'}}
+    news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
+    iterate_list(news_list)
 
 
 def search_by_date(date):
@@ -24,10 +28,7 @@ def search_by_date(date):
     else:
         regex_express = {"datetime": {'$regex': '^' + date, "$options": 'i'}}
         news_list = list(get_from_db(regex_express, {"title": 1, "url": 1}))
-        for item in news_list:
-            print(f"- {item['title']} : {item['url']}")
-        if not len(news_list):
-            print([])
+        iterate_list(news_list)
 
 
 def search_by_source(source):
@@ -35,16 +36,18 @@ def search_by_source(source):
                         "sources": {
                           '$all': [re.compile(f'^{source}$', re.IGNORECASE)]}}
     news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
-    for item in news_list:
-        print(f"- {item['title']} : {item['url']}")
-    if not len(news_list):
-        print([])
+    iterate_list(news_list)
 
 
-def search_by_category():
-    raise NotImplementedError
+def search_by_category(cat):
+    regex_expression = {
+                        "categories": {
+                          '$all': [re.compile(f'^{cat}$', re.IGNORECASE)]}}
+    news_list = list(get_from_db(regex_expression, {"title": 1, "url": 1}))
+    iterate_list(news_list)
 
 
-# search_by_title('paraxzcxc criar')
-# search_by_date('2020-09-12')
+# search_by_title('para criar')
+# search_by_date('2020-09-13')
 # search_by_source('Source 1')
+# search_by_category('categoria 2adas')
