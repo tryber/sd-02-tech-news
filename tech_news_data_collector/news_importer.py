@@ -1,5 +1,6 @@
 import csv
 import sys
+import json
 from mongo_connection import insert_news_importer
 
 
@@ -24,9 +25,12 @@ def check_file_and_extension(file, content):
     return True
 
 
-def check_row(row, index):
+def check_fields(row, index):
     row_keys = len(row.keys()) == 9
-    row_values = all(row.values())
+    row_values = False
+    for value in row.values():
+        if (str(value)):
+            row_values = True
     if not row_values or not row_keys:
         print(f"Erro na notícia {index}", file=sys.stderr)
         return False
@@ -42,19 +46,38 @@ def csv_importer(csv_file):
             if not validFile:
                 return
             for index, row in enumerate(news_reader, start=1):
-                validRow = check_row(row, index)
+                validRow = check_fields(row, index)
                 if not validRow:
                     return
                 all_news.append(dict(row))
     except FileNotFoundError:
-        print(f"Arquivo {csv_file} não encontrado")
+        print(f"Arquivo {csv_file} não encontrado", file=sys.stderr)
     else:
         insert_news_importer(all_news)
         print("Importação realizada com sucesso", file=sys.stdout)
 
 
-def json_importer():
-    raise NotImplementedError
+def json_importer(json_file):
+    if not json_file.endswith(".json"):
+        print("Formato inválido", file=sys.stderr)
+        return
+    all_news = []
+    try:
+        with open(json_file) as file:
+            news = json.load(file)
+            for index, item in enumerate(news, start=1):
+                validItem = check_fields(item, index)
+                if not validItem:
+                    return
+                all_news.append(item)
+    except FileNotFoundError:
+        print(f"Arquivo {json_file} não encontrado", file=sys.stderr)
+    except json.decoder.JSONDecodeError:
+        print("JSON inválido", file=sys.stderr)
+    else:
+        insert_news_importer(all_news)
+        print("Importação realizada com sucesso", file=sys.stdout)
 
 
-csv_importer("./csv_examples/news.csv")
+csv_importer("./news_files_mocks/news.csv")
+json_importer("./news_files_mocks/news.json")
