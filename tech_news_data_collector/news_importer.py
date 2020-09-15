@@ -27,10 +27,10 @@ def check_file_and_extension(file, content):
 
 def check_fields(row, index):
     row_keys = len(row.keys()) == 9
-    row_values = False
+    row_values = True
     for value in row.values():
-        if (str(value)):
-            row_values = True
+        if (not str(value)):
+            row_values = False
     if not row_values or not row_keys:
         print(f"Erro na notícia {index}", file=sys.stderr)
         return False

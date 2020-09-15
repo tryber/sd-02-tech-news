@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import re
 
 
 def insert_news_scrapper(news):
@@ -55,3 +56,12 @@ def get_news():
     with MongoClient() as client:
         db = client.tech_news
         return db.extracted_news.find({}, {"_id": 0})
+
+
+def get_news_by_title(title):
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.find(
+            {"title": re.compile(f".*{title}.*", re.IGNORECASE)},
+            {"_id": 0, "url": 1, "title": 1}
+        )
