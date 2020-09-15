@@ -70,7 +70,8 @@ def get_news_by_title(title):
 
 def get_news_by_date(date):
     year, month, day = date.split("-")
-    # solução encontrada em: https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat
+    # solução encontrada em:
+    # https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat
     begin = datetime.datetime(
         int(year), int(month), int(day)
     ).isoformat(sep="T")
