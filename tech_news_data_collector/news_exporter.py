@@ -1,4 +1,5 @@
 import csv
+import sys
 from pymongo import MongoClient
 
 
@@ -11,9 +12,12 @@ def get_from_mongo():
         return results
 
 
-def csv_exporter(csv_name):
+def csv_exporter(csv_file):
+    if not csv_file.endswith(".csv"):
+        print("Formato inválido", file=sys.stderr)
+        return
     news = get_from_mongo()
-    with open(csv_name + ".csv", "w") as csvfile:
+    with open(csv_file, "w") as csvfile:
         writer = csv.writer(csvfile, delimiter=";")
         headers = [
             "url",
@@ -40,7 +44,11 @@ def csv_exporter(csv_name):
                 item["categories"]
             ]
             writer.writerow(each_news)
+        print("Exportação realizada com sucesso")
 
 
 def json_exporter():
     raise NotImplementedError
+
+
+csv_exporter("trybe.json")
