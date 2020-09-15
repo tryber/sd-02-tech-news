@@ -110,4 +110,4 @@ def scrape(page_number=1):
     print("Raspagem de notícias finalizada")
 
 
-scrape(2)
+scrape(1)
