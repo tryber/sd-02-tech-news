@@ -1,9 +1,10 @@
-import parsel
 import requests
 import time
 import re
 import sys
+import parsel
 from mongo_connection import tech_news_db
+
 
 base_url = "https://www.tecmundo.com.br/novidades"
 
@@ -25,40 +26,72 @@ def string_formatter(str):
     return re.sub(r"\s{2,}", "", whithoutN)
 
 
+def create_title(selector):
+    return string_formatter(
+        selector.css("#js-article-title::text").get() or ""
+    )
+
+
+def create_timestamp(selector):
+    return string_formatter(
+        selector.css("div.tec--timestamp__item > time > strong::text").get()
+        or ""
+    )
+
+
+def create_writer(selector):
+    string_formatter(
+        selector.css("#js-author-bar p.z--m-none > a::text").get() or ""
+    )
+
+
+def create_summary(selector):
+    return "".join(
+        selector.css("div.tec--article__body > p:first-child *::text").getall()
+    )
+
+
+def create_shares_count(selector):
+    return selector.css(
+        "#js-author-bar div.tec--toolbar__item::text"
+    ).re_first(r"\d" or 0)
+
+
+def create_comments_count(selector):
+    return selector.css("#js-comments-btn::text").re_first(r"\d" or 0)
+
+
+def create_sources(selector):
+    return list(
+        map(
+            string_formatter,
+            selector.css("#js-main div.z--mb-16.z--px-16 a::text").getall(),
+        )
+    )
+
+
+def create_categories(selector):
+    return list(
+        map(
+            string_formatter,
+            selector.css("#js-categories a::text").getall(),
+        )
+    )
+
+
 def scrape_page_new(page_url):
     new_page = fetch_content(page_url)
     selector = parsel.Selector(new_page)
 
     return {
-        "title": string_formatter(
-            selector.css("#js-article-title::text").get() or ""
-    ),
-        "timestamp": string_formatter(
-        selector.css("div.tec--timestamp__item > time > strong::text").get()
-        or ""
-    ),
-        "writer": string_formatter(
-        selector.css("#js-author-bar p.z--m-none > a::text").get() or ""
-    ),
-        "summary": ("".join(selector.css(
-            "div.tec--article__body > p:first-child *::text"
-        ).getall()
-    ),
-        "shares_count": shares_count = selector.css(
-        "#js-author-bar div.tec--toolbar__item::text"
-    ).re_first(r"\d" or 0),
-        "comments_count": selector.css("#js-comments-btn::text").re_first(
-        r"\d" or 0
-    ),
-        "sources": list(
-        map(
-            string_formatter,
-            selector.css("#js-main div.z--mb-16.z--px-16 a::text").getall(),
-        )
-    ),
-        "categories": list(
-        map(string_formatter, selector.css("#js-categories a::text").getall())
-    ),
+        "title": create_title(selector),
+        "timestamp": create_timestamp(selector),
+        "writer": create_writer(selector),
+        "summary": create_summary(selector),
+        "shares_count": create_shares_count(selector),
+        "comments_count": create_comments_count(selector),
+        "sources": create_sources(selector),
+        "categories": create_categories(selector),
     }
 
 

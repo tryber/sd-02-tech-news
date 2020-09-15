@@ -2,7 +2,6 @@ import csv
 import json
 import sys
 import os
-
 from mongo_connection import tech_news_db
 
 
