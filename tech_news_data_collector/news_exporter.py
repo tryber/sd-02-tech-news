@@ -6,8 +6,17 @@ from utils import check_comparison
 import os.path
 
 
-correct_header = ['url', 'title', 'timestamp', 'writer', 'shares_count',
-                  'comments_count', 'summary', 'sources', 'categories']
+correct_header = [
+    "url",
+    "title",
+    "timestamp",
+    "writer",
+    "shares_count",
+    "comments_count",
+    "summary",
+    "sources",
+    "categories",
+]
 
 
 def get_from_db(db, collection, projection={"_id": 0}):
@@ -18,7 +27,7 @@ def get_from_db(db, collection, projection={"_id": 0}):
 
 def check_if_is_list(item):
     if type(item) is list:
-        return ','.join(item)
+        return ",".join(item)
     return item
 
 
@@ -35,37 +44,40 @@ def adjust_dot_comma(lines):
     return final_text
 
 
+def write_in_file(file_path, all_news):
+    with open(file_path, mode="w") as file:
+        lines = [list(new.values()) for new in all_news]
+
+        final_text = adjust_dot_comma(lines)
+
+        adjusted_line = "\n".join([";".join(line) for line in final_text])
+        file.writelines(";".join(correct_header) + "\n" + adjusted_line)
+
+
 def csv_exporter(file_path):
     try:
         extension = os.path.splitext(file_path)[1]
-        check_comparison(extension, '.csv', 'Formato inválido')
+        check_comparison(extension, ".csv", "Formato inválido")
+
+        all_news = list(get_from_db("web_scrape_python", "news_collection"))
+
+        base_path = Path(__file__).parent
+        file_path = (base_path / f"{file_path}").resolve()
+        write_in_file(file_path, all_news)
 
     except ValueError as exc_ext:
         print(exc_ext, file=sys.stderr)
 
     else:
-        all_news = list(get_from_db('web_scrape_python', 'news_collection'))
-
-        base_path = Path(__file__).parent
-        file_path = (base_path / f"{file_path}").resolve()
-
-        with open(file_path, mode="w") as file:
-            lines = [list(new.values()) for new in all_news]
-
-            final_text = adjust_dot_comma(lines)
-
-            adjusted_line = '\n'.join([';'.join(line) for line in final_text])
-            file.writelines(';'.join(correct_header) + '\n' + adjusted_line)
-
-        print('Exportação realizada com sucesso', file=sys.stdout)
+        print("Exportação realizada com sucesso", file=sys.stdout)
 
 
 def json_exporter(file_path):
     try:
         extension = os.path.splitext(file_path)[1]
-        check_comparison(extension, '.json', 'Formato inválido')
+        check_comparison(extension, ".json", "Formato inválido")
 
-        all_news = list(get_from_db('web_scrape_python', 'news_collection'))
+        all_news = list(get_from_db("web_scrape_python", "news_collection"))
 
         base_path = Path(__file__).parent
         file_path = (base_path / f"{file_path}").resolve()
@@ -79,8 +91,7 @@ def json_exporter(file_path):
         print(exc_ext, file=sys.stderr)
 
     else:
-        print('Exportação realizada com sucesso', file=sys.stdout)
+        print("Exportação realizada com sucesso", file=sys.stdout)
 
 
-# csv_exporter("../news.csv")
-# json_exporter("../news.json")
+csv_exporter("../news.csv")
