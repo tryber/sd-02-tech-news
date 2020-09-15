@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import re
+import datetime
 
 
 def insert_news_scrapper(news):
@@ -63,5 +64,30 @@ def get_news_by_title(title):
         db = client.tech_news
         return db.extracted_news.find(
             {"title": re.compile(f".*{title}.*", re.IGNORECASE)},
-            {"_id": 0, "url": 1, "title": 1}
+            {"_id": 0, "url": 1, "title": 1},
+        )
+
+
+def get_news_by_date(date):
+    year, month, day = date.split("-")
+    # solução encontrada em: https://docs.python.org/3/library/datetime.html#datetime.datetime.isoformat
+    begin = datetime.datetime(
+        int(year), int(month), int(day)
+    ).isoformat(sep="T")
+
+    end = datetime.datetime(
+        int(year), int(month), int(day), 23, 59, 59
+    ).isoformat(sep="T")
+
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.find(
+            (
+                {
+                    "timestamp": {
+                        "$gte": begin,
+                        "$lte": end,
+                    }
+                }
+            )
         )
