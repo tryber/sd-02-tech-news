@@ -1,5 +1,6 @@
 import csv
 import sys
+import json
 from mongo_connection import get_news
 
 
@@ -27,8 +28,15 @@ def csv_exporter(csv_file):
     print("Exportação realizada com sucesso", file=sys.stdout)
 
 
-def json_exporter():
-    raise NotImplementedError
+def json_exporter(json_file):
+    if not json_file.endswith(".json"):
+        print("Formato inválido", file=sys.stderr)
+        return
+    with open(json_file, "w") as file:
+        news = get_news()
+        json.dump(list(news), file)
+    print("Exportação realizada com sucesso", file=sys.stdout)
 
 
-csv_exporter("news.cs")
+csv_exporter("news.csv")
+json_exporter("news.jso")
