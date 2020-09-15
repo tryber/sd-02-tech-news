@@ -120,25 +120,16 @@ def create_summary(selector):
             ))
 
 
-def create_sources(selector):
+def create_sources_categories(selector, text):
     return [
-            source.strip()
-            for source in (selector.css(
-                ".z--mb-16 div a::text"
-            ).getall() or [])
+                categorie.strip()
+                for categorie in (
+                    selector.css(
+                        text
+                    ).getall()
+                    or []
+                )
             ]
-
-
-def create_categories(selector):
-    return [
-            categorie.strip()
-            for categorie in (
-                selector.css(
-                    "#js-categories a::text"
-                ).getall()
-                or []
-            )
-        ]
 
 
 def create_object(link, selector):
@@ -150,8 +141,12 @@ def create_object(link, selector):
                 "shares_count": create_shares_count(selector),
                 "comments_count": create_comments_count(selector),
                 "summary": create_summary(selector),
-                "sources": create_sources(selector),
-                "categories": create_categories(selector)
+                "sources": create_sources_categories(
+                    selector, ".z--mb-16 div a::text"
+                ),
+                "categories": create_sources_categories(
+                    selector, "#js-categories a::text"
+                )
             })
 
 
