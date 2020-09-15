@@ -39,8 +39,9 @@ def top_5_news():
 
 def top_5_categories():
     pipeline = [{'$unwind': '$categories'}, {'$group': {'_id': '$categories',
-                'quantity': {'$sum': 1}}}, {'$sort': {'quantity': -1}},
-                {'$limit': 5}, {'$sort': {'_id': 1}}]
+                'quantity': {'$sum': 1}}},
+                {'$sort': {'quantity': -1, '_id': 1}},
+                {'$limit': 5}]
     news_list = list(get_from_db(pipeline))
     iterate_categorie(news_list)
 
