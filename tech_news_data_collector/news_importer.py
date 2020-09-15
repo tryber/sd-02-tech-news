@@ -36,7 +36,9 @@ def mongo_insert(arquive):
             if existObject is None:
                 db["news"].insert_one(objToInsert)
             else:
-                print("Notícia " + str(index + 2) + " duplicada", file=sys.stderr)
+                print(
+                    "Notícia " + str(index + 2) + " duplicada", file=sys.stderr
+                )
 
 
 def headers_len(news):
@@ -80,11 +82,15 @@ def insert_json(arrayToInclude):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
         for index in range(len(arrayToInclude)):
-            existObject = db["news"].find_one({"url": arrayToInclude[index]["url"]})
+            existObject = db["news"].find_one({
+                "url": arrayToInclude[index]["url"]
+            })
             if existObject is None:
                 db["news"].insert_one(arrayToInclude[index])
             else:
-                print("Notícia " + str(index + 1) + " duplicada", file=sys.stderr)
+                print(
+                    "Notícia " + str(index + 1) + " duplicada", file=sys.stderr
+                )
 
 
 def json_check(news):

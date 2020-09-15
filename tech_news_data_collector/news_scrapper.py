@@ -112,7 +112,7 @@ def create_infos(urlsDetails):
                     ).re_first(
                     r"\d{1,}"
                 )
-                or 0),
+                    or 0),
                 "summary": "".join(
                     selector.css(
                         ".tec--article__body p:first-child *::text"

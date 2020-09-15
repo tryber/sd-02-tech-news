@@ -12,7 +12,7 @@ def print_content(findForText):
         print([])
 
 
-def mongoQuery(pipeline):
+def mongo_query(pipeline):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
         find = db["news"].aggregate(pipeline)
@@ -20,9 +20,11 @@ def mongoQuery(pipeline):
 
 
 def top_5_news():
-    results = mongoQuery(
+    results = mongo_query(
         [
-            {"$addFields": {"total": {"$add": ["$comments_count", "$shares_count"]}}},
+            {"$addFields": {
+                "total": {"$add": ["$comments_count", "$shares_count"]}
+            }},
             {"$sort": {"total": -1, "title": 1}},
             {"$limit": 5},
             {"$project": {"url": 1, "title": 1, "_id": 0}},
@@ -43,7 +45,7 @@ def print_content_categories(categories):
 
 
 def top_5_categories():
-    results = mongoQuery(
+    results = mongo_query(
         [
             {"$unwind": "$categories"},
             {"$group": {"_id": "$categories", "total": {"$sum": 1}}},
