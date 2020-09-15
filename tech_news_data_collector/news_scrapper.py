@@ -50,7 +50,7 @@ def request_details(url):
             },
         )
         response.raise_for_status()
-        time.sleep(6)
+        # time.sleep(1)
     except requests.HTTPError:
         print("Invalid URL " + url)
     else:
@@ -99,7 +99,7 @@ def create_infos(urlsDetails):
                         or ""
                     ).strip()
                 ),
-                "shares_count": (
+                "shares_count": int(
                     selector.css(
                         ".tec--toolbar .tec--toolbar__item::text"
                         ).re_first(
@@ -107,12 +107,12 @@ def create_infos(urlsDetails):
                     )
                     or 0
                 ),
-                "comments_count": selector.css(
+                "comments_count": int(selector.css(
                     "#js-comments-btn::text"
                     ).re_first(
                     r"\d{1,}"
                 )
-                or 0,
+                or 0),
                 "summary": "".join(
                     selector.css(
                         ".tec--article__body p:first-child *::text"

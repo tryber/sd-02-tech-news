@@ -8,53 +8,47 @@ def print_content(findForText):
             break
         boolean = False
         print([f'- {content["title"]}: {content["url"]}'])
-        print(content["shares_count"], content["comments_count"])
     if boolean:
         print([])
 
 
-def mongoQuery():
+def mongoQuery(pipeline):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
-        findForText = db["news"].aggregate(
-            [
-                {
-                    "$project": {
-                        "title": 1,
-                        "url": 1,
-                        "_id": 0,
-                        "shares_count": 1,
-                        "comments_count": 1,
-                    }
-                },
-            ]
-        )
-    return findForText
-
-
-# def get_my_key(obj):
-#     return int(obj["shares_count"]) + int(obj["comments_count"])
-
-
-# def get_my_scond_key(obj):
-#     return obj["title"]
+        find = db["news"].aggregate(pipeline)
+    return find
 
 
 def top_5_news():
-    results = mongoQuery()
-    newarray = [result for result in results]
-    # (newarray.sort(key=get_my_key, reverse=True))
-    newarray = sorted(
-        newarray,
-        key=lambda x: ((int(x["shares_count"]) + int(x["comments_count"])), x["title"]),
-        reverse=True
+    results = mongoQuery(
+        [
+            {"$addFields": {"total": {"$add": ["$comments_count", "$shares_count"]}}},
+            {"$sort": {"total": -1, "title": 1}},
+            {"$limit": 5},
+            {"$project": {"url": 1, "title": 1, "_id": 0}},
+        ]
     )
-    
-    print_content(newarray)
+    print_content(results)
+
+
+def print_content_categories(categories):
+    boolean = True
+    for index, content in enumerate(categories):
+        if index == 5:
+            break
+        boolean = False
+        print([f'- {content["_id"]}'])
+    if boolean:
+        print([])
 
 
 def top_5_categories():
-    raise NotImplementedError
-
-
-top_5_news()
+    results = mongoQuery(
+        [
+            {"$unwind": "$categories"},
+            {"$group": {"_id": "$categories", "total": {"$sum": 1}}},
+            {"$sort": {"total": -1, "_id": 1}},
+            {"$limit": 5},
+        ]
+    )
+    print_content_categories(results)
