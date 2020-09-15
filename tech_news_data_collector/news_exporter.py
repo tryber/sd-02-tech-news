@@ -51,4 +51,4 @@ def json_exporter():
     raise NotImplementedError
 
 
-csv_exporter("trybe.json")
+csv_exporter("trybe.csv")
