@@ -46,6 +46,8 @@ def csv_importer(csv_file):
             if not validFile:
                 return
             for index, row in enumerate(news_reader, start=1):
+                row["shares_count"] = int(row["shares_count"])
+                row["comments_count"] = int(row["comments_count"])
                 validRow = check_fields(row, index)
                 if not validRow:
                     return
@@ -79,5 +81,5 @@ def json_importer(json_file):
         print("Importação realizada com sucesso", file=sys.stdout)
 
 
-csv_importer("./news_files_mocks/news.csv")
+# csv_importer("./news_files_mocks/news.csv")
 json_importer("./news_files_mocks/news.json")

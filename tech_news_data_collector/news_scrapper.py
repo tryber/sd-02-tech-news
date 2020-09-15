@@ -30,15 +30,15 @@ def get_timestamp(selector):
 def get_shares_count(selector):
     shares_count = selector.css(
         ".tec--toolbar__item:first-child *::text"
-    ).re_first(r"\d")
-    return shares_count
+    ).re_first(r"\d") or 0
+    return int(shares_count)
 
 
 def get_comments_count(selector):
     comments_count = selector.css(
         ".tec--toolbar__item:nth-child(2) > button *::text"
-    ).re_first(r"\d")
-    return comments_count
+    ).re_first(r"\d") or 0
+    return int(comments_count)
 
 
 def get_summary(selector):
@@ -53,7 +53,7 @@ def get_categories_or_sources(selector, css_selector):
     result_list = []
     for item in result:
         result_list.append(item.strip())
-    return ", ".join(result_list)
+    return result_list
 
 
 def extract_news(url, selector):

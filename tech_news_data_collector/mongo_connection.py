@@ -109,3 +109,41 @@ def get_news_by_category(category):
             {"categories": re.compile(f"^{category}$", re.IGNORECASE)},
             {"_id": 0, "url": 1, "title": 1},
         )
+
+
+def get_top_5_news():
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.aggregate(
+            [
+                {
+                    "$project": {
+                        "_id": 0,
+                        "url": 1,
+                        "title": 1,
+                        "total": {
+                            "$add": [
+                                "$shares_count",
+                                "$comments_count",
+                            ]
+                        },
+                    }
+                },
+                {"$sort": {"total": -1, "title": 1}},
+                {"$limit": 5},
+            ]
+        )
+
+
+def get_top_5_categories():
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.extracted_news.aggregate(
+            [
+                {"$unwind": "$categories"},
+                {"$group": {"_id": "$categories", "total": {"$sum": 1}}},
+                {"$sort": {"total": -1, "_id": 1}},
+                {"$limit": 5},
+                {"$project": {"_id": 0, "category": "$_id", "total": 1}}
+            ]
+        )
