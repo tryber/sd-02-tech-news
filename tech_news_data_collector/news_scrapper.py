@@ -58,7 +58,7 @@ def get_news_details(url, total, current):
                                          ::attr(data-count)")
         share = '0'
     new_detailed['comments_count'] = comments_count
-    new_detailed['share'] = share
+    new_detailed['shares_count'] = share
     new_detailed['summary'] = ''.join(selector.css(".tec--article__body > \
                                     p:first_child *::text").getall()) or ''
 
