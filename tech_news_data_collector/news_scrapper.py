@@ -26,13 +26,24 @@ def add_to_mongo(results):
             )
 
 
+def fetch_content(url, timeout=2):
+    try:
+        response = requests.get(url, timeout=timeout, headers=info_headers)
+        response.raise_for_status()
+    except (requests.ReadTimeout, requests.HTTPError) as http_error:
+        print(http_error)
+        return ""
+    else:
+        return response.text
+
+
 def page_links(page_number):
-    base_url = "https://www.tecmundo.com.br/novidades"
+    base_url = "https://www.tecmundo.com.br/novidades/"
     query_number = 1
     while base_url and query_number <= page_number:
         time.sleep(1)
-        response = requests.get(base_url, headers=info_headers)
-        selector = Selector(response.text)
+        response = fetch_content(base_url, 2)
+        selector = Selector(response)
         news_urls.extend(selector.css(
             "h3.tec--card__title a.tec--card__title__link::attr(href)"
         ).getall())
@@ -72,8 +83,8 @@ def scrape(page_number=1):
 
     for index, news in enumerate(news_urls):
         time.sleep(0.1)
-        resp_news = requests.get(news, headers=info_headers)
-        sel_news = Selector(resp_news.text)
+        resp_news = fetch_content(news, 2)
+        sel_news = Selector(resp_news)
 
         result.append({
             "url": news,
@@ -105,7 +116,6 @@ def scrape(page_number=1):
 
             "categories": list_getterall(sel_news, "#js-categories a::text")
         })
-        print(index)
     add_to_mongo(result)
     print("Raspagem de notícias finalizada")
 
