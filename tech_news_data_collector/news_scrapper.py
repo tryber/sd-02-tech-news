@@ -54,11 +54,11 @@ def create_summary(selector):
 def create_shares_count(selector):
     return selector.css(
         "#js-author-bar div.tec--toolbar__item::text"
-    ).re_first(r"\d" or 0)
+    ).re_first(r"\d+" or 0)
 
 
 def create_comments_count(selector):
-    return selector.css("#js-comments-btn::text").re_first(r"\d" or 0)
+    return selector.css("#js-comments-btn::text").re_first(r"\d+" or 0)
 
 
 def create_sources(selector):
