@@ -89,20 +89,21 @@ def scrape(n=1):
 
     while next_page_url and count <= n:
         page_text = fetch_content(next_page_url)
-        page_selector = Selector(page_text)
+        page_selector = Selector(text=page_text)
         news_urls = page_selector.css("h3 > a::attr(href)").getall()
-        print(f"raspagem da página {count} em andamento")
+        news_urls and print(f"raspagem da página {count} em andamento")
         for news_details_url in news_urls:
             news_details_text = fetch_content(news_details_url)
-            news_details_selector = Selector(news_details_text)
+            news_details_selector = Selector(text=news_details_text)
             news = extract_news(news_details_url, news_details_selector)
             all_news.append(news)
-        print(f"dados da página {count} raspados")
+        news_urls and print(f"dados da página {count} raspados")
         next_page_url = page_selector.css(".tec--btn::attr(href)").get()
         count += 1
 
+    not all_news and print("Nenhuma notícia salva")
     insert_news_scrapper(all_news)
-    print("Raspagem de notícias finalizada")
+    all_news and print("Raspagem de notícias finalizada")
     return all_news
 
 
