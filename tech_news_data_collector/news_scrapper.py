@@ -114,7 +114,8 @@ def scrape(page_number=1):
             "sources": list_getterall(
                 sel_news, ".z--mb-16.z--px-16 div:last-child a::text"),
 
-            "categories": list_getterall(sel_news, "#js-categories a::text")
+            "categories": list_getterall(
+                sel_news, ".tec--badge.tec--badge--primary a::text")
         })
     add_to_mongo(result)
     print("Raspagem de notícias finalizada")
