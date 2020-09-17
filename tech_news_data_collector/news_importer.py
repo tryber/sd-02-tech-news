@@ -77,7 +77,7 @@ def csv_importer(csv_file):
     print("Importação realizada com sucesso")
 
 
-def validateJSON(json_file):
+def validate_json(json_file):
     try:
         result = json.load(json_file)
     except ValueError:
@@ -90,7 +90,7 @@ def json_importer(json_file):
         if not json_file.endswith(".json"):
             raise ValueError("Formato inválido")
         with open(json_file) as file:
-            all_data = validateJSON(file)
+            all_data = validate_json(file)
             for index, data in enumerate(all_data):
                 if not len(data) == 9:
                     print(f"Erro na notícia {index + 1}", file=sys.stderr)

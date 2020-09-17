@@ -27,7 +27,9 @@ def search_by_title(user_text):
     results = connect_to_mongo(aggregate)
     print_correct_name(results)
 
-search_by_title("re")
+
+# search_by_title("re")
+
 
 def search_by_date(user_date):
     try:
