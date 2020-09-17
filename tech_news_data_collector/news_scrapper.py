@@ -99,13 +99,13 @@ def scrape(page_number=1):
                 sel_news, ".tec--author__info__link::text", ""
             ),
 
-            "shares_count": ((
+            "shares_count": int(
                 sel_news.css(".tec--toolbar .tec--toolbar__item::text")
-                .re_first(r"\d")) or "0").strip(),
+                .re_first(r"\d") or 0),
 
-            "comments_count": getter_strip(
-                sel_news, "#js-comments-btn::attr(data-count)", "0"
-            ),
+            "comments_count": int(getter_only(
+                sel_news, "#js-comments-btn::attr(data-count)", 0
+            )),
 
             "summary": getterall_strip(
                 sel_news, ".tec--article__body > p:first-child *::text", ""
