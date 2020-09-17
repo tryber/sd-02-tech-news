@@ -49,18 +49,6 @@ def mongo_insert_if_not_found_json(data_to_insert):
                 collection.insert_one(data)
 
 
-def all_data_enumerated_csv(all_data):
-    for index, data in enumerate(all_data):
-        if not len(data) == 9:
-            print(f"Erro na notícia {index + 1}", file=sys.stderr)
-            return
-        for column in data:
-            if column == '':
-                print(f"Erro na notícia {index + 1}", file=sys.stderr)
-                return
-        data_to_insert.append(data)
-
-
 def csv_importer(csv_file):
     if not path.exists(csv_file):
         print(f"Arquivo {csv_file} não encontrado", file=sys.stderr)
@@ -74,7 +62,17 @@ def csv_importer(csv_file):
         header, *all_data = csv_info
         if not header == def_headers:
             print("Cabeçalho inválido", file=sys.stderr)
-        all_data_enumerated_csv(all_data)
+
+        for index, data in enumerate(all_data):
+            if not len(data) == 9:
+                print(f"Erro na notícia {index}", file=sys.stderr)
+                return
+            for column in data:
+                if column == '':
+                    print(f"Erro na notícia {index}", file=sys.stderr)
+                    return
+            data_to_insert.append(data)
+
     mongo_insert_if_not_found_csv(data_to_insert)
     print("Importação realizada com sucesso")
 
