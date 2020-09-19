@@ -30,7 +30,6 @@ def strip_content(content):
 
 def catch_news_info(url):
     page_text = fetch_content(url)
-    print("entrou")
     selector = Selector(page_text)
     data_extract = {
         "url": url or "",
@@ -76,20 +75,17 @@ def catch_news_info(url):
     return data_extract
 
 
-def scrape(url):
-    page = Selector(fetch_content(url))
-    links = page.css(
-        ".tec--list__item > article > div > h3 > a::attr(href)"
-    ).getall()
-    print("opa")
-    for href in links:
-        catch_news_info(href)
+def scrape(url, num_pages=1):
+    for num in range(num_pages):
+        print("Buscando notícias da Página", num + 1)
+        page = Selector(fetch_content(url))
+        links = page.css(
+            ".tec--list__item > article > div > h3 > a::attr(href)"
+        ).getall()
+        for i, href in enumerate(links):
+            catch_news_info(href)
+            print("Noticia", i + 1, "Inserida com sucesso")
+        url = (page.css(".tec--btn::attr(href)").get() or "").strip()
 
 
-scrape(url)
-
-# content_page = fetch_content(url)
-
-# news_json = catch_news_info(content_page, url)
-
-# print(news_json)
+scrape(url, 2)
