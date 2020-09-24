@@ -88,4 +88,4 @@ def scrape(url, num_pages=1):
         url = (page.css(".tec--btn::attr(href)").get() or "").strip()
 
 
-scrape(url, 2)
+scrape(url)
