@@ -95,7 +95,7 @@ def scrape(url, num_pages=1):
         for i, href in enumerate(links):
             catch_news_info(href, i)
         url = (page.css(".tec--btn::attr(href)").get() or "").strip()
-    print("Raspagem finalizada.")
+    print("Raspagem de notícias finalizada.")
 
 
 scrape(url)
