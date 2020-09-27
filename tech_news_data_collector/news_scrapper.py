@@ -28,7 +28,17 @@ def strip_content(content):
     return content.strip()
 
 
-def catch_news_info(url):
+def insert_or_update(content, url, i):
+    url_exists_database = db.news.find_one({"url": f"{url}"})
+    if url_exists_database:
+        db.news.update_one({"url": f"{url}"}, {"$set": content})
+        print("Noticia", i + 1, "Atualizada com sucesso")
+    else:
+        db.news.insert_one(content)
+        print("Noticia", i + 1, "Inserida com sucesso")
+
+
+def catch_news_info(url, i):
     page_text = fetch_content(url)
     selector = Selector(page_text)
     data_extract = {
@@ -71,7 +81,7 @@ def catch_news_info(url):
         )
         or None,
     }
-    db.news.insert_one(data_extract)
+    insert_or_update(data_extract, url, i)
     return data_extract
 
 
@@ -83,8 +93,7 @@ def scrape(url, num_pages=1):
             ".tec--list__item > article > div > h3 > a::attr(href)"
         ).getall()
         for i, href in enumerate(links):
-            catch_news_info(href)
-            print("Noticia", i + 1, "Inserida com sucesso")
+            catch_news_info(href, i)
         url = (page.css(".tec--btn::attr(href)").get() or "").strip()
     print("Raspagem finalizada.")
 
