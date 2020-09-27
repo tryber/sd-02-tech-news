@@ -3,7 +3,7 @@ import os.path
 import csv
 from pymongo import MongoClient
 import json
-from utils import check_comparison, correct_header
+from tech_news_data_collector.utils import check_comparison, correct_header
 
 
 def create_dict(keys, values):
@@ -30,6 +30,8 @@ def check_if_exists_db(value, i, collection, field):
 
 def iterate_lines(csvLines):
     for line in csvLines:
+        line[7] = line[7].split(',')
+        line[8] = line[8].split(',')
         save_db(line, "web_scrape_python", "news_collection", True)
 
 

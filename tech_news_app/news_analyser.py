@@ -44,7 +44,3 @@ def top_5_categories():
                 {'$limit': 5}]
     news_list = list(get_from_db(pipeline))
     iterate_categorie(news_list)
-
-
-# top_5_news()
-top_5_categories()

@@ -1,9 +1,9 @@
 from pymongo import MongoClient
 import sys
-from pathlib import Path
 import json
-from utils import check_comparison
+from tech_news_data_collector.utils import check_comparison
 import os.path
+import csv
 
 
 correct_header = [
@@ -45,13 +45,16 @@ def adjust_dot_comma(lines):
 
 
 def write_in_file(file_path, all_news):
-    with open(file_path, mode="w") as file:
-        lines = [list(new.values()) for new in all_news]
+    with open(file_path, mode="w") as csv_file:
 
-        final_text = adjust_dot_comma(lines)
+        csv_columns = all_news[0].keys()
 
-        adjusted_line = "\n".join([";".join(line) for line in final_text])
-        file.writelines(";".join(correct_header) + "\n" + adjusted_line)
+        writer = csv.DictWriter(
+            csv_file, fieldnames=csv_columns, delimiter=";"
+        )
+        writer.writeheader()
+        for line in all_news:
+            writer.writerow(line)
 
 
 def csv_exporter(file_path):
@@ -61,8 +64,6 @@ def csv_exporter(file_path):
 
         all_news = list(get_from_db("web_scrape_python", "news_collection"))
 
-        base_path = Path(__file__).parent
-        file_path = (base_path / f"{file_path}").resolve()
         write_in_file(file_path, all_news)
 
     except ValueError as exc_ext:
@@ -79,9 +80,6 @@ def json_exporter(file_path):
 
         all_news = list(get_from_db("web_scrape_python", "news_collection"))
 
-        base_path = Path(__file__).parent
-        file_path = (base_path / f"{file_path}").resolve()
-
         with open(file_path, mode="w") as file:
             lines = [line for line in all_news]
             json_news = json.dumps(lines)
@@ -92,6 +90,3 @@ def json_exporter(file_path):
 
     else:
         print("Exportação realizada com sucesso", file=sys.stdout)
-
-
-csv_exporter("../news.csv")

@@ -26,7 +26,7 @@ def search_by_date(date):
     if not bool(date_pattern.match(date)):
         print("Data inválida")
     else:
-        regex_express = {"datetime": {"$regex": "^" + date, "$options": "i"}}
+        regex_express = {"timestamp": {"$regex": "^" + date, "$options": "i"}}
         news_list = list(get_from_db(regex_express, {"title": 1, "url": 1}))
         iterate_list(news_list)
 
