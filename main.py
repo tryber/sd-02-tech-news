@@ -1,16 +1,3 @@
-# from tech_news_data_collector import (
-#   news_importer,
-#   news_exporter,
-#    news_scrapper,
-# )
-
-# from tech_news_data_collector import (
-#   news_importer,
-#   news_exporter,
-#   news_scrapper,
-# )
-
-# from tech_news_app import news_analyser, news_search_engine
 
 # news_importer.csv_importer('news.csv')
 
