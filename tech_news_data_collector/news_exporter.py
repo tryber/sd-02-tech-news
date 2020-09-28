@@ -24,6 +24,8 @@ def csv_exporter(csv_file):
         writer.writerow(headers)
         news = get_news()
         for row in news:
+            row["sources"] = ",".join(row["sources"])
+            row["categories"] = ",".join(row["categories"])
             writer.writerow(row.values())
     print("Exportação realizada com sucesso", file=sys.stdout)
 
@@ -39,4 +41,4 @@ def json_exporter(json_file):
 
 
 csv_exporter("news.csv")
-json_exporter("news.jso")
+# json_exporter("news.jso")
