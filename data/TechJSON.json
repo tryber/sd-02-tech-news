@@ -1,0 +1,64 @@
+[
+        {
+                "_id": 1,
+                "url": "https://www.tecmundo.com.br/ciencia/204362-cientista-quer-usar-vidro-frear-derretimento-gelo-do-artico.htm",
+                "title": "Cientista quer usar 'vidro' para frear derretimento do gelo do Ártico",
+                "timestamp": "2020-09-27T13:00:01",
+                "writer": "Reinaldo  Zaruvni",
+                "shares_count": "0",
+                "comments_count": "0",
+                "summary": "Uma das consequências do aumento da temperatura global é o derretimento acelerado de calotas polares, que, além de ameaçar todo o ecossistema, pode varrer completamente cidades costeiras do mapa. Para que catástrofes não ocorram, diversos estudos propõem métodos peculiares envolvendo a chamada geoengenharia, intervenção humana deliberada e em grande escala no sistema climático da Terra. Leslie Field, engenheira de Stanford, de acordo com a BBC News, tem a sua ideia: espalhar \"vidro\" por todo o Ártico.",
+                "sources": [
+                        "BBC News"
+                ],
+                "categories": [
+                        "Ciência",
+                        "Meio ambiente",
+                        "Invenção",
+                        "Inovação"
+                ]
+        },
+        {
+                "_id": 2,
+                "url": "https://www.tecmundo.com.br/minha-serie/204324-maldicao-mansao-bly-netflix-conheca-elenco-serie-terror.htm",
+                "title": "A Maldição da Mansão Bly: conheça os novos papéis do elenco da série",
+                "timestamp": "2020-09-27T12:00:01",
+                "writer": "",
+                "shares_count": null,
+                "comments_count": "0",
+                "summary": "Para quem está com as expectativas altas para a nova temporada da antologia de Mike Flanagan, que tal conhecer os novos personagens do elenco?",
+                "sources": [
+                        "TV Insider",
+                        "CBR",
+                        "IMDB"
+                ],
+                "categories": [
+                        "Minha Série",
+                        "Seriados",
+                        "Séries",
+                        "Elenco",
+                        "Listas",
+                        "Especiais",
+                        "Netflix",
+                        "Streaming"
+                ]
+        },
+        {
+                "_id": 3,
+                "url": "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/204354-helice-gerador-eolico-produz-energia-partir-leves-brisas.htm",
+                "title": "Sem hélice, gerador eólico produz energia a partir de leves brisas",
+                "timestamp": "2020-09-27T11:00:01",
+                "writer": "Kris Gaiato",
+                "shares_count": "0",
+                "comments_count": "0",
+                "summary": "Pesquisadores chineses desenvolveram um gerador eólico em miniatura que, ao invés de pás, possui duas fitas plásticas capazes de produzir eletricidade até mesmo a partir de um sopro. Os resultados do projeto foram publicados na revista científica Cell Reports Physical Science nesta quarta-feira (23).",
+                "sources": [
+                        "Cell Reports Physical Science"
+                ],
+                "categories": [
+                        "Mobilidade Urbana/Smart Cities",
+                        "Energia limpa",
+                        "Energia eólica"
+                ]
+        }
+]
