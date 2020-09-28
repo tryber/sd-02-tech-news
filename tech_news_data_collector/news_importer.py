@@ -29,7 +29,7 @@ def check_fields(row, index):
     row_keys = len(row.keys()) == 9
     row_values = True
     for value in row.values():
-        if (not str(value)):
+        if (value is None):
             row_values = False
     if not row_values or not row_keys:
         print(f"Erro na notícia {index}", file=sys.stderr)
@@ -46,13 +46,13 @@ def csv_importer(csv_file):
             if not validFile:
                 return
             for index, row in enumerate(news_reader, start=1):
+                validRow = check_fields(row, index)
+                if not validRow:
+                    return
                 row["shares_count"] = int(row["shares_count"])
                 row["comments_count"] = int(row["comments_count"])
                 row["sources"] = row["sources"].split(',')
                 row["categories"] = row["categories"].split(',')
-                validRow = check_fields(row, index)
-                if not validRow:
-                    return
                 all_news.append(dict(row))
     except FileNotFoundError:
         print(f"Arquivo {csv_file} não encontrado", file=sys.stderr)

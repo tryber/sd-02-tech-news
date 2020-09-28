@@ -8,9 +8,9 @@ from tech_news_app.news_search_engine import (
 from tech_news_app.news_analyser import top_5_news, top_5_categories
 
 
-# search_by_title("ar")
-# search_by_date("2020-09-27")
-# search_by_source("Twitter/Google")
-# search_by_category("celular")
-# top_5_news()
-# top_5_categories()
+print(search_by_title("ale"))
+print(search_by_date("2020-07-20"))
+print(search_by_source("the next web"))
+print(search_by_category("carro"))
+print(top_5_news())
+print(top_5_categories())

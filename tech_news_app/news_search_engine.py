@@ -15,7 +15,7 @@ def search_by_title(title):
         title = item["title"]
         url = item["url"]
         news_list.append(f"- {title}: {url}")
-    print(news_list)
+    return news_list
 
 
 def check_date(date):
@@ -40,7 +40,7 @@ def search_by_date(date):
         title = item["title"]
         url = item["url"]
         news_list.append(f"- {title}: {url}")
-    print(news_list)
+    return news_list
 
 
 def search_by_source(source):
@@ -50,7 +50,7 @@ def search_by_source(source):
         title = item["title"]
         url = item["url"]
         news_list.append(f"- {title}: {url}")
-    print(news_list)
+    return news_list
 
 
 def search_by_category(category):
@@ -60,4 +60,4 @@ def search_by_category(category):
         title = item["title"]
         url = item["url"]
         news_list.append(f"- {title}: {url}")
-    print(news_list)
+    return news_list

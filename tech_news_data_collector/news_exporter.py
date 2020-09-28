@@ -40,5 +40,5 @@ def json_exporter(json_file):
     print("Exportação realizada com sucesso", file=sys.stdout)
 
 
-csv_exporter("news.csv")
+csv_exporter("newsss.csv")
 # json_exporter("news.jso")
