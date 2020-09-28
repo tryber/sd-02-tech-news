@@ -35,7 +35,7 @@ def csv_exporter(file_name):
             single_new['source'] = ','.join(single_new['source'])
             single_new['categories'] = ','.join(single_new['categories'])
             writer.writerow(single_new.values())
-        print("Exportação realizada com sucesso")
+        print("Exportação realizada com sucesso", file=sys.stdout)
 
 
 def json_exporter(file_name):
@@ -45,7 +45,7 @@ def json_exporter(file_name):
     with open(file_name, "w") as file:
         news = get_news()
         json.dump(news, file)
-        print("Exportação realizada com sucesso")
+        print("Exportação realizada com sucesso", file=sys.stdout)
 
 
 # csv_exporter('news.csv')
