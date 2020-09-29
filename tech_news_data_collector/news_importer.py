@@ -47,7 +47,7 @@ def check_duplicate(idx, news):
         return True
 
 
-def check_all_JSON_news(imported_news):
+def check_all_json_news(imported_news):
     for idx, news in enumerate(imported_news):
         if list(news.keys()) != correct_header:
             print(f"Erro na notícia {idx + 1}", file=sys.stderr)
@@ -57,7 +57,7 @@ def check_all_JSON_news(imported_news):
     return False
 
 
-def check_all_CSV_news(data):
+def check_all_csv_news(data):
     news_values = []
     for idx, news in enumerate(data):
         if len(news) != 9:
@@ -84,7 +84,7 @@ def csv_importer(file_name):
         if header != correct_header:
             print("Cabeçalho inválido", file=sys.stderr)
             return
-        news_values = check_all_CSV_news(data)
+        news_values = check_all_csv_news(data)
         if not news_values:
             return
         insert_many_news(news_values)
@@ -101,7 +101,7 @@ def json_importer(file_name):
         except ValueError:
             print("JSON inválido", file=sys.stderr)
             return
-        if check_all_JSON_news(imported_news):
+        if check_all_json_news(imported_news):
             return
     insert_many_news(imported_news)
     print("Importação realizada com sucesso", file=sys.stdout)
