@@ -14,10 +14,13 @@ def csv_importer(file):
         return csv_file.close()
 
     reader = csv.DictReader(csv_file, delimiter=";", quotechar='"')
-    try:
-        line = 1
-        documents = []
-        for row in reader:
+    client = MongoClient()
+    db = client.tech_news
+
+    line = 1
+    documents = []
+    for row in reader:
+        try:
             url = row["url"]
             title = row["title"]
             timestamp = row["timestamp"]
@@ -27,36 +30,38 @@ def csv_importer(file):
             summary = row["summary"]
             sources = row["sources"]
             categories = row["categories"]
+        except KeyError:
+            print("Cabeçalho inválido", file=sys.stderr)
+            client.close()
+            return csv_file.close()
 
-            if not (url and title and timestamp and writer and shares_count and comments_count and summary and sources and categories):
-                print(f"Erro na notícia {line}", file=sys.stderr)
-                return csv_file.close()
-            for document in documents:
-                if document["url"] == url:
-                    print(f"Notícia {line} duplicada", file=sys.stderr)
-                    return csv_file.close()
+        if not (url and title and timestamp and writer and shares_count and comments_count and summary and sources and categories):
+            print(f"Erro na notícia {line}", file=sys.stderr)
+            client.close()
+            return csv_file.close()
 
-            line += 1
-            documents.append({
-                "url": url,
-                "title": title,
-                "timestamp": timestamp,
-                "writer": writer,
-                "shares_count": int(shares_count),
-                "comments_count": int(comments_count),
-                "summary": summary,
-                "sources": sources.split(","),
-                "categories": categories.split(","),
-            })
-    except KeyError:
-        print("Cabeçalho inválido", file=sys.stderr)
-        return csv_file.close()
+        document_exists = db.news.find_one({"url": url})
+        if document_exists:
+            print(f"Notícia {line} duplicada", file=sys.stderr)
+            client.close()
+            return csv_file.close()
 
-    client = MongoClient()
-    db = client.tech_news
+        documents.append({
+            "url": url,
+            "title": title,
+            "timestamp": timestamp,
+            "writer": writer,
+            "shares_count": int(shares_count),
+            "comments_count": int(comments_count),
+            "summary": summary,
+            "sources": sources.split(","),
+            "categories": categories.split(","),
+        })
+        line += 1
+
     db.news.insert_many(documents)
-
     print("Importação realizada com sucesso", file=sys.stdout)
+    client.close()
     csv_file.close()
 
 
