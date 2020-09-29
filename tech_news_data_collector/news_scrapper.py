@@ -17,7 +17,7 @@ def insert_mongo(dict_news):
     with MongoClient() as client:
         db = client.tech_news
         for news in dict_news:
-            db.teste2.find_one_and_replace(
+            db.news_details.find_one_and_replace(
                 {"url": news["url"]}, news, upsert=True
             )
 
@@ -96,7 +96,7 @@ def get_news(news_links):
             "writer": get_writer(
                 details_selector, ".tec--author__info__link::text"
             ),
-            "share_count": get_shares(
+            "shares_count": get_shares(
                 details_selector, "div.tec--toolbar__item::text"
             ),
             "comments_count": get_comments(
@@ -135,4 +135,4 @@ def scrape(n=1):
     print('Raspagem de notícias finalizada.')
 
 
-scrape(1)
+# scrape(1)

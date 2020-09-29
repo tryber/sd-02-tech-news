@@ -8,7 +8,13 @@ from pymongo import MongoClient
 def find_news_by_url(url):
     with MongoClient() as client:
         db = client.tech_news
-        return db.teste2.find({'url': url})
+        return db.news_details.find({"url": url})
+
+
+def insert_many_news(news):
+    with MongoClient() as client:
+        db = client.tech_news
+        return db.news_details.insert_many(news)
 
 
 correct_header = [
@@ -24,40 +30,82 @@ correct_header = [
 ]
 
 
-def csv_importer(file_name):
-    news_values = []
+def check_path_and_format(file_name, file_ext):
     if not os.path.exists(file_name):
         print(f"Arquivo {file_name} não econtrado", file=sys.stderr)
-        return
-    if not file_name.endswith(".csv"):
+        return True
+    if not file_name.endswith(file_ext):
         print("Formato inválido", file=sys.stderr)
+        return True
+    return False
+
+
+def check_duplicate(idx, news):
+    is_new_exist = list(find_news_by_url(news))
+    if is_new_exist or len(is_new_exist) != 0:
+        print(f"Noticía {idx + 1} duplicada", file=sys.stderr)
+        return True
+
+
+def check_all_JSON_news(imported_news):
+    for idx, news in enumerate(imported_news):
+        if list(news.keys()) != correct_header:
+            print(f"Erro na notícia {idx + 1}", file=sys.stderr)
+            return True
+        if check_duplicate(idx, news["url"]):
+            return True
+    return False
+
+
+def check_all_CSV_news(data):
+    news_values = []
+    for idx, news in enumerate(data):
+        if len(news) != 9:
+            print(f"Erro na notícia {idx + 1}", file=sys.stderr)
+            return False
+        if check_duplicate(idx, news[0]):
+            return False
+        news[7] = news[7].split(',')
+        news[8] = news[8].split(',')
+        dict_news = {
+            correct_header[i]: news[i] for i in range(len(correct_header))
+        }
+        news_values.append(dict_news)
+    return news_values
+
+
+def csv_importer(file_name):
+    news_values = []
+    if check_path_and_format(file_name, ".csv"):
         return
     with open(file_name) as file:
-        teste = csv.reader(file, delimiter=";")
-        header, *data = teste
+        imported_news = csv.reader(file, delimiter=";")
+        header, *data = imported_news
         if header != correct_header:
             print("Cabeçalho inválido", file=sys.stderr)
             return
-        for idx, news in enumerate(data):
-            if len(news) != 9:
-                print(f"Erro na notícia {idx + 1}", file=sys.stderr)
-                return
-            is_new_exist = list(find_news_by_url(news[0]))
-            if (is_new_exist or len(is_new_exist) != 0):
-                print(f'Noticía {idx} duplicada', file=sys.stderr)
-                return
-            print(news[0])
-            news[7] = news[7].split()
-            news[8] = news[8].split()
-            dict_news = {
-                correct_header[i]: news[i] for i in range(len(correct_header))
-            }
-            news_values.append(dict_news)
-        print(news_values)
+        news_values = check_all_CSV_news(data)
+        if not news_values:
+            return
+        insert_many_news(news_values)
+    print("Importação realizada com sucesso", file=sys.stdout)
 
 
-def json_importer():
-    raise NotImplementedError
+def json_importer(file_name):
+    imported_news = []
+    if check_path_and_format(file_name, ".json"):
+        return
+    with open(file_name) as file:
+        try:
+            imported_news = json.loads(file.read())
+        except ValueError:
+            print("JSON inválido", file=sys.stderr)
+            return
+        if check_all_JSON_news(imported_news):
+            return
+    insert_many_news(imported_news)
+    print("Importação realizada com sucesso", file=sys.stdout)
 
 
-csv_importer("news.csv")
+# csv_importer("news.csv")
+# json_importer("news.json")
