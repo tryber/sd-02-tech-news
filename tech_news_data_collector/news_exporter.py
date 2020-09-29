@@ -54,6 +54,8 @@ def write_in_file(file_path, all_news):
         )
         writer.writeheader()
         for line in all_news:
+            line["sources"] = ",".join(line["sources"])
+            line["categories"] = ",".join(line["categories"])
             writer.writerow(line)
 
 

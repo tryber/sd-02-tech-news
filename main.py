@@ -1,4 +1,3 @@
-# from tech_news_app import news_analyser, news_search_engine
 
 # news_importer.csv_importer('news.csv')
 
