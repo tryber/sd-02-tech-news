@@ -40,13 +40,10 @@ def search_by_date(date):
 
 
 def search_by_source(param):
-    findForText = mongo_query({"sources": param})
+    findForText = mongo_query({"sources": {"$regex": param, "$options": "i"}})
     print_content(findForText)
 
 
 def search_by_category(param):
-    findForText = mongo_query({"categories": param})
+    findForText = mongo_query({"categories": {"$regex": param, "$options": "i"}})
     print_content(findForText)
-
-
-search_by_category("TikTok")

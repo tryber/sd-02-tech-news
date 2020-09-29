@@ -1,7 +1,7 @@
 import requests
-import time
 from parsel import Selector
 from pymongo import MongoClient, UpdateOne
+import sys
 
 
 user_agent = (
@@ -18,12 +18,11 @@ def fetch_content(url):
             "User-Agent": user_agent,
         },
     )
-    time.sleep(6)
     return response.text
 
 
-def request_links(searchPages=1):
-    searchPages = int(searchPages)
+def request_links(searchPages):
+    searchPages = searchPages
     links = []
     URL = "https://www.tecmundo.com.br/novidades"
     aux = 0
@@ -50,9 +49,8 @@ def request_details(url):
             },
         )
         response.raise_for_status()
-        # time.sleep(1)
-    except requests.HTTPError:
-        print("Invalid URL " + url)
+    except ValueError:
+        print("Invalid URL " + url, file=sys.stderr)
     else:
         return response.text
 
@@ -161,12 +159,12 @@ def create_infos(urlsDetails):
     return arrayInfos
 
 
-def scrape(searchPages):
-    urlsDetails = request_links(searchPages)
-    arrayInfos = create_infos(urlsDetails)
-    mongo_save(arrayInfos)
-
-
-pages = input("Qual o numero de paginas você deseja raspar?\n")
-scrape(pages)
-print("Raspagem de notícias finalizada")
+def scrape(searchPages=1):
+    try:
+        urlsDetails = request_links(searchPages)
+        arrayInfos = create_infos(urlsDetails)
+        mongo_save(arrayInfos)
+    except ValueError:
+        print('erro desconhecido')
+    else:
+        print("Raspagem de notícias finalizada",file=sys.stderr)

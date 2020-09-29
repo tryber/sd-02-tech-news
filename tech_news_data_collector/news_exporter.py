@@ -16,35 +16,38 @@ def mongo_extract():
 
 
 def csv_exporter(arquive):
-    documents = mongo_extract()
-    with open(arquive.lower(), "w") as file:
-        writer = csv.writer(file, delimiter=";")
-        headers = [
-            "url",
-            "title",
-            "timestamp",
-            "writer",
-            "shares_count",
-            "comments_count",
-            "summary",
-            "sources",
-            "categories",
-        ]
-        writer.writerow(headers)
-        for document in documents:
-            row = [
-                document["url"],
-                document["title"],
-                document["timestamp"],
-                document["writer"],
-                document["shares_count"],
-                document["comments_count"],
-                document["summary"],
-                document["sources"],
-                document["categories"],
+    if re.search(".csv$", arquive, re.IGNORECASE):
+        documents = mongo_extract()
+        with open(arquive.lower(), "w") as file:
+            writer = csv.writer(file, delimiter=";")
+            headers = [
+                "url",
+                "title",
+                "timestamp",
+                "writer",
+                "shares_count",
+                "comments_count",
+                "summary",
+                "sources",
+                "categories",
             ]
-            writer.writerow(row)
-    print("Exportação realizada com sucesso")
+            writer.writerow(headers)
+            for document in documents:
+                row = [
+                    document["url"],
+                    document["title"],
+                    document["timestamp"],
+                    document["writer"],
+                    document["shares_count"],
+                    document["comments_count"],
+                    document["summary"],
+                    (','.join(document["sources"])),
+                    (','.join(document["categories"])),
+                ]
+                writer.writerow(row)
+        print("Exportação realizada com sucesso")
+    else:
+        print("Formato inválido", file=sys.stderr)
 
 
 class JSONEncoder(json.JSONEncoder):
@@ -55,17 +58,10 @@ class JSONEncoder(json.JSONEncoder):
 
 
 def json_exporter(arquive):
-    documents = mongo_extract()
-    with open(arquive.lower(), "w") as file:
-        json.dump(documents, file, cls=JSONEncoder)
-    print("Exportação realizada com sucesso")
-
-
-arquive = input("Digite o nome do arquivo com .csv ou .json\n")
-
-if re.search(".csv$", arquive, re.IGNORECASE):
-    csv_exporter(arquive)
-elif re.search(".json$", arquive, re.IGNORECASE):
-    json_exporter(arquive)
-else:
-    print("Formato inválido", file=sys.stderr)
+    if re.search(".json$", arquive, re.IGNORECASE):
+        documents = mongo_extract()
+        with open(arquive.lower(), "w") as file:
+            json.dump(documents, file, cls=JSONEncoder)
+        print("Exportação realizada com sucesso")
+    else:
+        print("Formato inválido", file=sys.stderr)
