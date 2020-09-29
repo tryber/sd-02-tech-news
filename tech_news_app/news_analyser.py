@@ -1,8 +1,16 @@
 from mongo_connection import tech_news_db
 
 
+def format_results(results):
+    return [f" - {i['url']}: {i['title']}" for i in list(results)]
+
+
+def format_categories(categories):
+    return [f" - {i['_id']}" for i in list(categories)]
+
+
 def top_5_news():
-    news = tech_news_db().pages.aggregate(
+    results = tech_news_db().pages.aggregate(
         [
             {
                 "$addFields": {
@@ -21,7 +29,7 @@ def top_5_news():
             },
         ]
     )
-    return list(news)
+    return format_results(results)
 
 
 def top_5_categories():
@@ -39,4 +47,4 @@ def top_5_categories():
             {"$project": {"_id": 1, "categories_count": 0}},
         ]
     )
-    return list(map(lambda x: x["_id"], list(categories)))
+    return format_categories(categories)

@@ -72,7 +72,7 @@ def csv_importer_open_with(filename):
         urls = []
 
         for index, row in enumerate(data):
-            url = row[0]
+            url = row[header.index('url')]
             is_row_valid(row, index)
             is_url_duplicated(url, urls, index)
             urls.append(url)

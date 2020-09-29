@@ -42,10 +42,17 @@ def validate_header(header):
         raise ValueError("Cabeçalho inválido")
 
 
+def has_data(news):
+    if len(news) < 1:
+        raise ValueError("Banco de dados vazio")
+
+
 def csv_exporter_open(file):
-    writer = csv.writer(file)
+    writer = csv.writer(file, delimiter=";")
     news = find_all()
     header = []
+
+    has_data(news)
 
     validate_header(news[0])
 
@@ -54,7 +61,7 @@ def csv_exporter_open(file):
     writer.writerow(header)
 
     for row in news:
-        writer.writerow(row)
+        writer.writerow([val for val in row.values()])
 
 
 def csv_exporter(filename):
