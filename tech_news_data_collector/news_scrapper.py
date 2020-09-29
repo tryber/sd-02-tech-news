@@ -85,7 +85,7 @@ def scrape(page_number=1):
         time.sleep(0.1)
         resp_news = fetch_content(news, 2)
         sel_news = Selector(resp_news)
-
+        print(f'Buscando a notícia {index + 1}')
         result.append({
             "url": news,
 
@@ -119,6 +119,3 @@ def scrape(page_number=1):
         })
     add_to_mongo(result)
     print("Raspagem de notícias finalizada")
-
-
-scrape(1)

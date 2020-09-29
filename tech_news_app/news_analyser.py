@@ -9,12 +9,10 @@ def connect_to_mongo(results):
 
 
 def print_correct_name(results):
-    results_null = True
+    items = []
     for result in results:
-        results_null = False
-        print(f'["- {result["title"]}: {result["url"]}"]')
-    if results_null:
-        print([])
+        items.append(f"- {result['title']}: {result['url']}")
+    return items
 
 
 def top_5_news():
@@ -33,10 +31,7 @@ def top_5_news():
         {"$project": {"title": 1, "url": 1, "_id": 0}}
     ]
     get_db = connect_to_mongo(aggregate)
-    print_correct_name(get_db)
-
-
-top_5_news()
+    return print_correct_name(get_db)
 
 
 def top_5_categories():
@@ -47,12 +42,7 @@ def top_5_categories():
         {"$limit": 5},
     ]
     get_db = connect_to_mongo(aggregate)
-    results_null = True
-    for item in get_db:
-        results_null = False
-        print(f'["- {item["_id"]}"]')
-    if results_null:
-        print([])
-
-
-# top_5_categories()
+    items = []
+    for result in get_db:
+        items.append(f"- {result['_id']}")
+    return items

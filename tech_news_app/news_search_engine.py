@@ -14,21 +14,16 @@ def connect_to_mongo(results):
 
 
 def print_correct_name(results):
-    results_null = True
+    items = []
     for result in results:
-        results_null = False
-        print(f'["- {result["title"]}: {result["url"]}"]')
-    if results_null:
-        print([])
+        items.append(f"- {result['title']}: {result['url']}")
+    return items
 
 
 def search_by_title(user_text):
     aggregate = {"title": {"$regex": user_text, "$options": "i"}}
     results = connect_to_mongo(aggregate)
-    print_correct_name(results)
-
-
-# search_by_title("re")
+    return print_correct_name(results)
 
 
 def search_by_date(user_date):
@@ -37,18 +32,19 @@ def search_by_date(user_date):
         result = str(result).split(" ")[0]
         aggregate = {"timestamp": {"$regex": result}}
         results = connect_to_mongo(aggregate)
-        print_correct_name(results)
     except ValueError:
-        print("Data inválida")
+        return "Data inválida"
+    else:
+        return print_correct_name(results)
 
 
 def search_by_source(user_text):
-    aggregate = {"sources": user_text}
+    aggregate = {"sources": {"$regex": user_text, "$options": "i"}}
     results = connect_to_mongo(aggregate)
-    print_correct_name(results)
+    return print_correct_name(results)
 
 
 def search_by_category(user_text):
-    aggregate = {"categories": user_text}
+    aggregate = {"categories": {"$regex": user_text, "$options": "i"}}
     results = connect_to_mongo(aggregate)
-    print_correct_name(results)
+    return print_correct_name(results)

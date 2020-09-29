@@ -41,8 +41,8 @@ def csv_exporter(csv_file):
                 item["shares_count"],
                 item["comments_count"],
                 item["summary"],
-                item["sources"],
-                item["categories"]
+                ",".join(item["sources"]),
+                ",".join(item["categories"]),
             ]
             writer.writerow(each_news)
         print("Exportação realizada com sucesso")
@@ -56,9 +56,3 @@ def json_exporter(json_file):
     with open(json_file, "w") as file:
         json.dump(news, file)
         print("Exportação realizada com sucesso")
-
-
-# csv_exporter("trybe.csv")
-
-
-json_exporter("trybe.json")
