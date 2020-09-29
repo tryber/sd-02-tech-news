@@ -8,17 +8,15 @@ def get_from_db(filter_query={}):
 
 
 def iterate_list(news_list):
-    for item in news_list:
-        print(f"- {item['title']} : {item['url']}")
     if not len(news_list):
-        print([])
+        return []
+    return [f"- {item['title']} : {item['url']}" for item in news_list]
 
 
 def iterate_categorie(news_list):
-    for item in news_list:
-        print(f"- {item['_id']}")
     if not len(news_list):
-        print([])
+        return []
+    return [f"- {item['_id']}" for item in news_list]
 
 
 def top_5_news():
@@ -34,7 +32,7 @@ def top_5_news():
     }}, {'$sort': {'totalInteraction': -1, 'title': 1}}, {'$limit': 5}]
 
     news_list = list(get_from_db(pipeline))
-    iterate_list(news_list)
+    return iterate_list(news_list)
 
 
 def top_5_categories():
@@ -43,4 +41,4 @@ def top_5_categories():
                 {'$sort': {'quantity': -1, '_id': 1}},
                 {'$limit': 5}]
     news_list = list(get_from_db(pipeline))
-    iterate_categorie(news_list)
+    return iterate_categorie(news_list)

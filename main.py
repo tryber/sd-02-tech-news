@@ -1,3 +1,4 @@
+# from tech_news_app import news_analyser, news_search_engine
 
 # news_importer.csv_importer('news.csv')
 
@@ -9,14 +10,14 @@
 
 # news_scrapper.scrape(1)
 
-# news_analyser.top_5_news()
+# print(news_analyser.top_5_news())
 
-# news_analyser.top_5_categories()
+# print(news_analyser.top_5_categories())
 
-# news_search_engine.search_by_title()
+# print(news_search_engine.search_by_title('Att'))
 
-# news_search_engine.search_by_date()
+# print(news_search_engine.search_by_date('2020-09-26'))
 
-# news_search_engine.search_by_source()
+# print(news_search_engine.search_by_source('Techradar'))
 
-# news_search_engine.search_by_category('categories2')
+# print(news_search_engine.search_by_category('categories2'))
