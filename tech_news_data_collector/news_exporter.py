@@ -1,7 +1,7 @@
 import csv
 import sys
 import json
-from mongo_connection import get_news
+from tech_news_data_collector.mongo_connection import get_news
 
 
 def csv_exporter(csv_file):
@@ -38,7 +38,3 @@ def json_exporter(json_file):
         news = get_news()
         json.dump(list(news), file)
     print("Exportação realizada com sucesso", file=sys.stdout)
-
-
-csv_exporter("newsss.csv")
-# json_exporter("news.jso")

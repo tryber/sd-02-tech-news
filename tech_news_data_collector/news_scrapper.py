@@ -1,7 +1,7 @@
 import requests
 from parsel import Selector
 import re
-from mongo_connection import insert_news_scrapper
+from tech_news_data_collector.mongo_connection import insert_news_scrapper
 
 
 def fetch_content(url, timeout=2):
@@ -105,6 +105,3 @@ def scrape(n=1):
     insert_news_scrapper(all_news)
     all_news and print("Raspagem de notícias finalizada")
     return all_news
-
-
-scrape(2)

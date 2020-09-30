@@ -1,7 +1,7 @@
 import csv
 import sys
 import json
-from mongo_connection import insert_news_importer
+from tech_news_data_collector.mongo_connection import insert_news_importer
 
 
 def check_file_and_extension(file, content):
@@ -62,12 +62,12 @@ def csv_importer(csv_file):
 
 
 def json_importer(json_file):
-    if not json_file.endswith(".json"):
-        print("Formato inválido", file=sys.stderr)
-        return
     all_news = []
     try:
         with open(json_file) as file:
+            if not json_file.endswith(".json"):
+                print("Formato inválido", file=sys.stderr)
+                return
             news = json.load(file)
             for index, item in enumerate(news, start=1):
                 validItem = check_fields(item, index)
@@ -81,7 +81,3 @@ def json_importer(json_file):
     else:
         insert_news_importer(all_news)
         print("Importação realizada com sucesso", file=sys.stdout)
-
-
-csv_importer("./news_files_mocks/news.csv")
-# json_importer("./news_files_mocks/news.json")
