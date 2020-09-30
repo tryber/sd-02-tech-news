@@ -1,6 +1,7 @@
 import csv
 import sys
 from pymongo import MongoClient
+import json
 
 
 def csv_importer(file):
@@ -65,5 +66,50 @@ def csv_importer(file):
     csv_file.close()
 
 
-def json_importer():
-    raise NotImplementedError
+def json_importer(file):
+    try:
+        json_file = open(file)
+    except FileNotFoundError:
+        return print(f"Arquivo {file} não encontrado", file=sys.stderr)
+
+    if not file.endswith(".json"):
+        print("Formato inválido", file=sys.stderr)
+        return json_file.close()
+
+    content = json_file.read()
+
+    try:
+        documents = json.loads(content)
+    except json.decoder.JSONDecodeError:
+        print("JSON inválido", file=sys.stderr)
+        return json_file.close()
+
+    client = MongoClient()
+    db = client.tech_news
+
+    for index, document in enumerate(documents):
+        try:
+            url = document["url"]
+            title = document["title"]
+            timestamp = document["timestamp"]
+            writer = document["writer"]
+            shares_count = document["shares_count"]
+            comments_count = document["comments_count"]
+            summary = document["summary"]
+            sources = document["sources"]
+            categories = document["categories"]
+        except KeyError:
+            print(f"Erro na notícia {index + 1}", file=sys.stderr)
+            client.close()
+            return json_file.close()
+
+        document_exists = db.news.find_one({"url": url})
+        if document_exists:
+            print(f"Notícia {index + 1} duplicada", file=sys.stderr)
+            client.close()
+            return json_file.close()
+
+    db.news.insert_many(documents)
+    print("Importação realizada com sucesso", file=sys.stdout)
+    client.close()
+    json_file.close()
