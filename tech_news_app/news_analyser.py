@@ -13,7 +13,7 @@ def top_5_news():
                     }
                 }
             },
-            {"$sort": {"shares_and_comments": -1}},
+            {"$sort": {"shares_and_comments": -1, "title": 1}},
             {"$limit": 5},
             {"$project": {"title": 1, "url": 1, "_id": 0}}
         ]))
