@@ -16,9 +16,9 @@ from tech_news_app.news_analyser import top_5_news, top_5_categories
 scrape(2)
 
 csv_importer("./news_files_mocks/news.csv")
-csv_exporter("news.csv")
+csv_exporter("news.json")
 
-json_importer("./news_files_mocks/news.json")
+json_importer("./news_files_mocks/broke_news.json")
 json_exporter("news.json")
 
 search_by_title("Série")

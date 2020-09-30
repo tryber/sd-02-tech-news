@@ -11,7 +11,6 @@ def top_5_news():
         title = item["title"]
         url = item["url"]
         news_list.append(f"- {title}: {url}")
-    print(news_list)
     return news_list
 
 
@@ -21,5 +20,4 @@ def top_5_categories():
     for item in news:
         category = item["category"]
         news_list.append(f"- {category}")
-    print(news_list)
     return news_list
