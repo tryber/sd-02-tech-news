@@ -30,6 +30,8 @@ def check_if_exists_db(value, i, collection, field):
 
 def iterate_lines(csvLines):
     for line in csvLines:
+        line[4] = int(line[4])
+        line[5] = int(line[5])
         line[7] = line[7].split(',')
         line[8] = line[8].split(',')
         save_db(line, "web_scrape_python", "news_collection", True)

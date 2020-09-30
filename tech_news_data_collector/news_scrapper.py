@@ -56,16 +56,16 @@ def get_news_details(url, total, current):
     if len(selector.css("div.tec--toolbar__item").getall()) == 2:
         share, comments_count = selector.css(
             "div.tec--toolbar__item ::text"
-        ).re(r"\d+")
+        ).re(r"\d+") or ("0", "0")
     else:
         comments_count = get_simple_text(
             selector,
             "#js-comments-btn \
                                          ::attr(data-count)",
-        )
+        ) or "0"
         share = "0"
-    new_detailed["comments_count"] = comments_count
-    new_detailed["shares_count"] = share
+    new_detailed["comments_count"] = int(comments_count)
+    new_detailed["shares_count"] = int(share)
     new_detailed["summary"] = (
         "".join(
             selector.css(
@@ -97,9 +97,9 @@ def get_news_details(url, total, current):
 def scrape(n=1):
     base_url = "https://www.tecmundo.com.br/novidades?page="
     urls_to_scrape = []
-
     for number in range(1, n + 1):
-        content = get_urls(f"{base_url}/{number}")
+        print(number)
+        content = get_urls(f"{base_url}{number}")
         selector = parsel.Selector(content)
         news_urls = selector.css(
             ".tec--list--lg \
