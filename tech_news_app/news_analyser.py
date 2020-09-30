@@ -25,4 +25,23 @@ def top_5_news():
 
 
 def top_5_categories():
-    raise NotImplementedError
+    with MongoClient() as client:
+        db = client.tech_news
+
+        searched_news = list(db.news.aggregate([
+            {"$unwind": "$categories"},
+            {
+                "$group": {
+                    "_id": "$categories",
+                    "count": {"$sum": 1}
+                }
+            },
+            {"$sort": {"count": -1}},
+            {"$limit": 5},
+            {"$sort": {"_id": 1}}
+        ]))
+
+        return [
+            f"- {news['_id']}"
+            for news in searched_news
+        ]
