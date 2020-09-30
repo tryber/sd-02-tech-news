@@ -54,5 +54,16 @@ def search_by_source(search):
         ]
 
 
-def search_by_category():
-    raise NotImplementedError
+def search_by_category(search):
+    with MongoClient() as client:
+        db = client.tech_news
+
+        searched_news = list(db.news.find(
+            {"categories": {"$regex": f"^{search}$", "$options": 'i'}},
+            {"title": 1, "url": 1, "_id": 0}
+        ))
+
+        return [
+            f"- {news['title']}: {news['url']}"
+            for news in searched_news
+        ]
