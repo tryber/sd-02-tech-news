@@ -39,8 +39,19 @@ def search_by_date(search):
         ]
 
 
-def search_by_source():
-    raise NotImplementedError
+def search_by_source(search):
+    with MongoClient() as client:
+        db = client.tech_news
+
+        searched_news = list(db.news.find(
+            {"sources": {"$regex": f"^{search}$", "$options": 'i'}},
+            {"title": 1, "url": 1, "_id": 0}
+        ))
+
+        return [
+            f"- {news['title']}: {news['url']}"
+            for news in searched_news
+        ]
 
 
 def search_by_category():
