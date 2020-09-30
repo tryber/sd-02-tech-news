@@ -1,6 +1,7 @@
 import csv
 import sys
 from pymongo import MongoClient
+import json
 
 
 def csv_exporter(file):
@@ -38,5 +39,14 @@ def csv_exporter(file):
         client.close()
 
 
-def json_exporter():
-    raise NotImplementedError
+def json_exporter(file):
+    if not file.endswith(".json"):
+        return print("Formato inválido", file=sys.stderr)
+
+    with open(file, "w") as json_file:
+        client = MongoClient()
+        documents = list(client.tech_news.news.find({}, {"_id": 0}))
+        json.dump(documents, json_file)
+
+        print("Exportação realizada com sucesso", file=sys.stdout)
+        client.close()
