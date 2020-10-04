@@ -31,8 +31,11 @@
 # json_importer("dummy")
 # json_importer("correto.csv")
 
-# json_exporter("conteudo_incorreto.json")
-# json_importer("conteudo_incorreto.json")
+# json_exporter("invalid.json")
+# json_importer("invalid.json")
+
+# json_exporter("incorreto.json")
+# json_importer("incorreto.json")
 
 # json_exporter("duplicado.json")
 # json_importer("duplicado.json")
@@ -42,21 +45,21 @@
 
 # json_exporter("saida.csv")
 
-# search_by_title('Vacina')
-# search_by_title('vacina')
-# search_by_title('asdadqdqw')
+# print(search_by_title('Vacina'))
+# print(search_by_title('vacina'))
+# print(search_by_title('asdadqdqw'))
 
-# search_by_date("12/11/1920")
-# search_by_date("2020-09-29")
+# print(search_by_date("12/11/1920"))
+# print(search_by_date("2020-10-05"))
 
-# search_by_source("Decider")
-# search_by_source("decider")
+# print(search_by_source("TV Insider"))
+# print(search_by_source("tv Insider"))
 # search_by_source("asdfghj")
 
-# search_by_category("Lançamentos")
-# search_by_category("lançamentos")
-# search_by_category("asdfghj")
+# print(search_by_category("Exploração espacial"))
+# print(search_by_category("exploração espacial"))
+# print(search_by_category("asdfghj"))
 
-# top_5_news()
+# print(top_5_news())
 
-# top_5_categories()
+# print(top_5_categories())

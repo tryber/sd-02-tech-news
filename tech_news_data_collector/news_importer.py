@@ -6,7 +6,7 @@ from pymongo import MongoClient
 import json
 
 
-defaultHeaders = [
+default_headers = [
     "url",
     "title",
     "timestamp",
@@ -19,31 +19,34 @@ defaultHeaders = [
 ]
 
 
-def create_object_mongo(arrayInfo):
-    arrayToObject = {}
-    for index in range(len(arrayInfo)):
+def create_object_mongo(array_info):
+    array_To_object = {}
+    for index in range(len(array_info)):
         if (
-            defaultHeaders[index] == "shares_count"
-            or defaultHeaders[index] == "comments_count"
+            default_headers[index] == "shares_count"
+            or default_headers[index] == "comments_count"
         ):
-            arrayToObject[defaultHeaders[index]] = int(arrayInfo[index])
+            array_To_object[default_headers[index]] = int(array_info[index])
         elif (
-            defaultHeaders[index] == "sources" or defaultHeaders[index] == "categories"
+            default_headers[index] == "sources" or 
+            default_headers[index] == "categories"
         ):
-            arrayToObject[defaultHeaders[index]] = arrayInfo[index].split(",")
+            array_To_object[
+                default_headers[index]
+                ] = array_info[index].split(",")
         else:
-            arrayToObject[defaultHeaders[index]] = arrayInfo[index]
-    return arrayToObject
+            array_To_object[default_headers[index]] = array_info[index]
+    return array_To_object
 
 
 def mongo_insert(arquive):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
         for index in range(len(arquive)):
-            objToInsert = create_object_mongo(arquive[index])
-            existObject = db["news"].find_one({"url": objToInsert["url"]})
-            if existObject is None:
-                db["news"].insert_one(objToInsert)
+            obj_to_insert = create_object_mongo(arquive[index])
+            exist_object = db["news"].find_one({"url": obj_to_insert["url"]})
+            if exist_object is None:
+                db["news"].insert_one(obj_to_insert)
             else:
                 print(
                     "Notícia " + str(index + 1) + " duplicada",
@@ -53,17 +56,17 @@ def mongo_insert(arquive):
 
 def headers_len(news):
     for index in range(len(news)):
-        if len(news[index]) < len(defaultHeaders):
+        if len(news[index]) < len(default_headers):
             print("Erro na notícia " + str(index + 1), file=sys.stderr)
             exit()
 
 
 def check_news(headers, news):
     conjunto = set(headers)
-    initiallen = len(conjunto)
-    for header in defaultHeaders:
+    initial_len = len(conjunto)
+    for header in default_headers:
         conjunto.add(header)
-    if len(conjunto) != initiallen:
+    if len(conjunto) != initial_len:
         print("Cabeçalho inválido", file=sys.stderr)
         exit()
     else:
@@ -92,13 +95,15 @@ def csv_importer(arquive):
         )
 
 
-def insert_json(arrayToInclude):
+def insert_json(array_to_include):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
-        for index in range(len(arrayToInclude)):
-            existObject = db["news"].find_one({"url": arrayToInclude[index]["url"]})
-            if existObject is None:
-                db["news"].insert_one(arrayToInclude[index])
+        for index in range(len(array_to_include)):
+            exist_object = db["news"].find_one({
+                "url": array_to_include[index]["url"]
+            })
+            if exist_object is None:
+                db["news"].insert_one(array_to_include[index])
             else:
                 print(
                         "Notícia " + str(index + 1) + " duplicada",
@@ -108,7 +113,7 @@ def insert_json(arrayToInclude):
 
 def json_check(news):
     for index in range(len(news)):
-        if len(news[index].keys()) < len(defaultHeaders) + 1:
+        if len(news[index].keys()) < len(default_headers) + 1:
             print("Erro na notícia " + str(index + 1), file=sys.stderr)
             exit()
     insert_json(news)

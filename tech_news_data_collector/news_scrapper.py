@@ -21,12 +21,11 @@ def fetch_content(url):
     return response.text
 
 
-def request_links(searchPages):
-    searchPages = searchPages
+def request_links(search_pages):
     links = []
     URL = "https://www.tecmundo.com.br/novidades"
     aux = 0
-    while aux < searchPages:
+    while aux < search_pages:
         content = fetch_content(URL)
         selector = Selector(text=content)
         links = (
@@ -55,10 +54,10 @@ def request_details(url):
         return response.text
 
 
-def mongo_save(arrayInfos):
+def mongo_save(array_infos):
     with MongoClient("mongodb://localhost:27017/") as client:
         db = client["tech_news"]
-        for value in arrayInfos:
+        for value in array_infos:
             db["news"].bulk_write(
                 [UpdateOne(
                     {"url": value["url"]},
@@ -148,23 +147,23 @@ def create_object(link, selector):
             })
 
 
-def create_infos(urlsDetails):
-    arrayInfos = []
-    for link in urlsDetails:
+def create_infos(urls_details):
+    array_infos = []
+    for link in urls_details:
         content = request_details(link)
         if content and False:
             continue
         selector = Selector(text=content)
-        arrayInfos.append(create_object(link, selector))
-    return arrayInfos
+        array_infos.append(create_object(link, selector))
+    return array_infos
 
 
-def scrape(searchPages=1):
+def scrape(search_pages=1):
     try:
-        urlsDetails = request_links(searchPages)
-        arrayInfos = create_infos(urlsDetails)
-        mongo_save(arrayInfos)
+        urls_details = request_links(search_pages)
+        array_infos = create_infos(urls_details)
+        mongo_save(array_infos)
     except ValueError:
         print('erro desconhecido')
     else:
-        print("Raspagem de notícias finalizada",file=sys.stderr)
+        print("Raspagem de notícias finalizada", file=sys.stderr)

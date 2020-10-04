@@ -2,14 +2,12 @@ from pymongo import MongoClient
 
 
 def print_content(findForText):
-    boolean = True
+    array_final = []
     for index, content in enumerate(findForText):
         if index == 5:
             break
-        boolean = False
-        print([f'- {content["title"]}: {content["url"]}'])
-    if boolean:
-        print([])
+        array_final.append(f'- {content["title"]}: {content["url"]}')
+    return array_final
 
 
 def mongo_query(pipeline):
@@ -30,18 +28,16 @@ def top_5_news():
             {"$project": {"url": 1, "title": 1, "_id": 0}},
         ]
     )
-    print_content(results)
+    return print_content(results)
 
 
 def print_content_categories(categories):
-    boolean = True
+    array_final = []
     for index, content in enumerate(categories):
         if index == 5:
             break
-        boolean = False
-        print([f'- {content["_id"]}'])
-    if boolean:
-        print([])
+        array_final.append(f'- {content["_id"]}')
+    return array_final
 
 
 def top_5_categories():
@@ -53,4 +49,4 @@ def top_5_categories():
             {"$limit": 5},
         ]
     )
-    print_content_categories(results)
+    return print_content_categories(results)
