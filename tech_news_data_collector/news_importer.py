@@ -25,6 +25,8 @@ def mongo_insert_if_not_found_csv(data_to_insert):
         collection = db["news_raspadas"]
         for index, data in enumerate(data_to_insert):
             item_exists = bool(collection.find_one({"url": data[0]}))
+            if item_exists:
+                print(f'Notícia {index+1} duplicada')
             if not item_exists:
                 collection.insert_one({
                     "url": data[0],
@@ -48,18 +50,18 @@ def mongo_insert_if_not_found_json(data_to_insert):
             if not item_exists:
                 collection.insert_one(data)
             else:
-                print(f'Notícia da linha {index +1} duplicada', file=sys.stderr)
+                print(f'Notícia {index +1} duplicada', file=sys.stderr)
 
 
 def csv_importer(csv_file):
     if not path.exists(csv_file):
         print(f"Arquivo {csv_file} não encontrado", file=sys.stderr)
         return
-    if not csv_file.endswith(".csv"):
-        print("Formato inválido", file=sys.stderr)
-        return
 
     with open(csv_file) as file:
+        if not csv_file.endswith(".csv"):
+            print("Formato inválido", file=sys.stderr)
+            return
         csv_info = csv.reader(file, delimiter=";")
         header, *all_data = csv_info
         if not header == def_headers:
