@@ -36,9 +36,8 @@ def top_5_categories():
                     "count": {"$sum": 1}
                 }
             },
-            {"$sort": {"count": -1}},
-            {"$limit": 5},
-            {"$sort": {"_id": 1}}
+            {"$sort": {"count": -1, "_id": 1}},
+            {"$limit": 5}
         ]))
 
         return [
