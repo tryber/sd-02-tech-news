@@ -9,3 +9,7 @@ __pycache__/
 
 # VSCode repo settings
 .vscode
+
+*.csv
+*.json
+tech_news_data_collector/tempCodeRunnerFile.py
