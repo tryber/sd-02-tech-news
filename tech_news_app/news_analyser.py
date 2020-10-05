@@ -60,7 +60,3 @@ def top_5_news():
 
 def top_5_categories():
     return [f"- {news['category']}" for news in find_top_5_categories()]
-
-
-# top_5_news()
-# top_5_categories()

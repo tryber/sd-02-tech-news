@@ -107,7 +107,3 @@ def json_importer(file_name):
             return
     insert_many_news(imported_news)
     print("Importação realizada com sucesso", file=sys.stdout)
-
-
-# csv_importer("news.csv")
-# json_importer("news.json")

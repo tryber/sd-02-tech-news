@@ -70,9 +70,3 @@ def search_by_category(category):
         f"- {news['title']}: {news['url']}"
         for news in find_by_category(category)
     ]
-
-
-# search_by_title("São")
-# search_by_date('2020-09-27')
-# search_by_source('Tv')
-# search_by_category('ps4')

@@ -46,7 +46,3 @@ def json_exporter(file_name):
         news = get_news()
         json.dump(news, file)
         print("Exportação realizada com sucesso", file=sys.stdout)
-
-
-# csv_exporter('news_correta.csv')
-# json_exporter('news.json')
