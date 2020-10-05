@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime
+import sys
 
 
 def connect_to_mongo(results):
@@ -33,7 +34,8 @@ def search_by_date(user_date):
         aggregate = {"timestamp": {"$regex": result}}
         results = connect_to_mongo(aggregate)
     except ValueError:
-        return "Data inválida"
+        print("Data invalida", file=sys.stderr) 
+        return ""
     else:
         return print_correct_name(results)
 
