@@ -56,6 +56,7 @@ def search_by_date(date_text):
         ]
     except ValueError:
         print("Data inválida", file=sys.stderr)
+        return ""
 
 
 def search_by_source(sources):

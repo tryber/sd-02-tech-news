@@ -65,6 +65,8 @@ def check_all_csv_news(data):
             return False
         if check_duplicate(idx, news[0]):
             return False
+        news[4] = int(news[4])
+        news[5] = int(news[5])
         news[7] = news[7].split(',')
         news[8] = news[8].split(',')
         dict_news = {

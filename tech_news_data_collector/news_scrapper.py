@@ -133,6 +133,3 @@ def scrape(n=1):
         response = fetch_content(URL_BASE, timeout=2)
         count += 1
     print('Raspagem de notícias finalizada.')
-
-
-# scrape(1)
