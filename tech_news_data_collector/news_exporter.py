@@ -61,7 +61,17 @@ def csv_exporter_open(file):
     writer.writerow(header)
 
     for row in news:
-        writer.writerow([val for val in row.values()])
+        writer.writerow([
+            row["url"],
+            row["title"],
+            row["timestamp"],
+            row["writer"],
+            row["shares_count"],
+            row["comments_count"],
+            row["summary"],
+            ",".join(row["sources"]),
+            ",".join(row["categories"]),
+        ])
 
 
 def csv_exporter(filename):

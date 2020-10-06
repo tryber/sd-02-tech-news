@@ -62,6 +62,12 @@ def is_valid_param(param, index):
         raise ValueError(f"Erro na notícia {index}")
 
 
+def sources_categories(item, i):
+    if (i == 7 or i == 8):
+        return item.split(",")
+    return item
+
+
 def csv_importer_open_with(filename):
     with open(filename) as file:
         status = csv.reader(file, delimiter=";", quotechar='"')
@@ -76,9 +82,12 @@ def csv_importer_open_with(filename):
             is_row_valid(row, index)
             is_url_duplicated(url, urls, index)
             urls.append(url)
-            row['sources'] = row['sources']
 
-        # insert_all(data, header)
+        insert_all(
+            [
+                [sources_categories(item, i) for i, item in enumerate(row)]
+                for row in data
+            ], header)
 
 
 def csv_importer(filename):
