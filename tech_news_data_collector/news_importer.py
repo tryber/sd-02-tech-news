@@ -76,8 +76,9 @@ def csv_importer_open_with(filename):
             is_row_valid(row, index)
             is_url_duplicated(url, urls, index)
             urls.append(url)
+            row['sources'] = row['sources']
 
-        insert_all(data, header)
+        # insert_all(data, header)
 
 
 def csv_importer(filename):

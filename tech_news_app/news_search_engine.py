@@ -1,6 +1,5 @@
 import re
 import sys
-from datetime import datetime
 from mongo_connection import tech_news_db
 
 
@@ -21,7 +20,8 @@ def is_valid_date(date):
     if not bool(re.match(r"\d{4}-\d{2}-\d{2}", date)):
         print("Data inválida", file=sys.stderr)
         raise ValueError
-    return datetime.fromisoformat(date)
+    [year, month, day] = date.split('-')
+    return f"{day}/{month}/{year}"
 
 
 def search_by_date(input_date):

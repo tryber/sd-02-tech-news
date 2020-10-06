@@ -5,7 +5,7 @@ from tech_news_app.news_search_engine import search_by_date
 from tech_news_app.news_analyser import top_5_categories
 
 
-# print(top_5_categories())
+print(search_by_date("2020-10-06"))
 # csv_importer('mock/arquivo.csv')
 # scrape(1)
-print(top_5_categories())
+# print(top_5_categories())

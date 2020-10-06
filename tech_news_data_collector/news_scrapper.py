@@ -13,7 +13,7 @@ def fetch_content(url, timeout=1):
     try:
         response = requests.get(url, timeout=timeout)
         response.raise_for_status()
-        time.sleep(2)
+        time.sleep(4)
     except (requests.HTTPError or requests.ReadTimeout) as exc:
         print(exc, file=sys.stderr)
         return
@@ -119,6 +119,7 @@ def scrape_main_page(url):
 
     for page_url in pages_url:
         obj = scrape_page_new(page_url)
+        print(obj)
         if find(page_url):
             insert(page_url, obj)
         else:
@@ -131,7 +132,7 @@ def scrape(N=1):
     for i in range(N):
         scrape_main_page(main_url)
         main_page = fetch_content(main_url)
-        print("main_page", main_page)
+        print(main_page)
         selector = parsel.Selector(main_page)
         main_url = selector.css("div.tec--list > a.tec--btn::attr(href)").get()
     print("Raspagem de notícias finalizada")
