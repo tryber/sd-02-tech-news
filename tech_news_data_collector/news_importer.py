@@ -58,10 +58,10 @@ def check_all_headers(news):
 
 def csv_importer(arg):
     try:
-        extension = os.path.splitext(arg)[1]
-        check_comparison(extension, ".csv", "Formato inválido")
 
         with open(arg) as file:
+            extension = os.path.splitext(arg)[1]
+            check_comparison(extension, ".csv", "Formato inválido")
             header, *csvLines = csv.reader(file, delimiter=";")
 
             check_comparison(header, correct_header, "Cabeçalho inválido")
@@ -86,13 +86,13 @@ def save_lines(news):
 
 def open_file(arg):
     with open(arg) as file:
+        extension = os.path.splitext(arg)[1]
+        check_comparison(extension, ".json", "Formato inválido")
         return json.load(file)
 
 
 def json_importer(arg):
     try:
-        extension = os.path.splitext(arg)[1]
-        check_comparison(extension, ".json", "Formato inválido")
 
         news = open_file(arg)
 
