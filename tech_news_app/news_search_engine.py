@@ -1,4 +1,5 @@
 import sys
+import re
 from pymongo import MongoClient
 from datetime import datetime
 
@@ -45,13 +46,47 @@ def search_by_date(date_user):
         return new_format
 
 
-def search_by_source():
-    raise NotImplementedError
+def search_by_source(source):
+    new_format = []
+    with MongoClient() as connection:
+        db = connection["tech_news"]
+        collection = db["scrapped_news"]
+        answer = collection.aggregate([
+            {
+                "$match": {
+                    "sources": {"$in": [re.compile(source, re.IGNORECASE)]}
+                }
+            },
+            {"$project": {"_id": 0, "title": "$title", "url": "$url"}}
+        ])
+        result = list(answer)
+        for item in result:
+            new_format.append(f"- {item['title']}: {item['url']}")
+    return new_format
 
 
-def search_by_category():
-    raise NotImplementedError
+def search_by_category(category):
+    new_format = []
+    with MongoClient() as connection:
+        db = connection["tech_news"]
+        collection = db["scrapped_news"]
+        answer = collection.aggregate([
+            {
+                "$match": {
+                    "categories": {
+                        "$in": [re.compile(category, re.IGNORECASE)]
+                    }
+                }
+            },
+            {"$project": {"_id": 0, "title": "$title", "url": "$url"}}
+        ])
+        result = list(answer)
+        for item in result:
+            new_format.append(f"- {item['title']}: {item['url']}")
+    return new_format
 
 
 # print(search_by_title("GOO"))
-print(search_by_date("2020-10-05"))
+# print(search_by_date("2020-10-05"))
+# print(search_by_source("gOog"))
+# print(search_by_category("GOOGLE"))
