@@ -130,4 +130,4 @@ def json_importer(file_name):
 
 
 # print(csv_importer("teste.csv"))
-# print(json_importer("teste.json"))
+print(json_importer("teste.json"))

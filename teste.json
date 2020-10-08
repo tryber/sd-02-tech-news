@@ -410,7 +410,7 @@
       "Google"
     ],
     "summary": "A Google liberou um patch de corre\u00e7\u00e3o que deve minimizar os impactos causados pela \u00faltima atualiza\u00e7\u00e3o do ChromeOS, na qual um servi\u00e7o ligado \u00e0 Play Store elevava o uso da CPU a 100%, gerando superaquecimento em Chromebooks, al\u00e9m de gasto excessivo de bateria.",
-    "timestamp": "2020-10-06T16:00:01",
+    "timestamp": "2020-10-07T16:00:01",
     "title": "Google corrige bug do ChromeOS que fazia CPU atingir 100% de uso",
     "writer": "Ramalho Lima"
   }
