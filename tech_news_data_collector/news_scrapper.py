@@ -49,7 +49,7 @@ def scrape(page_num=1):
     news_links = []
     scrapped_pages = []
 
-    get_news_links(page_num, news_links)
+    get_news_links(int(page_num), news_links)
 
     for index, link in enumerate(news_links):
         time.sleep(0.1)
@@ -89,6 +89,3 @@ def scrape(page_num=1):
         })
     add_scrapped_db(scrapped_pages)
     print("Raspagem de notícias finalizada")
-
-
-scrape()
