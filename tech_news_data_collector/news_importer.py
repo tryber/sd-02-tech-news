@@ -58,7 +58,7 @@ def add_json_mongo(data):
 
 def csv_importer(file_name):
     notices_add = []
-    exist = path.exists(f"./{file_name}")
+    exist = path.exists(file_name) or path.exists(f"./{file_name}")
     if not file_name.endswith(".csv"):
         print("Formato inválido", file=sys.stderr)
         return
@@ -101,7 +101,7 @@ def csv_importer(file_name):
 
 
 def json_importer(file_name):
-    exist = path.exists(f"./{file_name}")
+    exist = path.exists(file_name) or path.exists(f"./{file_name}")
     if not file_name.endswith(".json"):
         print("Formato inválido", file=sys.stderr)
         return
