@@ -1,5 +1,6 @@
 from parsel import Selector
 import requests
+from mongo_connection import news_to_database
 from time import sleep
 
 
@@ -38,30 +39,22 @@ def single_new_to_dict(
     news_info["summary"] = summary
     news_info["sources"] = sources
     news_info["categories"] = categories
-    # return news_info
-    print(news_info)
+    return news_info
 
 
 def fetch_single_new(url):
     single_new = fetch_content(url)
     selector = Selector(single_new)
     title = selector.css("h1#js-article-title::text").get()
-    # print(title.strip())
-    # print(title.strip()) # isso aqui pega o título
     timestamp = selector.css("time::attr(datetime)").get()
-    # print(timestamp)
     writer = selector.css(".tec--author__info__link::text").get() or ''
-    # print(writer.strip())
     shares_count = selector.css(
         ".tec--toolbar__item:first-child *::text").re_first(r"\d") or 0
-    # print(int(shares_count))
     comments_count = selector.css(
         ".tec--toolbar__item:nth-child(2)"
         " > button *::text").re_first(r"\d") or 0
-    # print(int(comments_count))
     summary = selector.css(
         ".tec--article__body p:first-child *::text").getall()
-    # print(''.join(summary))
 
     def strip_list(src):
         sources_list = []
@@ -69,13 +62,12 @@ def fetch_single_new(url):
             sources_list.append(source.strip())
         return sources_list
     sources = selector.css(".z--mb-16 .tec--badge::text").getall()
-    # print(strip_list(sources))
     categories = selector.css("#js-categories > a::text").getall()
-    # print(strip_list(categories))
-    single_new_to_dict(url, title, timestamp, writer.strip(),
-                       int(shares_count),
-                       int(comments_count), ''.join(summary),
-                       strip_list(sources), strip_list(categories))
+    dict_new = single_new_to_dict(url, title, timestamp, writer.strip(),
+                                  int(shares_count),
+                                  int(comments_count), ''.join(summary),
+                                  strip_list(sources), strip_list(categories))
+    return dict_new
 
 
 def scrape(n=1):
@@ -90,16 +82,16 @@ def scrape(n=1):
     while next_page_url and count <= n:
         response = fetch_content(next_page_url)
         selector = Selector(text=response)
+        print(f'Raspagem da página {count} em andamento')
         titles = selector.css("h3 > a::attr(href)").getall()
-        print(titles)
         for link in titles:
             url = link
-            # print(url)
-            fetch_single_new(url)
-
+            single_new = fetch_single_new(url, count)
+            all_news.append(single_new)
         sleep(2)
         next_page_url = selector.css(".tec--btn::attr(href)").get()
         count += 1
+    news_to_database(all_news)
     print("Raspagem de notícias finalizada")
 
 
