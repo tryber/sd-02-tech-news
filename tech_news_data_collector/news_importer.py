@@ -1,7 +1,8 @@
 import csv
+import json
 import sys
 
-from mongo_connection import news_to_database, find_duplicate
+from mongo_connection import news_to_database, find_duplicate, import_from_json
 
 
 def csv_importer(csv_file):
@@ -45,8 +46,33 @@ def csv_importer(csv_file):
         sys.exit(1)
 
 
-def json_importer():
-    raise NotImplementedError
+def json_importer(json_file):
+    try:
+        with open(json_file) as file:
+            if not json_file.endswith(".json"):
+                print("Formato inválido", file=sys.stderr)
+                sys.exit(1)
+            news = json.load(file)
+            for new in news:
+                headers = ["url", "title", "timestamp", "writer",
+                           "shares_count", "comments_count",
+                           "summary", "sources", "categories"]
+                for key in new.keys():
+                    if key not in headers:
+                        print(f"Erro na notícia {news.index(new) + 1}")
+                        sys.exit(1)
+            duplicated_new = find_duplicate(news)
+            if duplicated_new:
+                print(f"Notícia {duplicated_new} duplicada")
+                sys.exit(1)
+            import_from_json(news)
+            print("Importação realizada com sucesso")
+    except FileNotFoundError:
+        print(f"Arquivo {json_file} não encontrado", file=sys.stderr)
+        sys.exit(1)
+    except json.decoder.JSONDecodeError:
+        print("JSON inválido", file=sys.stderr)
+        return json_file.close()
 
 
-csv_importer("xablau.csv")
+json_importer("xablau.json")
