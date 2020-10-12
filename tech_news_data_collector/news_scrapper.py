@@ -4,11 +4,6 @@ from mongo_connection import news_to_database
 from time import sleep
 
 
-def req_answer():
-    with open('tech_news_data_collector/Novidades - TecMundo.html') as page:
-        return page.read()
-
-
 def fetch_content(url, timeout=2):
     try:
         response = requests.get(url, timeout=timeout)
