@@ -57,6 +57,10 @@ def json_importer(json_file):
                 headers = ["url", "title", "timestamp", "writer",
                            "shares_count", "comments_count",
                            "summary", "sources", "categories"]
+                for header in headers:
+                    if header not in new.keys():
+                        print(f"Erro na notícia {news.index(new) + 1}")
+                        sys.exit(1)
                 for key in new.keys():
                     if key not in headers:
                         print(f"Erro na notícia {news.index(new) + 1}")

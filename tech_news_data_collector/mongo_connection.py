@@ -20,6 +20,7 @@ def news_to_database(array_news):
             },
             upsert=True,
         )
+    client.close()
 
 
 def find_duplicate(array_news):
@@ -31,6 +32,7 @@ def find_duplicate(array_news):
         if duplicate:
             return line
         line += 1
+    client.close()
 
 
 def export_to_csv():
@@ -38,9 +40,19 @@ def export_to_csv():
     db = client.tech_news_test  # determina o banco de dados
     all_news = db.news_collection.find({}, {"_id": 0})
     return all_news
+    client.close()
 
 
 def import_from_json(array_news):
     client = MongoClient()
     db = client.tech_news_test  # determina o banco de dados
     db.news_collection.insert_many(array_news)
+    client.close()
+
+
+def export_to_json():
+    client = MongoClient()
+    db = client.tech_news_test  # determina o banco de dados
+    all_news = list(db.news_collection.find({}, {"_id": 0}))
+    return all_news
+    client.close()

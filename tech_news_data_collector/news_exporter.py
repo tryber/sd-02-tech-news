@@ -1,7 +1,8 @@
 import csv
+import json
 import sys
 
-from mongo_connection import export_to_csv
+from mongo_connection import export_to_csv, export_to_json
 
 
 def csv_exporter(filename):
@@ -36,8 +37,13 @@ def csv_exporter(filename):
         print("Exportação realizada com sucesso")
 
 
-def json_exporter():
-    raise NotImplementedError
+def json_exporter(filename):
+    if not filename.endswith(".json"):
+        return print("Formato inválido", file=sys.stderr)
+    with open(filename, "w") as file:
+        json_to_write = json.dumps(export_to_json(), ensure_ascii=False)
+        file.write(json_to_write)
+        print("Exportação realizada com sucesso")
 
 
-csv_exporter('xablau_exp.csv')
+json_exporter('xablau_exp.json')
