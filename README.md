@@ -82,7 +82,7 @@ Este repositório já contém um _template_ com a estrutura de diretórios e arq
 
 ## Dados
 
-### Importação e exportação de CSV
+### Importação e exportação de CSV (csv_importer)
 
 Os arquivos CSV devem seguir o modelo abaixo, utilizando ponto e vírgula (`;`) como separador:
 
