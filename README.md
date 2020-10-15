@@ -1,97 +1,50 @@
 # Bolivar, boas vindas ao repositório do projeto de Tech News!
 
-Você já usa o GitHub diariamente para desenvolver os exercícios, certo? Agora, para desenvolver os projetos, você deverá seguir as instruções a seguir. Fique atento a cada passo, e se tiver qualquer dúvida, nos envie por _Slack_! #vqv 🚀
+_Relaxa lindo você vai conseguir, não surta, é só uma nova linguagem, novos desafios auuuuuuuuuuuuuuuu how you like that that that_
 
-Aqui você vai encontrar os detalhes de como estruturar o desenvolvimento do seu projeto a partir desse repositório, utilizando uma branch específica e um _Pull Request_ para colocar seus códigos.
+## CLI:
 
----
+### Virtual Environment
 
-## Instruções para entregar seu projeto:
-
-### ANTES DE COMEÇAR A DESENVOLVER:
-
-1. Clone o repositório
-
--   `git clone git@github.com:tryber/sd-02-tech-news.git`.
--   Entre na pasta do repositório que você acabou de clonar:
-    -   `sd-02-tech-news`
-
-2. Crie o ambiente virtual para o projeto
+// Semi-isolated Python environment that allows packages to be installed for use by a particular application, rather than being installed system wide
 
 -   `python3 -m venv .venv && source .venv/bin/activate`
 
-3. Instale as dependências
+### Install
+
+// Requirements files; list of pip install arguments placed in a file
 
 -   `python3 -m pip install -r requirements.txt`
 
-4. Crie uma branch a partir da branch `master`
+### Test
 
--   Verifique que você está na branch `master`
-    -   Exemplo: `git branch`
--   Se não estiver, mude para a branch `master`
-    -   Exemplo: `git checkout master`
--   Agora crie uma branch à qual você vai submeter os `commits` do seu projeto
-    -   Você deve criar uma branch no seguinte formato: `nome-github-nome-do-projeto`
-    -   Exemplo: `git checkout -b exemplo-tech-news`
+```bash
+$ python3 -m pytest
+```
 
-5. Adicione as mudanças ao _stage_ do Git e faça um `commit`
+### Python Style
 
--   Verifique que as mudanças ainda não estão no _stage_
-    -   Exemplo: `git status` (deve aparecer listada a pasta _exemplo_ em vermelho)
--   Adicione o novo arquivo ao _stage_ do Git
-    -   Exemplo:
-        -   `git add .` (adicionando todas as mudanças - _que estavam em vermelho_ - ao stage do Git)
-        -   `git status` (deve aparecer listado o arquivo _exemplo/README.md_ em verde)
--   Faça o `commit` inicial
-    -   Exemplo:
-        -   `git commit -m 'iniciando o projeto tech-news'` (fazendo o primeiro commit)
-        -   `git status` (deve aparecer uma mensagem tipo _nothing to commit_ )
+```bash
+$ python3 -m flake8
+```
 
-6. Adicione a sua branch com o novo `commit` ao repositório remoto
+## Project
 
--   Usando o exemplo anterior: `git push -u origin exemplo-project-name`
+Main Goal: Create and Fill a tech news database, research(news_search_engine) and analyse(news_analyser) it;
 
-7. Crie um novo `Pull Request` _(PR)_
+Get the tech news (tech_news_data_collector):
 
--   Vá até a página de _Pull Requests_ do [repositório no GitHub](https://github.com/tryber/sd-02-tech-news/pulls)
--   Clique no botão verde _"New pull request"_
--   Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
--   Clique no botão verde _"Create pull request"_
--   Adicione uma descrição para o _Pull Request_ e clique no botão verde _"Create pull request"_
--   **Não se preocupe em preencher mais nada por enquanto!**
--   Volte até a [página de _Pull Requests_ do repositório](https://github.com/tryber/sd-02-tech-news/pulls) e confira que o seu _Pull Request_ está criado
+-   Import `CSV` file
+-   Import `JSON` file
+-   Scrape [últimas notícias do TecMundo](https://www.tecmundo.com.br/novidades)
 
----
+Export tech news (tech_news_data_collector);
 
-## Entregáveis
+Test application (tests);
 
-Para entregar o seu projeto você deverá criar um _Pull Request_ neste repositório. Este _Pull Request_ deverá conter os arquivos `news_importer.py`, `news_exporter.py`, `news_scrapper.py`, `news_search_engine.py`, `news_analyser.py`, `test_news_importer.py`, `test_news_exporter.py`, `test_news_scrapper.py`, `test_news_search_engine.py`, `test_news_analyser.py`, que conterão seu código `Python` e seus testes, respectivamente.
+_Legal, não é?_
 
-### ⚠️ É importante que seus arquivos tenham exatamente estes nomes! ⚠️
-
-Você pode adicionar outros arquivos se julgar necessário. Qualquer dúvida, procure a monitoria.
-
-Lembre-se que você pode consultar nosso conteúdo sobre [Git & GitHub](https://course.betrybe.com/intro/git/) sempre que precisar!
-
----
-
-## O que deverá ser desenvolvido
-
-Para fixar o conteúdo sobre Python visto até agora, você fará um projeto que tem como principal objetivo criar um banco de dados de notícias sobre tecnologia e realizar algumas consultas nas notícias registradas.
-
-Essas notícias podem ser obtidas de diferentes formas. Sendo elas:
-
--   Através da importação de um arquivo `CSV`;
-
--   Através da importação de um arquivo `JSON`;
-
--   E através da raspagem das [últimas notícias do TecMundo](https://www.tecmundo.com.br/novidades).
-
-Além de importar ou raspar as notícias, também deve ser possível exportá-las e realizar buscas ou análises nas notícias coletadas. **Ou seja: desenvolva um sistema capaz de importar _e_ exportar notícias via JSON e CSV; e que faça raspagem e preenchimento de um banco de dados com notícias.**
-
-Legal, não é?
-
----
+_yaaas girl_
 
 ## Desenvolvimento e testes
 
@@ -116,34 +69,6 @@ Este repositório já contém um _template_ com a estrutura de diretórios e arq
 │   ├── test_news_scrapper.py
 │   └── test_news_search_engine.py
 ```
-
-Apesar do projeto já possuir uma estrutura base, você quem deve implementar tanto as funções quanto os testes (extra). Novos arquivos podem ser criados conforme a necessidade.
-
-Para executar os testes, lembre-se de primeiro **criar e ativar o ambiente virtual**, além de também instalar as dependências do projeto. Isso pode ser feito através dos comandos:
-
-```bash
-$ python3 -m venv .venv
-
-$ source .venv/bin/activate
-
-$ python3 -m pip install -r requirements.txt
-```
-
-O arquivo `requirements.txt` contém todos as dependências que serão utilizadas no projeto, ele está agindo como se fosse um `package.json` de um projeto `Node.js`. Com as dependências já instaladas, para executar os testes basta usar o comando:
-
-```bash
-$ python3 -m pytest
-```
-
-Se quiser saber mais sobre a instalação de dependências com `pip`, veja esse artigo: https://medium.com/python-pandemonium/better-python-dependency-and-package-management-b5d8ea29dff1
-
-Para verificar se você está seguindo o guia de estilo do Python corretamente, execute o comando:
-
-```bash
-$ python3 -m flake8
-```
-
----
 
 ## Dados
 
