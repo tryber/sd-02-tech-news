@@ -28,6 +28,16 @@ $ python3 -m pytest
 $ python3 -m flake8
 ```
 
+### Caching GitHub credentials
+
+```bash
+git config --global credential.helper cache
+
+git config --global credential.helper 'cache --timeout=36000'
+```
+
+###
+
 ## Project
 
 Main Goal: Create and Fill a tech news database, research(news_search_engine) and analyse(news_analyser) it;
