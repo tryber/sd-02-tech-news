@@ -80,6 +80,8 @@ Este repositório já contém um _template_ com a estrutura de diretórios e arq
 │   └── test_news_search_engine.py
 ```
 
+O with serve para is
+
 ## Dados
 
 ### Importação e exportação de CSV (csv_importer)

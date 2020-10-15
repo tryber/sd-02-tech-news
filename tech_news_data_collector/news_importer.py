@@ -1,26 +1,26 @@
 import csv
 
 
-def csv_reader(csv_string):
+def csv_importer(csv_string):
     '''
     encapsulamento da utilização de um recurso
     gerenciamento de contexto
     ações tomadas independente do status da resposta
     '''
-
     with open(csv_string) as csv_file:
         '''
-        Create an object
-        that operates like a regular reader
-        but maps the information in each row
-        to a dict
-        whose keys are given by the optional fieldnames parameter
+        return a reader object
+        which will iterate over lines
+        in the given csvfile
         '''
+        csv_reader = csv.reader(csv_file, delimiter=";")
 
-        csv_reader = csv.DictReader(csv_file, delimiter=";")
+        data = []
 
+        for csv_row in csv_reader:
+            data.append(csv_row)
 
-def csv_importer():
+        return data
 
     raise NotImplementedError
 
