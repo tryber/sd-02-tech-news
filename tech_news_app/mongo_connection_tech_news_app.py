@@ -23,12 +23,14 @@ def mongo_search_by_date(date):
     return searched_news
 
 
-# def export_to_csv():
-#     client = MongoClient()
-#     db = client.tech_news_test  # determina o banco de dados
-#     all_news = db.news_collection.find({}, {"_id": 0})
-#     return all_news
-#     client.close()
+def mongo_search_by_source(source):
+    client = MongoClient()
+    db = client.tech_news_test  # determina o banco de dados
+    searched_news = list(db.news_collection.find(
+        {"sources": re.compile(source, re.IGNORECASE)},
+        {"title": 1, "url": 1, "_id": 0}
+    ))
+    return searched_news
 
 
 # def import_from_json(array_news):

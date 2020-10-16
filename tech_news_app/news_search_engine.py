@@ -1,6 +1,7 @@
 from mongo_connection_tech_news_app import (
     mongo_search_by_title,
-    mongo_search_by_date
+    mongo_search_by_date,
+    mongo_search_by_source
 )
 from datetime import datetime
 import sys
@@ -31,15 +32,18 @@ def search_by_date(date):
         sys.exit(1)
     news = mongo_search_by_date(valid_date)
     return news
-   
 
 
-def search_by_source():
-    raise NotImplementedError
+def search_by_source(source):
+    searched_news = mongo_search_by_source(source)
+    return [
+        f"- {new['title']}: {new['url']}"
+        for new in searched_news
+    ]
 
 
 def search_by_category():
     raise NotImplementedError
 
 
-search_by_date("2020-07-20")
+search_by_source("The Next Web")
