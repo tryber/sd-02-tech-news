@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from datetime import datetime
 import re
 
 
@@ -12,16 +13,14 @@ def mongo_search_by_title(text):
     client.close()
 
 
-# def find_duplicate(array_news):
-#     client = MongoClient()
-#     db = client.tech_news_test  # determina o banco de dados
-#     line = 1
-#     for new in array_news:
-#         duplicate = db.news_collection.find_one({"url": new["url"]})
-#         if duplicate:
-#             return line
-#         line += 1
-#     client.close()
+def mongo_search_by_date(date):
+    client = MongoClient()
+    db = client.tech_news_test
+    searched_news = list(db.news_collection.find(
+        {"timestamp": re.compile(f"{date}")},
+        {"title": 1, "url": 1, "_id": 0}
+    ))
+    return searched_news
 
 
 # def export_to_csv():
