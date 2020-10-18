@@ -1,20 +1,16 @@
 import csv
 
-
-def file_not_found(path):
-    return "Arquivo {} não encontrado".format(path)
-
-
-# def check_extension(string):
-#     extension = string.split(".").pop()
-
-#     wrong_format = "Formato inválido"
-#     if extension != "csv":
-#         raise ValueError(wrong_format)
+from collector.news_importer_service import (
+    check_extension,
+    check_field,
+    check_headers,
+    check_url,
+    file_not_found
+)
 
 
 def csv_importer(csv_string):
-    # check_extension(csv_string)
+    check_extension(csv_string)
 
     try:
         '''
@@ -28,11 +24,28 @@ def csv_importer(csv_string):
             which will iterate over lines
             in the given csvfile
             '''
-            csv_reader = csv.reader(csv_file, delimiter=";")
+            csv_reader = csv.DictReader(csv_file, delimiter=";")
+
+            check_headers(csv_reader.fieldnames)
 
             data = []
 
+            line = 0
+
+            urls = []
+
             for csv_row in csv_reader:
+                for field in csv_row:
+                    check_field(csv_row[field], line)
+
+                url = csv_row["url"]
+
+                check_url(urls, url, line)
+
+                urls.append(url)
+
+                line += 1
+
                 data.append(csv_row)
 
     except(FileNotFoundError):
