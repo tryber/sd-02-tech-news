@@ -1,11 +1,12 @@
 import pytest
 
+from unittest.mock import patch
+
 from collector.news_importer import csv_importer
 
 from tests.test_news_importer_fakers import (
     correct_file,
     duplicate_file,
-    expected_return,
     incomplete_file,
     some_not_exist_file,
     wrong_fomart_file,
@@ -42,8 +43,13 @@ def test_csv_importer_urls_duplicadas():
 #     assert False
 
 
-def test_csv_importer_sucesso():
-    assert csv_importer(correct_file) == expected_return
+# @patch("database.store.store_list")
+def test_csv_importer_sucesso(capsys):
+    csv_importer(correct_file)
+
+    out, err = capsys.readouterr()
+
+    assert out == "Exportação realizada com sucesso\n"
 
 
 # def test_json_importer_arquivo_nao_existe():

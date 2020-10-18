@@ -5,8 +5,10 @@ from collector.news_importer_service import (
     check_field,
     check_headers,
     check_url,
-    file_not_found
+    file_not_found,
 )
+
+from database.store import store_list
 
 
 def csv_importer(csv_string):
@@ -51,7 +53,9 @@ def csv_importer(csv_string):
     except(FileNotFoundError):
         raise ValueError(file_not_found(csv_string))
 
-    return data
+    store_list(data)
+
+    print("Exportação realizada com sucesso")
 
 
 def json_importer():
