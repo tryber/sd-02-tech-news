@@ -19,7 +19,7 @@ _Relaxa lindo você vai conseguir, não surta, é só uma nova linguagem, novos 
 ### Test
 
 ```bash
-$ python3 -m pytest
+$ nodemon --exec  python3 -m pytest --cov
 ```
 
 ### Python Style
@@ -35,8 +35,6 @@ git config --global credential.helper cache
 
 git config --global credential.helper 'cache --timeout=36000'
 ```
-
-###
 
 ## Project
 
@@ -167,6 +165,8 @@ _Dica:_ Utilize a função `drop` do mongo no final do teste.
 Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é um caso onde a tag _p_ é um ancestral e as tags _a_ e _em_ são as descendentes. Para obter todo o texto do exemplo, utiliza-se `*::text` no seletor.
 
 ##### As seguintes verificações serão feitas:
+
+<!--  -->
 
 -   Por padrão deve-se raspar apenas as notícias da primeira página;
 
@@ -428,40 +428,3 @@ Selecione uma das opções a seguir:
 #### 17 - A cobertura de testes unitários do pacote deve ser de no mínimo 90%.
 
 ---
-
-### DURANTE O DESENVOLVIMENTO
-
--   Faça `commits` das alterações que você fizer no código regularmente
-
--   Lembre-se de sempre após um (ou alguns) `commits` atualizar o repositório remoto
-
--   Os comandos que você utilizará com mais frequência são:
-    1. `git status` _(para verificar o que está em vermelho - fora do stage - e o que está em verde - no stage)_
-    2. `git add` _(para adicionar arquivos ao stage do Git)_
-    3. `git commit` _(para criar um commit com os arquivos que estão no stage do Git)_
-    4. `git push -u nome-da-branch` _(para enviar o commit para o repositório remoto na primeira vez que fizer o `push` de uma nova branch)_
-    5. `git push` _(para enviar o commit para o repositório remoto após o passo anterior)_
-
----
-
-### DEPOIS DE TERMINAR O DESENVOLVIMENTO (OPCIONAL)
-
-Para sinalizar que o seu projeto está pronto para o _"Code Review"_ dos seus colegas, faça o seguinte:
-
--   Vá até a página **DO SEU** _Pull Request_, adicione a label de _"code-review"_ e marque seus colegas:
-
-    -   No menu à direita, clique no _link_ **"Labels"** e escolha a _label_ **code-review**;
-
-    -   No menu à direita, clique no _link_ **"Assignees"** e escolha **o seu usuário**;
-
-    -   No menu à direita, clique no _link_ **"Reviewers"** e digite `students`, selecione o time `tryber/students-sd-02`.
-
-Caso tenha alguma dúvida, [aqui tem um video explicativo](https://vimeo.com/362189205).
-
----
-
-### REVISANDO UM PULL REQUEST
-
-Use o conteúdo sobre [Code Review](https://course.betrybe.com/real-life-engineer/code-review/) para te ajudar a revisar os _Pull Requests_.
-
-#VQV 🚀
