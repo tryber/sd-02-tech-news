@@ -4,7 +4,7 @@ import re
 
 def db_search_by_title(text):
     client = MongoClient()
-    db = client.tech_news_test
+    db = client.tech_news
     return db.news_collection.find(
         {"title": re.compile(f".*{text}.*", re.IGNORECASE)},
         {"_id": 0, "url": 1, "title": 1},
@@ -13,7 +13,7 @@ def db_search_by_title(text):
 
 def db_search_by_date(date):
     client = MongoClient()
-    db = client.tech_news_test
+    db = client.tech_news
     searched_news = list(db.news_collection.find(
         {"timestamp": re.compile(f"{date}")},
         {"title": 1, "url": 1, "_id": 0}
@@ -23,7 +23,7 @@ def db_search_by_date(date):
 
 def db_search_by_source(source):
     client = MongoClient()
-    db = client.tech_news_test  # determina o banco de dados
+    db = client.tech_news  # determina o banco de dados
     searched_news = list(db.news_collection.find(
         {"sources": re.compile(source, re.IGNORECASE)},
         {"title": 1, "url": 1, "_id": 0}
@@ -33,7 +33,7 @@ def db_search_by_source(source):
 
 def db_search_by_category(category):
     client = MongoClient()
-    db = client.tech_news_test  # determina o banco de dados
+    db = client.tech_news  # determina o banco de dados
     searched_news = list(db.news_collection.find(
         {"categories": re.compile(category, re.IGNORECASE)},
         {"title": 1, "url": 1, "_id": 0}
@@ -43,7 +43,7 @@ def db_search_by_category(category):
 
 def db_top_5_news():
     client = MongoClient()
-    db = client.tech_news_test  # determina o banco de dados
+    db = client.tech_news  # determina o banco de dados
     top_5_news = list(db.news_collection.aggregate([
             {
                 "$addFields": {
@@ -61,7 +61,7 @@ def db_top_5_news():
 
 def db_top_5_categories():
     client = MongoClient()
-    db = client.tech_news_test  # determina o banco de dados
+    db = client.tech_news  # determina o banco de dados
     top_5_categories = list(db.news.aggregate([
             {"$unwind": "$categories"},
             {

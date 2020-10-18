@@ -2,8 +2,6 @@ from mongo_connection_tech_news_app import (
     db_top_5_news,
     db_top_5_categories
 )
-from datetime import datetime
-import sys
 
 
 def top_5_news():
@@ -20,6 +18,3 @@ def top_5_categories():
         f"- {news['title']}: {news['url']}"
         for news in categories_list
     ]
-
-
-top_5_categories()

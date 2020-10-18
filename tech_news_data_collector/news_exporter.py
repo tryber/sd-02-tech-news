@@ -45,5 +45,3 @@ def json_exporter(filename):
         file.write(json_to_write)
         print("Exportação realizada com sucesso")
 
-
-json_exporter('xablau_exp.json')

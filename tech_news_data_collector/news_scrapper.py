@@ -81,7 +81,7 @@ def scrape(n=1):
         titles = selector.css("h3 > a::attr(href)").getall()
         for link in titles:
             url = link
-            single_new = fetch_single_new(url, count)
+            single_new = fetch_single_new(url)
             all_news.append(single_new)
         sleep(2)
         next_page_url = selector.css(".tec--btn::attr(href)").get()
@@ -89,5 +89,3 @@ def scrape(n=1):
     news_to_database(all_news)
     print("Raspagem de notícias finalizada")
 
-
-scrape()

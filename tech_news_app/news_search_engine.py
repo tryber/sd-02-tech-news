@@ -49,6 +49,3 @@ def search_by_category(category):
         f"- {new['title']}: {new['url']}"
         for new in searched_news
     ])
-
-
-search_by_category("Carro")

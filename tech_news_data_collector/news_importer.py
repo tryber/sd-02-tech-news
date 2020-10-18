@@ -78,5 +78,3 @@ def json_importer(json_file):
         print("JSON inválido", file=sys.stderr)
         return json_file.close()
 
-
-json_importer("xablau.json")
