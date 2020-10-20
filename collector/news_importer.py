@@ -8,7 +8,7 @@ from collector.news_importer_service import (
     file_not_found,
 )
 
-from database.store import store_list
+from database.store import store_news
 
 
 def csv_importer(csv_string):
@@ -33,7 +33,7 @@ def csv_importer(csv_string):
     except(FileNotFoundError):
         raise ValueError(file_not_found(csv_string))
 
-    store_list(data)
+    store_news(data)
 
     print("Exportação realizada com sucesso")
 

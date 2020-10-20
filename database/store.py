@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 
 
-def store_list(data):
+def store_news(data):
     with MongoClient() as client:
         db = client.tech_news
 

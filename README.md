@@ -19,7 +19,7 @@ _Relaxa lindo você vai conseguir, não surta, é só uma nova linguagem, novos 
 ### Test
 
 ```bash
-$ nodemon --exec  python3 -m pytest --cov
+$ ptw
 ```
 
 ### Python Style
