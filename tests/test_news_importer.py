@@ -43,7 +43,7 @@ def test_csv_importer_urls_duplicadas():
 #     assert False
 
 
-# @patch("database.store.store_list")
+@patch("database.store.store_list")
 def test_csv_importer_sucesso(capsys):
     csv_importer(correct_file)
 
