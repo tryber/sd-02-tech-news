@@ -1,30 +1,3 @@
-
-
-### Importação e exportação de JSON
-
-Os arquivos JSON devem seguir o seguinte modelo:
-
-```json
-[
-    {
-        "url": "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155348-alemanha-trabalha-regulamentacao-carros-autonomos.htm",
-        "title": "Alemanha já trabalha na regulamentação de carros autônomos",
-        "timestamp": "2020-07-20T15:30:00",
-        "writer": "Reinaldo Zaruvni",
-        "shares_count": 0,
-        "comments_count": 0,
-        "summary": "Recentemente, a Alemanha fez a Tesla “pisar no freio” quanto ao uso de termos comerciais relacionados a carros autônomos, mas quem pensa que esse é um sinal de resistência à introdução de novas tecnologias se engana. Isso porque, de acordo o Automotive News Europe, o país está se preparando para se tornar o primeiro do mundo a criar uma ampla estrutura para regulamentar tais veículos de nível 4.",
-        "sources": ["The Next Web", "The Next Web", "Automotive News Europe"],
-        "categories": [
-            "Mobilidade Urbana/Smart Cities",
-            "Veículos autônomos",
-            "Carro",
-            "Política"
-        ]
-    }
-]
-```
-
 ### Raspagem de notícias
 
 As notícias a serem raspadas estarão disponíveis na aba de últimas notícias do TecMundo: https://www.tecmundo.com.br/novidades.
@@ -89,24 +62,6 @@ Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é u
 
 -   Ao finalizar o scrapping, deve-se exibir a mensagem "Raspagem de notícias finalizada".
 
-#### 2 - Deve haver uma função `csv_importer` dentro do módulo `news_importer` capaz de importar notícias a partir de um arquivo CSV, utilizando ";" como separador. Todas as mensagens de erro devem ir para a `stderr`.
-
-##### As seguintes verificações serão feitas:
-
--   Caso o arquivo CSV não exista, deve ser exibida a mensagem "Arquivo {path/to/file.csv} não encontrado";
-
--   Caso a extensão do arquivo seja diferente de `.csv`, deve ser exibida uma mensagem "Formato inválido";
-
--   O arquivo CSV deve possuir um cabeçalho contendo `url`, `title`, `timestamp`, `writer`, `shares_count`, `comments_count`, `summary`, `sources` e `categories`. Caso contrário, deve ser exibida uma mensagem "Cabeçalho inválido";
-
--   Todos as informações devem ser obrigatórias. Caso haja alguma informação faltando, deve ser exibida uma mensagem "Erro na notícia {numero-da-linha}";
-
--   Como não sabemos se a notícia importada está na versão mais atual, não deve ser possível adicionar notícias com URLs duplicadas. Em caso de erro, exiba a mensagem "Notícia {numero-da-linha} duplicada";
-
--   Em caso de erros, a importação deve ser interrompida e nenhuma notícia deve ser salva;
-
--   Em caso de sucesso, todas as notícias devem ser salvas no banco de dados e a mensagem "Importação realizada com sucesso" deve ser exibida na `stdout`.
-
 #### 3 - Deve haver uma função `csv_exporter` dentro do módulo `news_exporter` capaz de exportar todas as notícias do banco de dados para um arquivo CSV, utilizando ";" como separador.
 
 ##### As seguintes verificações serão feitas:
@@ -120,26 +75,6 @@ Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é u
 -   O arquivo CSV deve possuir um cabeçalho contendo `url`, `title`, `timestamp`, `writer`, `shares_count`, `comments_count`, `summary`, `sources` e `categories`;
 
 -   Todas as notícias salvas no banco de dados devem ser exportadas. Em caso de sucesso na exportação, a mensagem "Exportação realizada com sucesso" deve ser exibida na `stdout`.
-
-#### 4 - Deve haver uma função `json_importer` dentro do módulo `news_importer` capaz de importar notícias a partir de um arquivo JSON. Todas as mensagens de erro devem ir para a `stderr`.
-
-> Observação: considere o número da notícia como índice da lista + 1.
-
-##### As seguintes verificações serão feitas:
-
--   Caso o arquivo não exista, deve ser exibida a mensagem "Arquivo {path/to/file.json} não encontrado";
-
--   Caso a extensão do arquivo seja diferente de `.json`, deve ser exibida a mensagem "Formato inválido";
-
--   Caso o JSON seja inválido por qualquer erro no arquivo, deve ser exibida a mensagem "JSON inválido";
-
--   Todas as informações devem ser obrigatórias. Caso haja alguma informação faltando, deve ser exibida a mensagem "Erro na notícia {numero-da-notícia}";
-
--   Não deve ser possível adicionar notícias com URLs duplicadas, exibindo a mensagem "Notícia {numero-da-notícia} duplicada" em caso de erro;
-
--   Em caso de erros, a importação deve ser interrompida e nenhuma notícia deve ser salva;
-
--   Em caso de sucesso, todas as notícias devem ser salvas no banco de dados e a mensagem "Importação realizada com sucesso" deve ser exibida na `stdout`.
 
 #### 5 - Deve haver uma função `json_exporter` dentro do módulo `news_exporter` capaz de exportar todas as notícias do banco de dados para um arquivo JSON.
 

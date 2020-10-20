@@ -1,9 +1,12 @@
+available_extensions = ("csv", "json")
+
+
 def check_extension(string):
     extension = string.split(".").pop()
 
     wrong_format = "Formato inválido"
 
-    if extension != "csv":
+    if extension not in available_extensions:
         raise ValueError(wrong_format)
 
 
@@ -12,7 +15,7 @@ def check_field(field, line):
         raise ValueError("Erro na notícia {}".format(line))
 
 
-def check_headers(file_headers):
+def check_headers(file_headers, err_message):
     headers = [
         "url",
         "title",
@@ -26,7 +29,7 @@ def check_headers(file_headers):
     ]
 
     if file_headers != headers:
-        raise ValueError("Cabeçalho inválido")
+        raise ValueError(err_message)
 
 
 def check_url(urls, url, line):
