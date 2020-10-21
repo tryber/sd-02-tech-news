@@ -1,6 +1,20 @@
+from mongo_connection_tech_news_app import (
+    db_top_5_news,
+    db_top_5_categories
+)
+
+
 def top_5_news():
-    raise NotImplementedError
+    news_list = db_top_5_news()
+    return [
+        f"- {news['title']}: {news['url']}"
+        for news in news_list
+    ]
 
 
 def top_5_categories():
-    raise NotImplementedError
+    categories_list = db_top_5_categories()
+    return [
+        f"- {news['title']}: {news['url']}"
+        for news in categories_list
+    ]
