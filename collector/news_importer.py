@@ -1,4 +1,4 @@
-from collector.news_importer_service import (
+from collector.news_service import (
     check_extension,
     check_field,
     check_headers,
@@ -6,7 +6,9 @@ from collector.news_importer_service import (
     file_not_found,
 )
 
-from database.store import store_news
+from database.index import create_news
+
+# from tests.test_news_importer_fakers import correct_csv
 
 import csv
 
@@ -33,9 +35,12 @@ def csv_importer(csv_path):
     except(FileNotFoundError):
         raise ValueError(file_not_found(csv_path))
 
-    store_news(data)
+    create_news(data)
 
-    print("Exportação realizada com sucesso")
+    print("Importação realizada com sucesso")
+
+
+# csv_importer(correct_csv)
 
 
 def json_importer(json_path):
@@ -58,6 +63,6 @@ def json_importer(json_path):
     except(json.decoder.JSONDecodeError):
         raise ValueError("JSON inválido")
 
-    store_news(data)
+    create_news(data)
 
-    print("Exportação realizada com sucesso")
+    print("Importação realizada com sucesso")

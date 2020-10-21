@@ -6,7 +6,7 @@ from contextlib import suppress
 
 from collector.news_importer import (csv_importer, json_importer)
 
-from tests.test_news_importer_fakers import (
+from tests.test_news_fakers import (
     data_mock,
     correct_csv,
     correct_json,
@@ -23,7 +23,7 @@ from tests.test_news_importer_fakers import (
 
 
 def test_csv_importer_arquivo_nao_existe():
-    with pytest.raises(ValueError, match="Arquivo wrong_file.csv não encontrado"):
+    with pytest.raises(ValueError, match="Arquivo not_exist.csv não encontrado"):
         csv_importer(not_exists_csv) is None
 
 
@@ -48,27 +48,27 @@ def test_csv_importer_urls_duplicadas():
 
 
 def test_csv_importer_importacao_interrompida_em_caso_de_erro():
-    with patch("collector.news_importer.store_news") as store_news_mock:
+    with patch("collector.news_importer.create_news") as create_news_mock:
         with suppress(ValueError):
             csv_importer(duplicate_csv)
-            store_news_mock.assert_not_called()
+            create_news_mock.assert_not_called()
 
 
 def test_csv_importer_print_on_success(capsys):
-    with patch("collector.news_importer.store_news"):
+    with patch("collector.news_importer.create_news"):
         csv_importer(correct_csv)
         out, err = capsys.readouterr()
-        assert out == "Exportação realizada com sucesso\n"
+        assert out == "Importação realizada com sucesso\n"
 
 
-@patch("collector.news_importer.store_news")
-def test_csv_importer_save_data_on_sucess(store_news_mock):
+@patch("collector.news_importer.create_news")
+def test_csv_importer_save_data_on_sucess(create_news_mock):
     csv_importer(correct_csv)
-    store_news_mock.assert_called_with(data_mock)
+    create_news_mock.assert_called_with(data_mock)
 
 
 def test_json_importer_arquivo_nao_existe():
-    with pytest.raises(ValueError, match="Arquivo wrong_file.json não encontrado"):
+    with pytest.raises(ValueError, match="Arquivo not_exist.json não encontrado"):
         json_importer(not_exists_json)
 
 
@@ -93,20 +93,20 @@ def test_json_importer_urls_duplicadas():
 
 
 def test_json_importer_importacao_interrompida_em_caso_de_erro():
-    with patch("collector.news_importer.store_news") as store_news_mock:
+    with patch("collector.news_importer.create_news") as create_news_mock:
         with suppress(ValueError):
             json_importer(duplicate_json)
-            store_news_mock.assert_not_called()
+            create_news_mock.assert_not_called()
 
 
 def test_json_importer_print_on_success(capsys):
-    with patch("collector.news_importer.store_news"):
+    with patch("collector.news_importer.create_news"):
         json_importer(correct_json)
         out, err = capsys.readouterr()
-        assert out == "Exportação realizada com sucesso\n"
+        assert out == "Importação realizada com sucesso\n"
 
 
-@patch("collector.news_importer.store_news")
-def test_json_importer_save_data_on_sucess(store_news_mock, capsys):
+@patch("collector.news_importer.create_news")
+def test_json_importer_save_data_on_sucess(create_news_mock, capsys):
     json_importer(correct_json)
-    store_news_mock.assert_called_with(data_mock)
+    create_news_mock.assert_called_with(data_mock)

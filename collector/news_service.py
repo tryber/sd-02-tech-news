@@ -1,5 +1,19 @@
 available_extensions = ("csv", "json")
 
+exported_directory = "/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
+
+headers = [
+    "url",
+    "title",
+    "timestamp",
+    "writer",
+    "shares_count",
+    "comments_count",
+    "summary",
+    "sources",
+    "categories"
+]
+
 
 def check_extension(string):
     extension = string.split(".").pop()
@@ -16,18 +30,6 @@ def check_field(field, line):
 
 
 def check_headers(file_headers, err_message):
-    headers = [
-        "url",
-        "title",
-        "timestamp",
-        "writer",
-        "shares_count",
-        "comments_count",
-        "summary",
-        "sources",
-        "categories"
-    ]
-
     if file_headers != headers:
         raise ValueError(err_message)
 
@@ -38,4 +40,11 @@ def check_url(urls, url, line):
 
 
 def file_not_found(path):
-    return "Arquivo {} não encontrado".format(path)
+    file = path.split("/").pop()
+
+    return "Arquivo {} não encontrado".format(file)
+
+
+def remove_id(row):
+    row.pop("_id")
+    return row

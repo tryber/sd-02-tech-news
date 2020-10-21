@@ -66,13 +66,6 @@ Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é u
 
 ##### As seguintes verificações serão feitas:
 
--   O arquivo exportado deve possuir o formato CSV. Caso contrário, deve ser exibida uma mensagem de erro "Formato inválido" na `stderr`;
-
--   O arquivo deve ser criado na raiz do projeto;
-
--   Caso já exista um arquivo com o mesmo nome, ele deve ser substituído;
-
--   O arquivo CSV deve possuir um cabeçalho contendo `url`, `title`, `timestamp`, `writer`, `shares_count`, `comments_count`, `summary`, `sources` e `categories`;
 
 -   Todas as notícias salvas no banco de dados devem ser exportadas. Em caso de sucesso na exportação, a mensagem "Exportação realizada com sucesso" deve ser exibida na `stdout`.
 
