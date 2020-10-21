@@ -5,9 +5,8 @@ import sys
 
 
 def option_1():
-    print("hi!")
-    # file = input("Digite o path do arquivo CSV a ser importado: ")
-    # csv_importer(file)
+    file = input("Digite o path do arquivo CSV a ser importado: ")
+    csv_importer(file)
 
 
 def option_2():

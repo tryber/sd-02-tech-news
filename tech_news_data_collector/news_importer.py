@@ -74,7 +74,7 @@ def json_importer(json_file):
     except FileNotFoundError:
         print(f"Arquivo {json_file} não encontrado", file=sys.stderr)
         sys.exit(1)
-    except json.decoder.JSONDecodeError:
+    except ValueError:
         print("JSON inválido", file=sys.stderr)
         return json_file.close()
 

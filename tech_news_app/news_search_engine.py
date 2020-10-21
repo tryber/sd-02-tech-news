@@ -15,7 +15,7 @@ def search_by_title(search):
         title = new["title"]
         url = new["url"]
         all_news.append(f"- {title}: {url}")
-    print(all_news)
+    return all_news
 
 
 def check_date(date):
@@ -45,7 +45,7 @@ def search_by_source(source):
 
 def search_by_category(category):
     searched_news = db_search_by_category(category)
-    print([
+    return [
         f"- {new['title']}: {new['url']}"
         for new in searched_news
-    ])
+    ]
