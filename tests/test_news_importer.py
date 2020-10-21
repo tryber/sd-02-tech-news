@@ -24,7 +24,7 @@ from tests.test_news_fakers import (
 
 def test_csv_importer_arquivo_nao_existe():
     with pytest.raises(ValueError, match="Arquivo not_exist.csv não encontrado"):
-        csv_importer(not_exists_csv) is None
+        csv_importer(not_exists_csv)
 
 
 def test_csv_importer_extensao_invalida():

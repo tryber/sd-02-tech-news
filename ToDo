@@ -62,24 +62,6 @@ Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é u
 
 -   Ao finalizar o scrapping, deve-se exibir a mensagem "Raspagem de notícias finalizada".
 
-#### 3 - Deve haver uma função `csv_exporter` dentro do módulo `news_exporter` capaz de exportar todas as notícias do banco de dados para um arquivo CSV, utilizando ";" como separador.
-
-##### As seguintes verificações serão feitas:
-
-
--   Todas as notícias salvas no banco de dados devem ser exportadas. Em caso de sucesso na exportação, a mensagem "Exportação realizada com sucesso" deve ser exibida na `stdout`.
-
-#### 5 - Deve haver uma função `json_exporter` dentro do módulo `news_exporter` capaz de exportar todas as notícias do banco de dados para um arquivo JSON.
-
-##### As seguintes verificações serão feitas:
-
--   O arquivo exportado deve possuir o formato `.json`. Caso contrário, deve ser exibida a mensagem de erro "Formato inválido" na `stderr`;
-
--   O arquivo deve ser criado na raiz do projeto;
-
--   Caso já exista um arquivo com o mesmo nome, ele deve ser substituído;
-
--   Todas as notícias salvas no banco de dados devem ser exportadas e a mensagem "Exportação realizada com sucesso" deve ser exibida na `stdout`.
 
 ### Pacote `tech_news_app`
 
