@@ -27,7 +27,7 @@ def four():
 
 def five():
     num_pages = input("Digite a quantidade de páginas a serem raspadas:")
-    scrape(num_pages)
+    scrape(int(num_pages))
 
 
 def six():
