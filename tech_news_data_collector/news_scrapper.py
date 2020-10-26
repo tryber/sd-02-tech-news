@@ -1,6 +1,5 @@
 import requests
 import time
-import re
 import sys
 import parsel
 from mongo_connection import tech_news_db
