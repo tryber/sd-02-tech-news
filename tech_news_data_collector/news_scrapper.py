@@ -22,12 +22,11 @@ def fetch_content(url, timeout=1):
 
 
 def string_formatter(str):
-    whithoutN = re.sub("\\n", "", str)
-    return re.sub(r"\s{2,}", "", whithoutN)
+    return str.strip()
 
 
 def create_title(selector):
-    return string_formatter(
+    return (
         selector.css("#js-article-title::text").get() or ""
     )
 
