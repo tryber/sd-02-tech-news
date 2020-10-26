@@ -27,11 +27,11 @@ def four():
 
 
 def five():
-    print(top_5_categories())
+    print(top_5_news())
 
 
 def six():
-    print(top_5_news())
+    print(top_5_categories())
 
 
 def seven():
