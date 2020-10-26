@@ -58,7 +58,7 @@ def check_file_extention(filename, extention):
 
 
 def is_valid_param(param, index):
-    if not param:
+    if not param and param != 0:
         raise ValueError(f"Erro na notícia {index}")
 
 
