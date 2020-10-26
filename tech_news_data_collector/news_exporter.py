@@ -89,7 +89,7 @@ def csv_exporter(filename):
 
 def json_exporter_open(file):
     news = find_all()
-    json.dump(news, file)
+    json.dump(news, file, ensure_ascii=False)
 
 
 def json_exporter(filename):
