@@ -50,15 +50,9 @@ Repare que no exemplo dentro da tag _p_ encontram-se duas outras tags. Esse é u
 
 <!--  -->
 
--   Por padrão deve-se raspar apenas as notícias da primeira página;
 
--   Um número de páginas para serem raspadas pode ser passado para a função. Caso o número de páginas seja definido, deve-se raspar os dados das N primeiras páginas;
 
--   O scrapper deve ser capaz de tratar um erro de `status 404` ao acessar uma notícia. Devemos considerar que é possível que haja alguma notícia com link quebrado;
 
--   Todas as notícias devem conter obrigatoriamente os atributos `url`, `title`, `timestamp`, `writer`, `shares_count`, `comments_count`, `summary`, `sources` e `categories`;
-
--   Caso a notícia já exista no banco de dados, ela deve ser atualizada;
 
 -   Ao finalizar o scrapping, deve-se exibir a mensagem "Raspagem de notícias finalizada".
 
@@ -247,3 +241,4 @@ Selecione uma das opções a seguir:
 #### 17 - A cobertura de testes unitários do pacote deve ser de no mínimo 90%.
 
 ---
+

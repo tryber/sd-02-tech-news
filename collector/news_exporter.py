@@ -1,7 +1,6 @@
 from collector.news_service import (
     exported_directory,
     headers,
-    remove_id,
     check_extension,
     file_not_found,
     check_headers
@@ -34,10 +33,11 @@ def csv_exporter(csv_file_name):
                               "Erro na notícia {}".format(line))
                 csv_writer.writerow(csv_row.values())
 # Conferir com o Cássio
-    except(FileNotFoundError):
-        raise ValueError(file_not_found(csv_path))
+    except Exception as err:
+        raise ValueError("Other error occurred: {}".format(err))
 
-    print("Exportação realizada com sucesso")
+    else:
+        print("Exportação realizada com sucesso")
 
 
 def json_exporter(json_file_name):
@@ -51,7 +51,8 @@ def json_exporter(json_file_name):
         with open(json_path, "w") as json_file:
             json.dump(data, json_file)
 
-    except(FileNotFoundError):
-        raise ValueError(file_not_found(csv_path))
+    except Exception as err:
+        raise ValueError("Other error occurred: {}".format(err))
 
-    print("Exportação realizada com sucesso")
+    else:
+        print("Exportação realizada com sucesso")

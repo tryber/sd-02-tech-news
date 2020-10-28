@@ -35,9 +35,9 @@ def csv_importer(csv_path):
     except(FileNotFoundError):
         raise ValueError(file_not_found(csv_path))
 
-    create_news(data)
-
-    print("Importação realizada com sucesso")
+    else:
+        create_news(data)
+        print("Importação realizada com sucesso")
 
 
 # csv_importer(correct_csv)
@@ -63,6 +63,6 @@ def json_importer(json_path):
     except(json.decoder.JSONDecodeError):
         raise ValueError("JSON inválido")
 
-    create_news(data)
-
-    print("Importação realizada com sucesso")
+    else:
+        create_news(data)
+        print("Importação realizada com sucesso")

@@ -13,3 +13,16 @@ def find_news():
         db = client.tech_news
 
         return list(db.news.find())
+
+
+def create_or_update_news(data):
+    with MongoClient() as client:
+        db = client.tech_news
+
+        for new in data:
+            exist = list(db.news.find({"url": new["url"]}))
+            if exist:
+                url = new.pop("url")
+                db.news.update_one({"url": url}, {"$set": new})
+            else:
+                db.news.insert_one(new)
