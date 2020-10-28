@@ -62,14 +62,17 @@ def is_valid_param(param, index):
         raise ValueError(f"Erro na notícia {index}")
 
 
-def sources_categories(item, i):
+def param_treatments(item, i):
     if (i == 7 or i == 8):
         return item.split(",")
+    if (i == 4 or i == 5):
+        return int(item)
     return item
 
 
 def csv_importer_open_with(filename):
     with open(filename) as file:
+        check_file_extention(filename, ".csv")
         status = csv.reader(file, delimiter=";", quotechar='"')
         header, *data = status
 
@@ -85,24 +88,24 @@ def csv_importer_open_with(filename):
 
         insert_all(
             [
-                [sources_categories(item, i) for i, item in enumerate(row)]
+                [param_treatments(item, i) for i, item in enumerate(row)]
                 for row in data
             ], header)
 
 
 def csv_importer(filename):
     try:
-        check_file_extention(filename, ".csv")
         csv_importer_open_with(filename)
         print("Importação realizada com sucesso")
-    except ValueError as exc:
-        print(exc, file=sys.stderr)
     except FileNotFoundError:
         print(f"Arquivo {filename} não encontrado", file=sys.stderr)
+    except ValueError as exc:
+        print(exc, file=sys.stderr)
 
 
 def json_importer_open_with(filename):
     with open(filename) as file:
+        check_file_extention(filename, ".json")
         content = file.read()
         news = json.loads(content)
 
@@ -119,12 +122,11 @@ def json_importer_open_with(filename):
 
 def json_importer(filename):
     try:
-        check_file_extention(filename, ".json")
         json_importer_open_with(filename)
         print("Importação realizada com sucesso")
-    except ValueError as exc:
-        print(exc, file=sys.stderr)
     except FileNotFoundError:
         print(f"Arquivo {filename} não encontrado", file=sys.stderr)
     except json.decoder.JSONDecodeError:
         print("JSON inválido", file=sys.stderr)
+    except ValueError as exc:
+        print(exc, file=sys.stderr)

@@ -1,10 +1,11 @@
 import re
 import sys
+from datetime import datetime
 from mongo_connection import tech_news_db
 
 
 def format_results(results):
-    return [f" - {i['url']}: {i['title']}" for i in list(results)]
+    return [f" - {i['title']}: {i['url']}" for i in list(results)]
 
 
 def search_by_title(input):
@@ -20,13 +21,13 @@ def is_valid_date(date):
     if not bool(re.match(r"\d{4}-\d{2}-\d{2}", date)):
         print("Data inválida", file=sys.stderr)
         raise ValueError
-    [year, month, day] = date.split('-')
-    return f"{day}/{month}/{year}"
+    return
 
 
 def search_by_date(input_date):
     try:
-        date = is_valid_date(input_date)
+        is_valid_date(input_date)
+        date = datetime.fromisoformat(input_date)
         results = tech_news_db().pages.find(
             {"timestamp": {"$eq": date}},
             {"_id": 0, "title": 1, "url": 1},

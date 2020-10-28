@@ -32,7 +32,7 @@ def create_title(selector):
 
 def create_timestamp(selector):
     return string_formatter(
-        selector.css("div.tec--timestamp__item > time > strong::text").get()
+        selector.css("div.tec--timestamp__item > time::attr(datetime)").get()
         or ""
     )
 
@@ -52,11 +52,11 @@ def create_summary(selector):
 def create_shares_count(selector):
     return selector.css(
         "#js-author-bar div.tec--toolbar__item::text"
-    ).re_first(r"\d+" or 0)
+    ).re_first(r"\d+") or 0
 
 
 def create_comments_count(selector):
-    return selector.css("#js-comments-btn::text").re_first(r"\d+" or 0)
+    return selector.css("#js-comments-btn::text").re_first(r"\d+") or 0
 
 
 def create_sources(selector):
@@ -86,8 +86,8 @@ def scrape_page_new(page_url):
         "timestamp": create_timestamp(selector),
         "writer": create_writer(selector),
         "summary": create_summary(selector),
-        "shares_count": create_shares_count(selector),
-        "comments_count": create_comments_count(selector),
+        "shares_count": int(create_shares_count(selector)),
+        "comments_count": int(create_comments_count(selector)),
         "sources": create_sources(selector),
         "categories": create_categories(selector),
     }
