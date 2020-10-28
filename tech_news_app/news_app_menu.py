@@ -48,7 +48,8 @@ dict1 = {
   '7': seven
 }
 
-if "__main__":
+
+def list_options():
     print("1 - Buscar notícias por título")
     print("2 - Buscar notícias por data")
     print("3 - Buscar notícias por fonte")
@@ -59,9 +60,10 @@ if "__main__":
 
 
 def menu():
-    choose = input()
-    if (dict1[choose]):
-        dict1[choose]()
-        sys.exit(0)
-    else:
-        print("Opção inválida", file=sys.stderr)
+    while (True):
+        list_options()
+        choose = input()
+        if (dict1[choose]):
+            dict1[choose]()
+        else:
+            print("Opção inválida", file=sys.stderr)

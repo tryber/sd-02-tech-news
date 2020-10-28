@@ -44,7 +44,7 @@ dict1 = {
 }
 
 
-if "__main__":
+def list_options():
     print("1 - Importar notícias a partir de um arquivo CSV")
     print("2 - Exportar notícias para CSV")
     print("3 - Importar notícias a partir de um arquivo JSON")
@@ -55,9 +55,9 @@ if "__main__":
 
 def menu():
     while (True):
+        list_options()
         choose = input()
         if (dict1[choose]):
             dict1[choose]()
-            sys.exit(0)
         else:
             print("Opção inválida", file=sys.stderr)
