@@ -1,9 +1,7 @@
-import inquirer
-# import click
-
 from collector.news_exporter import (csv_exporter, json_exporter)
 from collector.news_importer import (csv_importer, json_importer)
 from collector.news_scrapper import scrape
+import inquirer
 
 choices = [
     "1 - Importar notícias a partir de um arquivo CSV;",
@@ -15,11 +13,9 @@ choices = [
 ]
 
 
-def prompt_csv_importer():
-    questions = [inquirer.Text(
-        "path", message="Digite o path do arquivo CSV a ser importado")]
-    csv_path = inquirer.prompt(questions)['path']
-    csv_importer(csv_path)
+def exit_code():
+    print("Bye")
+    pass
 
 
 def prompt_csv_exporter():
@@ -29,11 +25,11 @@ def prompt_csv_exporter():
     csv_exporter(csv_path)
 
 
-def prompt_json_importer():
+def prompt_csv_importer():
     questions = [inquirer.Text(
-        "path", message="Digite o path do arquivo JSON a ser importado")]
-    json_path = inquirer.prompt(questions)['path']
-    json_importer(json_path)
+        "path", message="Digite o path do arquivo CSV a ser importado")]
+    csv_path = inquirer.prompt(questions)['path']
+    csv_importer(csv_path)
 
 
 def prompt_json_exporter():
@@ -43,16 +39,18 @@ def prompt_json_exporter():
     json_exporter(csv_path)
 
 
+def prompt_json_importer():
+    questions = [inquirer.Text(
+        "path", message="Digite o path do arquivo JSON a ser importado")]
+    json_path = inquirer.prompt(questions)['path']
+    json_importer(json_path)
+
+
 def prompt_scrape():
     questions = [inquirer.Text(
         "number", message="Digite a quantidade de páginas a serem raspadas")]
     pages_number = int(inquirer.prompt(questions)['number'])
     scrape(pages_number)
-
-
-def exit_code():
-    print("Bye")
-    pass
 
 
 interface = {
@@ -72,21 +70,9 @@ def main():
     index = answer["option"][0]
     interface[index]()
 
-# @click.group(name="tech_news")
-
 
 def tech_news():
-    # try:
     main()
-    # except KeyboardInterrupt:
-    #     print("Bye!")
-
-
-# @tech_news.command()
-# @click.option('--param', help='path do arquivo CSV')
-# def exporter(param: str):
-#     """Importar notícias a partir de um arquivo CSV"""
-#     print(param)
 
 
 if __name__ == '__main__':
