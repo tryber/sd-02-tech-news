@@ -1,11 +1,6 @@
-# import pytest
-
 # from unittest.mock import patch
 
-
 # from unittest.mock import Mock
-
-# from collector.news_scrapper import scrape
 
 
 # from tests.test_news_fakers import (
@@ -13,9 +8,13 @@
 #     wrong_url
 # )
 
+# from collector.news_scrapper import scrape
+
+# import pytest
+
 
 # def test_scrape_raspa_primeira_pagina_por_padrao():
-#     Menu()
+#     scrape(2)
 #     assert False
 
 

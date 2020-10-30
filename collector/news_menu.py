@@ -18,12 +18,50 @@ choices = [
 def prompt_csv_importer():
     questions = [inquirer.Text(
         "path", message="Digite o path do arquivo CSV a ser importado")]
-    answer = inquirer.prompt(questions)
-    csv_exporter(answer["path"])
+    csv_path = inquirer.prompt(questions)['path']
+    csv_importer(csv_path)
+
+
+def prompt_csv_exporter():
+    questions = [inquirer.Text(
+        "name", message="Digite o nome do arquivo CSV a ser exportado")]
+    csv_path = inquirer.prompt(questions)['name']
+    csv_exporter(csv_path)
+
+
+def prompt_json_importer():
+    questions = [inquirer.Text(
+        "path", message="Digite o path do arquivo JSON a ser importado")]
+    json_path = inquirer.prompt(questions)['path']
+    json_importer(json_path)
+
+
+def prompt_json_exporter():
+    questions = [inquirer.Text(
+        "name", message="Digite o nome do arquivo JSON a ser exportado")]
+    csv_path = inquirer.prompt(questions)['name']
+    json_exporter(csv_path)
+
+
+def prompt_scrape():
+    questions = [inquirer.Text(
+        "number", message="Digite a quantidade de páginas a serem raspadas")]
+    pages_number = int(inquirer.prompt(questions)['number'])
+    scrape(pages_number)
+
+
+def exit_code():
+    print("Bye")
+    pass
 
 
 interface = {
-    "1": prompt_csv_importer
+    "1": prompt_csv_importer,
+    "2": prompt_csv_exporter,
+    "3": prompt_json_importer,
+    "4": prompt_json_exporter,
+    "5": prompt_scrape,
+    "6": exit_code
 }
 
 
@@ -38,10 +76,10 @@ def main():
 
 
 def tech_news():
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("Bye!")
+    # try:
+    main()
+    # except KeyboardInterrupt:
+    #     print("Bye!")
 
 
 # @tech_news.command()

@@ -14,8 +14,8 @@ import json
 
 def csv_exporter(file_name):
     data = find_news()
+    check_extension(file_name, ".csv")
     csv_path = directory + "/" + file_name
-    check_extension(csv_path, "csv")
 
     try:
         with open(csv_path, "w") as csv_file:
@@ -36,7 +36,7 @@ def csv_exporter(file_name):
 def json_exporter(file_name):
     data = find_news()
     json_path = directory + "/" + file_name
-    check_extension(json_path, "json")
+    check_extension(json_path, ".json")
 
     try:
         with open(json_path, "w") as json_file:

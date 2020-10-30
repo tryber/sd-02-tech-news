@@ -19,6 +19,8 @@ from tests.test_news_fakers import (
 
 from unittest.mock import patch
 
+import os
+
 import pytest
 
 
@@ -61,10 +63,12 @@ def test_csv_importer_print_on_success(capsys):
         assert out == "Importação realizada com sucesso\n"
 
 
-@patch("collector.news_importer.create_news")
-def test_csv_importer_save_data_on_sucess(create_news_mock):
-    csv_importer(path_correct_csv)
-    create_news_mock.assert_called_with(mock_data)
+def test_csv_importer_save_data_on_sucess():
+    with patch("collector.news_service.find_new") as find_new_mock:
+        with patch("collector.news_importer.create_news") as create_news_mock:
+            find_new_mock.return_value = []
+            csv_importer(path_correct_csv)
+            create_news_mock.assert_called_with(mock_data)
 
 
 def test_json_importer_arquivo_nao_existe():
@@ -106,7 +110,9 @@ def test_json_importer_print_on_success(capsys):
         assert out == "Importação realizada com sucesso\n"
 
 
-@patch("collector.news_importer.create_news")
-def test_json_importer_save_data_on_sucess(create_news_mock, capsys):
-    json_importer(path_correct_json)
-    create_news_mock.assert_called_with(mock_data)
+def test_json_importer_save_data_on_sucess():
+    with patch("collector.news_service.find_new") as find_new_mock:
+        with patch("collector.news_importer.create_news") as create_news_mock:
+            find_new_mock.return_value = []
+            json_importer(path_correct_json)
+            create_news_mock.assert_called_with(mock_data)

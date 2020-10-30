@@ -4,13 +4,6 @@ from tests.test_news_fakers import (
     mock_data,
     mock_wrong_data,
     path_export_correct_csv,
-    path_export_wrong_fields_csv,
-    # data_mock,
-    # wrong_data,
-    # export_correct_csv,
-    # export_wrong_csv,
-    # export_no_exists_csv,
-    # export_no_exists_json
 )
 
 from unittest.mock import patch

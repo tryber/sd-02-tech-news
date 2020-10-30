@@ -1,26 +1,32 @@
-import requests
-import parsel
+from database.index import find_new
+
 from requests.exceptions import HTTPError
 
-URL_BASE = "https://www.tecmundo.com.br/novidades"
+import parsel
 
-URL_SELECTOR = "h3.tec--card__title > a::attr(href)"
+import requests
 
-TITLE_SELECTOR = "#js-article-title::text"
-
-TIMESTAMP_SELECTOR = "#js-article-date::attr(datetime)"
-
-WRITER_SELECTOR = "a.tec--author__info__link::text"
-# not done
-SHARES_COUNT = ".tec--toolbar .tec--toolbar__item::text"
+CATEGORIES_SELECTOR = "#js-categories > a::text"
 
 COMMENTS_COUNT = "#js-comments-btn::attr(data-count)"
-# not done
-SUMARRY_SELECTOR = ".tec--article__body p:first-child *::text"
+
+SHARES_COUNT = ".tec--toolbar .tec--toolbar__item::text"
 
 SOURCES_SELECTOR = "div.z--mb-16 > div a.tec--badge::text"
 
-CATEGORIES_SELECTOR = "#js-categories > a::text"
+SUMARRY_SELECTOR = ".tec--article__body p:first-child *::text"
+
+TIMESTAMP_SELECTOR = "#js-article-date::attr(datetime)"
+
+TITLE_SELECTOR = "#js-article-title::text"
+
+URL_BASE = "https://www.tecmundo.com.br/novidades"
+
+URL_NEXT_PAGE = ".tec--btn.tec--btn--lg.tec--btn--primary.z--mx-auto.z--mt-48::attr(href)"
+
+URL_SELECTOR = "h3.tec--card__title > a::attr(href)"
+
+WRITER_SELECTOR = "a.tec--author__info__link::text"
 
 available_fields = [
     "url",
@@ -36,22 +42,20 @@ available_fields = [
 
 directory = "/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
 
-headers = [
-    {"name": "url", "selector": URL_SELECTOR},
-    {"name": "title", "selector": TITLE_SELECTOR},
-    {"name": "timestamp", "selector": TIMESTAMP_SELECTOR},
-    {"name": "writer", "selector": WRITER_SELECTOR},
-    {"name": "shares_count", "selector": SHARES_COUNT},
-    {"name": "comments_count", "selector": COMMENTS_COUNT},
-    {"name": "summary", "selector": SUMARRY_SELECTOR},
-    {"name": "sources", "selector": SOURCES_SELECTOR},
-    {"name": "categories", "selector": CATEGORIES_SELECTOR}
-]
+selectors = {
+    "title": TITLE_SELECTOR,
+    "timestamp": TIMESTAMP_SELECTOR,
+    "writer": WRITER_SELECTOR,
+    "shares_count": SHARES_COUNT,
+    "comments_count": COMMENTS_COUNT,
+    "summary": SUMARRY_SELECTOR,
+    "sources": SOURCES_SELECTOR,
+    "categories": CATEGORIES_SELECTOR
+}
 
 
 def check_extension(path, expected_extension):
-    current_extension = path.split(".").pop()
-    if current_extension != expected_extension:
+    if expected_extension not in path:
         raise ValueError("Formato inválido")
 
 
@@ -66,25 +70,13 @@ def check_fields(file_fields, err_message):
 
 
 def check_url(urls, url, line):
-    if urls.count(url) > 0:
+    urls.append(url)
+    if urls.count(url) > 1:
         raise ValueError("Notícia {} duplicada".format(line))
 
 
-def file_not_found(path):
-    file = path.split("/").pop()
-
-    return "Arquivo {} não encontrado".format(file)
-
-
-def get_urls(content):
-    selector = parsel.Selector(content)
-
-    return selector.css(URL_SELECTOR).getall()
-
-
-def fetch_content(url, timeout=1000):
+def fetch_content(url, timeout=2000):
     try:
-        # Conferir timeout
         response = requests.get(url, timeout=timeout)
         response.raise_for_status()
     except HTTPError as http_err:
@@ -93,14 +85,23 @@ def fetch_content(url, timeout=1000):
         return response.text
 
 
-def get_field_data(field, selector, selector_string):
-    if field == "categories":
-        return selector.css(selector_string).getall()
-    else:
-        return selector.css(selector_string).get()
+def file_not_found(path):
+    file = path.split("/").pop()
+    return "Arquivo {} não encontrado".format(file)
 
 
-def fill_object(obj, field, data):
+def fill_news_data(news_data, data_row):
+    new = find_new(data_row["url"])
+    if not new:
+        data_row["comments_count"] = int(data_row["comments_count"])
+        data_row["shares_count"] = int(data_row["shares_count"])
+        categories = data_row["categories"]
+        if type(categories) is str:
+            data_row["categories"] = categories.split(",")
+        news_data.append(data_row)
+
+
+def fill_news_field(obj, field, data):
     if field == "comments_count":
         obj[field] = int(data)
     elif field == "shares_count":
@@ -111,23 +112,31 @@ def fill_object(obj, field, data):
         obj[field] = data
 
 
+def get_field_data(field, selector, field_selector):
+    if field == "categories":
+        return selector.css(field_selector).getall()
+    else:
+        return selector.css(field_selector).get()
+
+
+def get_next_page_url(content):
+    selector = parsel.Selector(content)
+    return selector.css(URL_NEXT_PAGE).get()
+
+
+def get_urls(content):
+    selector = parsel.Selector(content)
+    return selector.css(URL_SELECTOR).getall()
+
+
 def get_news(content, url):
     selector = parsel.Selector(content)
-
     obj = {"url": url}
-
-    fields = headers.copy()
-
-    fields.pop(0)
-
-    for element in fields:
-        field = element["name"]
-        selector_string = element["selector"]
-        data = get_field_data(field, selector, selector_string)
+    for field, field_selector in selectors.items():
+        data = get_field_data(field, selector, field_selector)
         if data:
-            fill_object(obj, field, data)
+            fill_news_field(obj, field, data)
         else:
             obj = {}
             break
-
     return obj

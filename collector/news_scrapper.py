@@ -1,30 +1,34 @@
 from collector.news_service import (
     fetch_content,
-    URL_BASE,
     get_urls,
-    get_news
+    URL_BASE,
+    get_news,
+    get_next_page_url,
 )
 
-from database.index import create_or_update_news
+from database.index import upsert_news
 
 
 def scrape(pages_number=1):
+    content_news = fetch_content(URL_BASE)
     current_page = 1
-
     news_data = []
-
     while current_page <= pages_number:
-        content_news = fetch_content(URL_BASE + "?page=" + str(pages_number))
         urls = get_urls(content_news)
-        print("urls", urls)
         for url in urls:
             content_details = fetch_content(url)
             news = get_news(content_details, url)
             if news:
                 news_data.append(news)
 
-        current_page += 1
+        next_url = get_next_page_url(content_news)
+        if next_url:
+            content_news = fetch_content(next_url)
+            current_page += 1
+        else:
+            raise ValueError(
+                "Page Limit Achieved: {} pages".format(current_page))
 
-    create_or_update_news(news_data)
+    upsert_news(news_data)
 
     print("Raspagem de notícias finalizada")
