@@ -70,6 +70,11 @@ def param_treatments(item, i):
     return item
 
 
+def return_url_dont_exist():
+    all_news = tech_news_db().pages.find({}, {"_id": 0, "url": 1})
+    return {item['url'] for item in all_news}
+
+
 def csv_importer_open_with(filename):
     with open(filename) as file:
         check_file_extention(filename, ".csv")
@@ -79,8 +84,11 @@ def csv_importer_open_with(filename):
         validate_header(header)
 
         urls = []
+        url_dont_exist = return_url_dont_exist()
 
         for index, row in enumerate(data):
+            if (row[0] in url_dont_exist):
+                raise ValueError(f"Notícia {index} duplicada")
             url = row[header.index('url')]
             is_row_valid(row, index)
             is_url_duplicated(url, urls, index)
@@ -110,8 +118,11 @@ def json_importer_open_with(filename):
         news = json.loads(content)
 
         urls = []
+        url_dont_exist = return_url_dont_exist()
 
         for index, item in enumerate(news):
+            if (item["url"] in url_dont_exist):
+                raise ValueError(f"Notícia {index} duplicada")
             url = item["url"]
             is_url_duplicated(url, urls, index)
             urls.append(url)

@@ -21,7 +21,6 @@ def is_valid_date(date):
     if not bool(re.match(r"\d{4}-\d{2}-\d{2}", date)):
         print("Data inválida", file=sys.stderr)
         raise ValueError
-    return
 
 
 def search_by_date(input_date):

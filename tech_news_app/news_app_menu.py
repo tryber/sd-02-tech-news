@@ -67,3 +67,7 @@ def menu():
             dict1[choose]()
         else:
             print("Opção inválida", file=sys.stderr)
+
+
+if __name__ == "__main__":
+    menu()
