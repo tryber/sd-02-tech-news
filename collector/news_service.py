@@ -2,10 +2,6 @@ import requests
 import parsel
 from requests.exceptions import HTTPError
 
-available_extensions = ("csv", "json")
-
-exported_directory = "/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
-
 URL_BASE = "https://www.tecmundo.com.br/novidades"
 
 URL_SELECTOR = "h3.tec--card__title > a::attr(href)"
@@ -37,6 +33,8 @@ available_fields = [
     "sources",
     "categories",
 ]
+
+directory = "/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
 
 headers = [
     {"name": "url", "selector": URL_SELECTOR},

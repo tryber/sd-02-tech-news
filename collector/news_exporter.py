@@ -1,38 +1,31 @@
 from collector.news_service import (
-    exported_directory,
-    headers,
+    available_fields,
     check_extension,
-    file_not_found,
-    check_fields
+    check_fields,
+    directory,
 )
 
 from database.index import find_news
-
-# from tests.test_news_fakers import correct_csv
-
 
 import csv
 
 import json
 
 
-def csv_exporter(csv_file_name):
+def csv_exporter(file_name):
     data = find_news()
-
-    csv_path = exported_directory + "/" + csv_file_name
-
-    check_extension(csv_path)
+    csv_path = directory + "/" + file_name
+    check_extension(csv_path, "csv")
 
     try:
         with open(csv_path, "w") as csv_file:
             csv_writer = csv.writer(csv_file, delimiter=";")
-            csv_writer.writerow(headers)
-
+            csv_writer.writerow(available_fields)
             for line, csv_row in enumerate(data):
                 check_fields(list(csv_row.keys()),
                              "Erro na notícia {}".format(line))
                 csv_writer.writerow(csv_row.values())
-# Conferir com o Cássio
+
     except Exception as err:
         raise ValueError("Other error occurred: {}".format(err))
 
@@ -40,12 +33,10 @@ def csv_exporter(csv_file_name):
         print("Exportação realizada com sucesso")
 
 
-def json_exporter(json_file_name):
+def json_exporter(file_name):
     data = find_news()
-
-    json_path = exported_directory + "/" + json_file_name
-
-    check_extension(json_path)
+    json_path = directory + "/" + file_name
+    check_extension(json_path, "json")
 
     try:
         with open(json_path, "w") as json_file:

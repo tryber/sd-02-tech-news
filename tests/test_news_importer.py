@@ -1,10 +1,6 @@
-import pytest
-
-from unittest.mock import patch
+from collector.news_importer import (csv_importer, json_importer)
 
 from contextlib import suppress
-
-from collector.news_importer import (csv_importer, json_importer)
 
 from tests.test_news_fakers import (
     mock_data,
@@ -16,10 +12,14 @@ from tests.test_news_fakers import (
     path_incomplete_json,
     path_not_exists_csv,
     path_not_exists_json,
+    path_wrong_fields_csv,
     path_wrong_fomart_file,
-    path_wrong_header_csv,
     path_wrong_json,
 )
+
+from unittest.mock import patch
+
+import pytest
 
 
 def test_csv_importer_arquivo_nao_existe():
@@ -34,7 +34,7 @@ def test_csv_importer_extensao_invalida():
 
 def test_csv_importer_cabecalho_invalido():
     with pytest.raises(ValueError, match="Cabeçalho inválido"):
-        csv_importer(path_wrong_header_csv)
+        csv_importer(path_wrong_fields_csv)
 
 
 def test_csv_importer_informacoes_incompletas():
