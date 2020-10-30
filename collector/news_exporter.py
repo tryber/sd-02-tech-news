@@ -3,7 +3,7 @@ from collector.news_service import (
     headers,
     check_extension,
     file_not_found,
-    check_headers
+    check_fields
 )
 
 from database.index import find_news
@@ -29,8 +29,8 @@ def csv_exporter(csv_file_name):
             csv_writer.writerow(headers)
 
             for line, csv_row in enumerate(data):
-                check_headers(list(csv_row.keys()),
-                              "Erro na notícia {}".format(line))
+                check_fields(list(csv_row.keys()),
+                             "Erro na notícia {}".format(line))
                 csv_writer.writerow(csv_row.values())
 # Conferir com o Cássio
     except Exception as err:

@@ -26,8 +26,18 @@ SOURCES_SELECTOR = "div.z--mb-16 > div a.tec--badge::text"
 
 CATEGORIES_SELECTOR = "#js-categories > a::text"
 
+available_fields = [
+    "url",
+    "title",
+    "timestamp",
+    "writer",
+    "shares_count",
+    "comments_count",
+    "summary",
+    "sources",
+    "categories",
+]
 
-# conferir com o cássio qual o melhor tipo de dado
 headers = [
     {"name": "url", "selector": URL_SELECTOR},
     {"name": "title", "selector": TITLE_SELECTOR},
@@ -41,13 +51,10 @@ headers = [
 ]
 
 
-def check_extension(string):
-    extension = string.split(".").pop()
-
-    wrong_format = "Formato inválido"
-
-    if extension not in available_extensions:
-        raise ValueError(wrong_format)
+def check_extension(path, expected_extension):
+    current_extension = path.split(".").pop()
+    if current_extension != expected_extension:
+        raise ValueError("Formato inválido")
 
 
 def check_field(field, line):
@@ -55,16 +62,8 @@ def check_field(field, line):
         raise ValueError("Erro na notícia {}".format(line))
 
 
-def get_fields(file_headers, field):
-    fields = []
-    for header in file_headers:
-        fields.append(header[field])
-    return fields
-
-
-def check_headers(file_headers, err_message):
-    fields = get_fields(headers, "name")
-    if file_headers != fields:
+def check_fields(file_fields, err_message):
+    if file_fields != available_fields:
         raise ValueError(err_message)
 
 

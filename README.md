@@ -38,6 +38,10 @@ git config --global credential.helper cache
 git config --global credential.helper 'cache --timeout=36000'
 ```
 
+### Configure PYTHONPATH
+
+export PYTHONPATH="\${PYTHONPATH}:/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
+
 ## Project
 
 Main Goal: Create and Fill a tech news database, research(news_search_engine) and analyse(news_analyser) it;

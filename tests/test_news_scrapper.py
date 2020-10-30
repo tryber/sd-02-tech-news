@@ -1,21 +1,21 @@
-import pytest
+# import pytest
 
-from unittest.mock import patch
-
-
-from unittest.mock import Mock
-
-from collector.news_scrapper import scrape
+# from unittest.mock import patch
 
 
-from tests.test_news_fakers import (
-    data_mock,
-    wrong_url
-)
+# from unittest.mock import Mock
+
+# from collector.news_scrapper import scrape
+
+
+# from tests.test_news_fakers import (
+#     data_mock,
+#     wrong_url
+# )
 
 
 # def test_scrape_raspa_primeira_pagina_por_padrao():
-#     scrape(3)
+#     Menu()
 #     assert False
 
 
