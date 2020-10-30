@@ -1,4 +1,9 @@
+from app.news_search_engine import (
+    search_by_title, search_by_date, search_by_source, search_by_category)
+
+
 # def test_search_by_title_se_encontrar_retorna_a_lista_de_noticias():
+#     print(search_by_category("Mercado"))
 #     assert False
 
 

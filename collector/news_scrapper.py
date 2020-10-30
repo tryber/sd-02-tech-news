@@ -16,7 +16,7 @@ def scrape(pages_number=1):
     while current_page <= pages_number:
         content_news = fetch_content(URL_BASE + "?page=" + str(pages_number))
         urls = get_urls(content_news)
-
+        print("urls", urls)
         for url in urls:
             content_details = fetch_content(url)
             news = get_news(content_details, url)

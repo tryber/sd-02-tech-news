@@ -26,3 +26,17 @@ def create_or_update_news(data):
                 db.news.update_one({"url": url}, {"$set": new})
             else:
                 db.news.insert_one(new)
+
+
+def search_news(query):
+    with MongoClient() as client:
+        db = client.tech_news
+
+        return list(db.news.find(query))
+
+
+def aggregate_news(query):
+    with MongoClient() as client:
+        db = client.tech_news
+
+        return list(db.news.aggregate(query))

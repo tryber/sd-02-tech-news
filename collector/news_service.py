@@ -16,11 +16,11 @@ TIMESTAMP_SELECTOR = "#js-article-date::attr(datetime)"
 
 WRITER_SELECTOR = "a.tec--author__info__link::text"
 # not done
-SHARES_COUNT = "#js-comments-btn::attr(data-count)"
+SHARES_COUNT = ".tec--toolbar .tec--toolbar__item::text"
 
 COMMENTS_COUNT = "#js-comments-btn::attr(data-count)"
 # not done
-SUMARRY_SELECTOR = "#js-comments-btn::attr(data-count)"
+SUMARRY_SELECTOR = ".tec--article__body p:first-child *::text"
 
 SOURCES_SELECTOR = "div.z--mb-16 > div a.tec--badge::text"
 
@@ -96,21 +96,41 @@ def fetch_content(url, timeout=1000):
         return response.text
 
 
+def get_field_data(field, selector, selector_string):
+    if field == "categories":
+        return selector.css(selector_string).getall()
+    else:
+        return selector.css(selector_string).get()
+
+
+def fill_object(obj, field, data):
+    if field == "comments_count":
+        obj[field] = int(data)
+    elif field == "shares_count":
+        obj[field] = int(data[1])
+    elif field == "categories":
+        obj[field] = [each.strip() for each in data]
+    else:
+        obj[field] = data
+
+
 def get_news(content, url):
     selector = parsel.Selector(content)
 
     obj = {"url": url}
 
-    for element in headers:
+    fields = headers.copy()
+
+    fields.pop(0)
+
+    for element in fields:
         field = element["name"]
-        if field != "url":
-            element_data = selector.css(element["selector"]).getall()
-            if len(element_data) == 1:
-                obj[field] = element_data[0]
-            elif len(element_data) == 0:
-                obj = {}
-                break
-            else:
-                obj[field] = element_data
+        selector_string = element["selector"]
+        data = get_field_data(field, selector, selector_string)
+        if data:
+            fill_object(obj, field, data)
+        else:
+            obj = {}
+            break
 
     return obj

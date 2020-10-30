@@ -15,7 +15,7 @@ from tests.test_news_fakers import (
 
 
 # def test_scrape_raspa_primeira_pagina_por_padrao():
-#     scrape(2)
+#     scrape(3)
 #     assert False
 
 
@@ -37,12 +37,12 @@ from tests.test_news_fakers import (
 #     assert False
 
 
-def test_scrape_exibe_mensagem_apos_finalizar(capsys):
-    scrape(2000)
-    assert False
-    # with patch("collector.news_scrapper.fetch_content") as fetch_content_mock:
-    #     fetch_content_mock.return_value = data_mock
-    #     with patch("collector.news_scrapper.create_or_update_news"):
-    #         scrape()
-    #         out, err = capsys.readouterr()
-    #         assert out == "Raspagem de notícias finalizada\n"
+# def test_scrape_exibe_mensagem_apos_finalizar(capsys):
+#     scrape(2000)
+#     assert False
+#     # with patch("collector.news_scrapper.fetch_content") as fetch_content_mock:
+#     #     fetch_content_mock.return_value = data_mock
+#     #     with patch("collector.news_scrapper.create_or_update_news"):
+#     #         scrape()
+#     #         out, err = capsys.readouterr()
+#     #         assert out == "Raspagem de notícias finalizada\n"
