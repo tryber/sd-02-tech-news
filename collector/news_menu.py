@@ -65,7 +65,8 @@ interface = {
 
 def main():
     questions = [inquirer.List(
-        "option", message="Selecione uma das opções a seguir", choices=choices)]
+        "option", message="Selecione uma das opções a seguir", choices=choices)
+    ]
     answer = inquirer.prompt(questions)
     index = answer["option"][0]
     interface[index]()
