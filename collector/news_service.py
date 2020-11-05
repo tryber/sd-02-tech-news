@@ -22,8 +22,7 @@ TITLE_SELECTOR = "#js-article-title::text"
 
 URL_BASE = "https://www.tecmundo.com.br/novidades"
 
-URL_NEXT_PAGE = ".tec--btn.tec--btn--lg
-.tec--btn--primary.z--mx-auto.z--mt-48: : attr(href)"
+URL_NEXT_PAGE = ".tec--btn.tec--btn--lg.tec--btn--primary.z--mx-auto.z--mt-48::attr(href)"
 
 URL_SELECTOR = "h3.tec--card__title > a::attr(href)"
 
