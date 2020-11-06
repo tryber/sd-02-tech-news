@@ -62,3 +62,6 @@ def json_importer(json_path):
     else:
         create_news(news_data)
         print("Importação realizada com sucesso")
+
+
+# csv_importer("dummy/dummy.csv")

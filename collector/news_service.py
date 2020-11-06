@@ -29,15 +29,15 @@ URL_SELECTOR = "h3.tec--card__title > a::attr(href)"
 WRITER_SELECTOR = "a.tec--author__info__link::text"
 
 available_fields = [
-    "url",
-    "title",
-    "timestamp",
-    "writer",
-    "shares_count",
-    "comments_count",
-    "summary",
-    "sources",
     "categories",
+    "comments_count",
+    "shares_count",
+    "sources",
+    "summary",
+    "timestamp",
+    "title",
+    "url",
+    "writer",
 ]
 
 directory = "/home/anderson.bolivar/Documents/projects/sd-02-tech-news"
@@ -65,7 +65,7 @@ def check_field(field, line):
 
 
 def check_fields(file_fields, err_message):
-    if file_fields != available_fields:
+    if sorted(file_fields) != available_fields:
         raise ValueError(err_message)
 
 
