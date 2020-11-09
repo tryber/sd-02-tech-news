@@ -96,8 +96,11 @@ def fill_news_data(news_data, data_row):
         data_row["comments_count"] = int(data_row["comments_count"])
         data_row["shares_count"] = int(data_row["shares_count"])
         categories = data_row["categories"]
+        sources = data_row["sources"]
         if type(categories) is str:
             data_row["categories"] = categories.split(",")
+        if type(sources) is str:
+            data_row["sources"] = sources.split(",")
         news_data.append(data_row)
 
 
@@ -108,6 +111,8 @@ def fill_news_field(obj, field, data):
         obj[field] = int(data[1])
     elif field == "categories":
         obj[field] = [each.strip() for each in data]
+    elif field == "sources":
+        obj[field] = data.split()
     else:
         obj[field] = data
 

@@ -15,10 +15,9 @@ import json
 
 
 def csv_importer(csv_path):
-    check_extension(csv_path, ".csv")
-
     try:
         with open(csv_path) as csv_file:
+            check_extension(csv_path, ".csv")
             csv_reader = csv.DictReader(csv_file, delimiter=";")
             check_fields(csv_reader.fieldnames, "Cabeçalho inválido")
             news_data = []
@@ -39,10 +38,9 @@ def csv_importer(csv_path):
 
 
 def json_importer(json_path):
-    check_extension(json_path, ".json")
-
     try:
         with open(json_path) as json_file:
+            check_extension(json_path, ".json")
             json_data = json.load(json_file)
             urls = []
             news_data = []
