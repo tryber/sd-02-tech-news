@@ -15,16 +15,18 @@ import json
 def csv_exporter(file_name):
     data = find_news()
     check_extension(file_name, ".csv")
-    csv_path = directory + "/" + file_name
 
     try:
-        with open(csv_path, "w") as csv_file:
-            csv_writer = csv.writer(csv_file, delimiter=";")
-            csv_writer.writerow(available_fields)
+        with open(file_name, "w") as csv_file:
+            csv_writer = csv.DictWriter(
+                csv_file, delimiter=";", fieldnames=available_fields)
+            csv_writer.writeheader()
             for line, csv_row in enumerate(data):
                 check_fields(list(csv_row.keys()),
                              "Erro na notícia {}".format(line))
-                csv_writer.writerow(csv_row.values())
+                csv_row["sources"] = ",".join(csv_row["sources"])
+                csv_row["categories"] = ",".join(csv_row["categories"])
+                csv_writer.writerow(csv_row)
 
     except Exception as err:
         raise ValueError("Other error occurred: {}".format(err))
