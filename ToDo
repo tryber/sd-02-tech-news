@@ -1,0 +1,51 @@
+
+### Pacote `tech_news_app`
+
+#### 14 - Crie um módulo `news_app_menu` que deve ser utilizado como um menu de opções, em que cada opção pede as informações necessárias disparar uma ação. O texto exibido pelo menu deve ser exatamente:
+
+**Dica**: Utilize o `__main__`.
+
+```md
+Selecione uma das opções a seguir:
+
+1 - Buscar notícias por título;
+2 - Buscar notícias por data;
+3 - Buscar notícias por fonte;
+4 - Buscar notícias por categoria;
+5 - Listar top 5 notícias;
+6 - Listar top 5 categorias;
+7 - Sair.
+```
+
+##### As seguintes verificações serão feitas:
+
+-   A mensagem de menu deve ser exibida corretamente;
+
+-   Caso a opção `1` seja selecionada, deve-se exibir a mensagem "Digite o título:";
+
+-   Caso a opção `2` seja selecionada, deve-se exibir a mensagem "Digite a data:";
+
+-   Caso a opção `3` seja selecionada, deve-se exibir a mensagem "Digite a fonte:";
+
+-   Caso a opção `4` seja selecionada, deve-se exibir a mensagem "Digite a categoria:";
+
+-   Caso a opção não exista, exiba a mensagem de erro "Opção inválida" na `stderr`.
+
+#### 15 - Ao selecionar uma opção do menu de opções e inserir as informações necessárias, a ação adequada deve ser disparada e seu resultado deve ser exibido.
+
+##### As seguintes verificações serão feitas:
+
+-   Caso a opção `1` seja selecionada, a importação deve ser feita utilizando a função `search_by_title` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `2` seja selecionada, a exportação deve ser feita utilizando a função `search_by_date` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `3` seja selecionada, a importação deve ser feita utilizando a função `search_by_source` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `4` seja selecionada, a exportação deve ser feita utilizando a função `search_by_category` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `5` seja selecionada, a raspagem deve ser feita utilizando a função `top_5_news` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `6` seja selecionada, a raspagem deve ser feita utilizando a função `top_5_categories` e seu resultado deve ser impresso em tela;
+
+-   Caso a opção `7` seja selecionada, deve-se encerrar a execução do script.
+
